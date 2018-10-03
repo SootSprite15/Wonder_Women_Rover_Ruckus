@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Drive Controls", group="Teleop")
 @Disabled
-public class DrivingWay2 extends LinearOpMode {
+public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -93,18 +93,26 @@ public class DrivingWay2 extends LinearOpMode {
             FrontRight.setPower(0);
             BackLeft.setPower(0);
             BackRight.setPower(0);
+            double strafe = 0;
+            double drive = -gamepad1.left_stick_y;
+            double turn = gamepad1.right_stick_y;
+            drive = Math.pow(drive, 3);
+            turn = Math.pow(turn, 3);
+
 
             if (gamepad1.right_bumper) {
-                FrontRight.setPower(-1);
-                FrontLeft.setPower(1);
-                BackLeft.setPower(1);
-                BackRight.setPower(-1);
-            } else if (gamepad1.left_bumper) {
                 FrontRight.setPower(1);
                 FrontLeft.setPower(-1);
+                BackLeft.setPower(1);
+                BackRight.setPower(-1);
+                strafe = 1;
+            } else if (gamepad1.left_bumper) {
+                FrontRight.setPower(-1);
+                FrontLeft.setPower(1);
                 BackLeft.setPower(-1);
                 BackRight.setPower(1);
-            } else {
+                 strafe = -1;
+            }
 
 
                 // Setup a variable for each drive wheel to save power level for telemetry
@@ -112,14 +120,21 @@ public class DrivingWay2 extends LinearOpMode {
                 double frontrightPower;
                 double backleftPower;
                 double backrightPower;
+                double x = drive;
+                double y = strafe;
+                double r = turn;
 
-                double drive = -gamepad1.left_stick_y;
-                double turn = gamepad1.right_stick_y;
-                frontleftPower = +x + y +r;
-                frontrightPower = +x - y -r;
-                backleftPower = +x -y +r;
-                backrightPower = +x + y -r;
-                frontleftPower = Math.max(drive - turn, -1.0, 1.0);
+                double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
+
+                x = x/normalize;
+                y = y/normalize;
+                r = r/normalize;
+
+                frontleftPower = x + y +r;
+                frontrightPower = x - y -r;
+                backleftPower = x -y +r;
+                backrightPower = x + y -r;
+
 
 
                 // Send calculated power to wheels
@@ -134,7 +149,8 @@ public class DrivingWay2 extends LinearOpMode {
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontleftPower, frontrightPower);
                 telemetry.update();
-            }
+
         }
     }
 }
+

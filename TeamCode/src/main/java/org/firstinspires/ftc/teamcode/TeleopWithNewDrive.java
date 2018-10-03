@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Phil's Guide to Teleop", group="Teleop")
 
-public class PhilTest extends LinearOpMode {
+public class TeleopWithNewDrive extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -94,16 +94,16 @@ public class PhilTest extends LinearOpMode {
             BackRight.setPower(0);
 
             if (gamepad1.right_bumper) {
-                FrontRight.setPower(-1);
-                FrontLeft.setPower(1);
+                FrontRight.setPower(1);
+                FrontLeft.setPower(-1);
                 BackLeft.setPower(1);
                 BackRight.setPower(-1);
             } else if (gamepad1.left_bumper) {
-                FrontRight.setPower(1);
-                FrontLeft.setPower(-1);
+                FrontRight.setPower(-1);
+                FrontLeft.setPower(1);
                 BackLeft.setPower(-1);
                 BackRight.setPower(1);
-            } else {
+            }
 
 
                 // Setup a variable for each drive wheel to save power level for telemetry
@@ -117,10 +117,10 @@ public class PhilTest extends LinearOpMode {
 
 
                 // Send calculated power to wheels
-                FrontRight.setPower(-turn);
+                FrontRight.setPower(turn);
                 FrontLeft.setPower(-drive);
                 BackLeft.setPower(drive);
-                BackRight.setPower(turn);
+                BackRight.setPower(-turn);
 
 
 
@@ -131,4 +131,4 @@ public class PhilTest extends LinearOpMode {
             }
         }
     }
-}
+
