@@ -79,8 +79,8 @@ public class TeleopWithNewDrive extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        FrontRight.setDirection(DcMotor.Direction.REVERSE);
+
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -95,13 +95,13 @@ public class TeleopWithNewDrive extends LinearOpMode {
 
             if (gamepad1.right_bumper) {
                 FrontRight.setPower(1);
-                FrontLeft.setPower(-1);
-                BackLeft.setPower(1);
+                FrontLeft.setPower(1);
+                BackLeft.setPower(-1);
                 BackRight.setPower(-1);
             } else if (gamepad1.left_bumper) {
                 FrontRight.setPower(-1);
-                FrontLeft.setPower(1);
-                BackLeft.setPower(-1);
+                FrontLeft.setPower(-1);
+                BackLeft.setPower(1);
                 BackRight.setPower(1);
             }
 
@@ -118,9 +118,9 @@ public class TeleopWithNewDrive extends LinearOpMode {
 
                 // Send calculated power to wheels
                 FrontRight.setPower(turn);
-                FrontLeft.setPower(-drive);
+                FrontLeft.setPower(drive);
                 BackLeft.setPower(drive);
-                BackRight.setPower(-turn);
+                BackRight.setPower(turn);
 
 
 
