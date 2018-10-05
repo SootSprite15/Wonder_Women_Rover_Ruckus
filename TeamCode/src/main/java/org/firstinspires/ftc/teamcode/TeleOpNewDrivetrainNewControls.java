@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Drive Controls", group="Teleop")
-@Disabled
+
 public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
 
     // Declare OpMode members.
@@ -79,9 +79,9 @@ public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
 
         // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
+      //   Reverse the motor that runs backwards when connected directly to the battery
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        FrontRight.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -94,22 +94,22 @@ public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
             BackLeft.setPower(0);
             BackRight.setPower(0);
             double strafe = 0;
-            double drive = -gamepad1.left_stick_y;
-            double turn = gamepad1.right_stick_y;
-            drive = Math.pow(drive, 3);
-            turn = Math.pow(turn, 3);
+            double turn = -gamepad1.left_stick_y;
+            double drive = gamepad1.right_stick_x;
+           drive = Math.pow(drive, 3);
+           turn = Math.pow(turn, 3);
 
 
             if (gamepad1.right_bumper) {
                 FrontRight.setPower(1);
-                FrontLeft.setPower(-1);
-                BackLeft.setPower(1);
-                BackRight.setPower(-1);
-                strafe = 1;
-            } else if (gamepad1.left_bumper) {
-                FrontRight.setPower(-1);
                 FrontLeft.setPower(1);
                 BackLeft.setPower(-1);
+                BackRight.setPower(-1);
+                strafe = -1;
+            } else if (gamepad1.left_bumper) {
+                FrontRight.setPower(-1);
+                FrontLeft.setPower(-1);
+                BackLeft.setPower(1);
                 BackRight.setPower(1);
                  strafe = -1;
             }
@@ -120,9 +120,9 @@ public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
                 double frontrightPower;
                 double backleftPower;
                 double backrightPower;
-                double x = drive;
-                double y = strafe;
                 double r = turn;
+                double y = strafe;
+                double x = drive;
 
                 double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
 
@@ -138,8 +138,8 @@ public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
 
 
                 // Send calculated power to wheels
-                FrontRight.setPower(frontleftPower);
-                FrontLeft.setPower(frontrightPower);
+                FrontRight.setPower(frontrightPower);
+                FrontLeft.setPower(frontleftPower);
                 BackLeft.setPower(backleftPower);
                 BackRight.setPower(backrightPower);
 
