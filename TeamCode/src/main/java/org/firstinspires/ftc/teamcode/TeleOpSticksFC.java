@@ -94,7 +94,7 @@ public class TeleOpSticksFC extends LinearOpMode {
             FrontRight.setPower(0);
             BackLeft.setPower(0);
             BackRight.setPower(0);
-            double strafe = 0;
+            //double strafe = 0;
             double turn = -gamepad1.left_stick_y;
             double drive = gamepad1.right_stick_x;
             double strafe = gamepad1.left_stick_x;
