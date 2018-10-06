@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -50,9 +49,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Drive Controls", group="Teleop")
+@TeleOp(name="TeleOp Old Controls", group="Teleop")
 
-public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
+public class TeleOpOldControls extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -79,9 +78,9 @@ public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
 
         // Most robots need the motor on one side to be reversed to drive forward
-      //   Reverse the motor that runs backwards when connected directly to the battery
-        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        // Reverse the motor that runs backwards when connected directly to the battery
+
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -93,64 +92,43 @@ public class TeleOpNewDrivetrainNewControls extends LinearOpMode {
             FrontRight.setPower(0);
             BackLeft.setPower(0);
             BackRight.setPower(0);
-            double strafe = 0;
-            double turn = -gamepad1.left_stick_y;
-            double drive = gamepad1.right_stick_x;
-           drive = Math.pow(drive, 3);
-           turn = Math.pow(turn, 3);
-
 
             if (gamepad1.right_bumper) {
                 FrontRight.setPower(1);
                 FrontLeft.setPower(1);
                 BackLeft.setPower(-1);
                 BackRight.setPower(-1);
-                strafe = -1;
             } else if (gamepad1.left_bumper) {
                 FrontRight.setPower(-1);
                 FrontLeft.setPower(-1);
                 BackLeft.setPower(1);
                 BackRight.setPower(1);
-                 strafe = -1;
             }
 
 
                 // Setup a variable for each drive wheel to save power level for telemetry
-                double frontleftPower;
-                double frontrightPower;
-                double backleftPower;
-                double backrightPower;
-                double r = turn;
-                double y = strafe;
-                double x = drive;
+                double leftPower;
+                double rightPower;
 
-                double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
-
-                x = x/normalize;
-                y = y/normalize;
-                r = r/normalize;
-
-                frontleftPower = x + y +r;
-                frontrightPower = x - y -r;
-                backleftPower = x -y +r;
-                backrightPower = x + y -r;
-
+                double drive = -gamepad1.left_stick_y;
+                double turn = gamepad1.right_stick_y;
+                leftPower = Range.clip(drive + turn, -1.0, 1.0);
+                rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
 
                 // Send calculated power to wheels
-                FrontRight.setPower(frontrightPower);
-                FrontLeft.setPower(frontleftPower);
-                BackLeft.setPower(backleftPower);
-                BackRight.setPower(backrightPower);
+                FrontRight.setPower(turn);
+                FrontLeft.setPower(drive);
+                BackLeft.setPower(drive);
+                BackRight.setPower(turn);
 
 
 
                 // Show the elapsed game time and wheel power.
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
-                telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontleftPower, frontrightPower);
+                telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
                 telemetry.update();
-
+            }
         }
     }
-}
 
