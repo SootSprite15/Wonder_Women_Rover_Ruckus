@@ -128,10 +128,11 @@ public class TeleOpSticksNoFC extends LinearOpMode {
                 double x = drive;
 
                 double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
-
-                x = x/normalize;
-                y = y/normalize;
-                r = r/normalize;
+            if (normalize >= 1) {
+                x = x / normalize;
+                y = y / normalize;
+                r = r / normalize;
+            }
 
                 frontleftPower = x + y +r;
                 frontrightPower = x - y -r;
