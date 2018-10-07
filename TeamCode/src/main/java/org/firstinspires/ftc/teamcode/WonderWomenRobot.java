@@ -34,6 +34,8 @@ public class WonderWomenRobot{
         BackLeft.setPower(0);
         BackRight.setPower(0);
     }
+
+    //initRobot initalizes motors and brings in the opmode and its hardware map
     public void initRobot(HardwareMap hwMap, LinearOpMode opmode){
         setHardwareMap(hwMap);
         setOpMode(opmode);
@@ -41,15 +43,15 @@ public class WonderWomenRobot{
 
 
     }
+    //brings in hardware map
     public void setHardwareMap(HardwareMap hwMap){
         this.hardwareMap = hwMap;
-
     }
+    //brings in opmode
     public void setOpMode(LinearOpMode opmode){
         this.opmode = opmode;
-
     }
-
+//sets mecanum power using drive, strafe, and turn
     public void setMecanumPower(double drive, double strafe, double turn){
         double frontleftPower;
         double frontrightPower;
