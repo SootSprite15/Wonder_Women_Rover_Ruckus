@@ -109,7 +109,7 @@ public class TeleOpBumpersNoFC extends LinearOpMode {
                 FrontLeft.setPower(1);
                 BackLeft.setPower(-1);
                 BackRight.setPower(-1);
-                strafe = -1;
+                strafe = 1;
             } else if (gamepad1.left_bumper) {
                 FrontRight.setPower(-1);
                 FrontLeft.setPower(-1);
@@ -128,12 +128,14 @@ public class TeleOpBumpersNoFC extends LinearOpMode {
                 double y = strafe;
                 double x = drive;
 
+                //Normalize drive strafe and rotate equally to be in [-1,1]
                 double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
 
-                x = x/normalize;
-                y = y/normalize;
-                r = r/normalize;
-
+            if (normalize >= 1) {
+                x = x / normalize;
+                y = y / normalize;
+                r = r / normalize;
+            }
                 frontleftPower = x + y +r;
                 frontrightPower = x - y -r;
                 backleftPower = x -y +r;
