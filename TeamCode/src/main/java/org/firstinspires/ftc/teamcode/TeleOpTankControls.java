@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="TeleOp Tank Controls", group="Teleop")
-
+//updated tank controls with new ports
 public class TeleOpTankControls extends LinearOpMode {
 
     // Declare OpMode members.
@@ -59,7 +59,7 @@ public class TeleOpTankControls extends LinearOpMode {
     public DcMotor FrontLeft = null;
     public DcMotor BackRight = null;
     public DcMotor BackLeft = null;
-
+    double strafe = 0;
     double drive = 0;
     double turn = 0;
 
@@ -92,21 +92,22 @@ public class TeleOpTankControls extends LinearOpMode {
             FrontRight.setPower(0);
             BackLeft.setPower(0);
             BackRight.setPower(0);
-
-            if (gamepad1.right_bumper) {
-                FrontRight.setPower(1);
+            if (gamepad1.right_trigger>0) {
+                FrontRight.setPower(-1);
                 FrontLeft.setPower(1);
                 BackLeft.setPower(-1);
-                BackRight.setPower(-1);
-            } else if (gamepad1.left_bumper) {
-                FrontRight.setPower(-1);
+                BackRight.setPower(1);
+                strafe = 1;
+            } else if (gamepad1.left_trigger>0) {
+                FrontRight.setPower(1);
                 FrontLeft.setPower(-1);
                 BackLeft.setPower(1);
-                BackRight.setPower(1);
+                BackRight.setPower(-1);
+                strafe = -1;
             }
 
 
-                // Setup a variable for each drive wheel to save power level for telemetry
+            // Setup a variable for each drive wheel to save power level for telemetry
                 double leftPower;
                 double rightPower;
 
