@@ -27,12 +27,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//strafing with bumpers; no finecontrols
+
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -48,12 +52,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-//strafing with sticks: fine controls
+@TeleOp(name="TeleOp Triggers FC", group="Teleop")
 
-
-@TeleOp(name="TeleOp Sticks No FC", group="Teleop")
-
-public class TeleOpSticksNoFC extends LinearOpMode {
+public class TeleOpTriggersFC extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -85,6 +86,7 @@ public class TeleOpSticksNoFC extends LinearOpMode {
         BackRight.setDirection(DcMotor.Direction.REVERSE);
         FrontRight.setDirection(DcMotor.Direction.REVERSE);
         BackLeft.setDirection(DcMotor.Direction.FORWARD);
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -95,28 +97,30 @@ public class TeleOpSticksNoFC extends LinearOpMode {
             FrontRight.setPower(0);
             BackLeft.setPower(0);
             BackRight.setPower(0);
-            //double strafe = 0;
+            double strafe = 0;
             double turn = gamepad1.right_stick_x;
             double drive = -gamepad1.left_stick_y;
-            double strafe = gamepad1.left_stick_x;
-           //drive = Math.pow(drive, 3);
-           //turn = Math.pow(turn, 3);
-           //strafe = Math.pow(strafe, 3);
 
-////get rid of if statement if using sticks to control strafing
-//            if (gamepad1.right_bumper) {
-//                FrontRight.setPower(1);
-//                FrontLeft.setPower(1);
-//                BackLeft.setPower(-1);
-//                BackRight.setPower(-1);
-//                strafe = -1;
-//            } else if (gamepad1.left_bumper) {
-//                FrontRight.setPower(-1);
-//                FrontLeft.setPower(-1);
-//                BackLeft.setPower(1);
-//                BackRight.setPower(1);
-//                 strafe = -1;
-//            }
+            //double strafe = gamepad1.left_stick_x;
+            drive = Math.pow(drive, 1);
+            turn = Math.pow(turn, 1);
+            strafe = Math.pow(strafe, 1);
+
+
+//get rid of if statement if using sticks to control strafing
+            if (gamepad1.right_trigger>0) {
+                FrontRight.setPower(-1);
+                FrontLeft.setPower(1);
+                BackLeft.setPower(-1);
+                BackRight.setPower(1);
+                strafe = 1;
+            } else if (gamepad1.left_trigger>0) {
+                FrontRight.setPower(1);
+                FrontLeft.setPower(-1);
+                BackLeft.setPower(1);
+                BackRight.setPower(-1);
+                 strafe = -1;
+            }
 
 
                 // Setup a variable for each drive wheel to save power level for telemetry
@@ -128,27 +132,28 @@ public class TeleOpSticksNoFC extends LinearOpMode {
                 double y = strafe;
                 double x = drive;
 
+                //Normalize drive strafe and rotate equally to be in [-1,1]
                 double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
+
             if (normalize >= 1) {
                 x = x / normalize;
                 y = y / normalize;
                 r = r / normalize;
             }
-
                 frontleftPower = x + y +r;
                 frontrightPower = x - y -r;
                 backleftPower = x -y +r;
                 backrightPower = x + y -r;
 
 
+                double maxspeed = 1;
+                // Send calculated power to wheels
+                //multiply maxspeed by each power
+                FrontRight.setPower(frontrightPower*maxspeed);
+                FrontLeft.setPower(frontleftPower*maxspeed);
+                BackLeft.setPower(backleftPower*maxspeed);
+                BackRight.setPower(backrightPower*maxspeed);
 
-            double maxspeed = 0.5;
-            // Send calculated power to wheels
-            //multiply maxspeed by each power
-            FrontRight.setPower(frontrightPower*maxspeed);
-            FrontLeft.setPower(frontleftPower*maxspeed);
-            BackLeft.setPower(backleftPower*maxspeed);
-            BackRight.setPower(backrightPower*maxspeed);
 
 
                 // Show the elapsed game time and wheel power.

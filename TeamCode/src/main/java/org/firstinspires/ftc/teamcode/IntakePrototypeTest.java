@@ -31,10 +31,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -52,19 +51,17 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeleOp Bumpers, NoFC", group="Teleop")
+@TeleOp(name="Intake Prototype Test", group="Teleop")
 
-public class TeleOpBumpersNoFC extends LinearOpMode {
+public class IntakePrototypeTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    public DcMotor FrontRight = null;
-    public DcMotor FrontLeft = null;
-    public DcMotor BackRight = null;
-    public DcMotor BackLeft = null;
+    public Servo LeftSide = null;
+    public Servo RightSide = null;
 
-    double drive = 0;
-    double turn = 0;
+
+
 
     @Override
     public void runOpMode() {
@@ -75,85 +72,47 @@ public class TeleOpBumpersNoFC extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
-        FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
-        BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
-        BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+        LeftSide = hardwareMap.get(Servo.class, "LeftServo");
+        RightSide = hardwareMap.get(Servo.class, "RightServo");
 
-        // Most robots need the motor on one side to be reversed to drive forward
-      //   Reverse the motor that runs backwards when connected directly to the battery
-        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            FrontLeft.setPower(0);
-            FrontRight.setPower(0);
-            BackLeft.setPower(0);
-            BackRight.setPower(0);
-            double strafe = 0;
-            double turn = -gamepad1.left_stick_y;
-            double drive = gamepad1.right_stick_x;
-            //double strafe = gamepad1.left_stick_x;
-           //drive = Math.pow(drive, 3);
-           //turn = Math.pow(turn, 3);
-           //strafe = Math.pow(strafe, 3);
 
-//get rid of if statement if using sticks to control strafing
-            if (gamepad1.right_bumper) {
-                FrontRight.setPower(1);
-                FrontLeft.setPower(1);
-                BackLeft.setPower(-1);
-                BackRight.setPower(-1);
-                strafe = 1;
-            } else if (gamepad1.left_bumper) {
-                FrontRight.setPower(-1);
-                FrontLeft.setPower(-1);
-                BackLeft.setPower(1);
-                BackRight.setPower(1);
-                 strafe = -1;
+//            double strafe = 0;
+           double run = gamepad1.right_stick_y;
+            // run until the end of the match (driver presses STOP)
+            double tgtPower = 0;
+            while (opModeIsActive()) {
+            //    tgtPower = -this.gamepad1.left_stick_y;
+
+                while (opModeIsActive()) {
+                    if(gamepad1.a) {
+                        RightSide.setPosition(1);
+                        LeftSide.setPosition(-1);
+                    }else if(gamepad1.y){
+                        RightSide.setPosition(-1);
+                        LeftSide.setPosition(1);
+                    }else if(gamepad1.x) {
+                        RightSide.setPosition(0.5);
+                        LeftSide.setPosition(-0.5);
+                    }
+                    telemetry.addData("Servo Position", RightSide.getPosition());
+               // telemetry.addData("Target Power", tgtPower);
+
+                telemetry.addData("Status", "Running");
+                telemetry.update();
+
             }
-
-
-                // Setup a variable for each drive wheel to save power level for telemetry
-                double frontleftPower;
-                double frontrightPower;
-                double backleftPower;
-                double backrightPower;
-                double r = turn;
-                double y = strafe;
-                double x = drive;
-
-                //Normalize drive strafe and rotate equally to be in [-1,1]
-                double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
-
-            if (normalize >= 1) {
-                x = x / normalize;
-                y = y / normalize;
-                r = r / normalize;
-            }
-                frontleftPower = x + y +r;
-                frontrightPower = x - y -r;
-                backleftPower = x -y +r;
-                backrightPower = x + y -r;
-
-
-
-                // Send calculated power to wheels
-                FrontRight.setPower(frontrightPower);
-                FrontLeft.setPower(frontleftPower);
-                BackLeft.setPower(backleftPower);
-                BackRight.setPower(backrightPower);
-
-
 
                 // Show the elapsed game time and wheel power.
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
-                telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontleftPower, frontrightPower);
+                //telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontleftPower, frontrightPower);
                 telemetry.update();
 
         }

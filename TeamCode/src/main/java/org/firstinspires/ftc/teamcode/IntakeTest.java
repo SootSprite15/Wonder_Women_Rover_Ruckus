@@ -27,6 +27,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//strafing with bumpers; no finecontrols
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -48,22 +50,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-//strafing with sticks: fine controls
+@TeleOp(name="Intake Test", group="Teleop")
 
-
-@TeleOp(name="TeleOp Sticks No FC", group="Teleop")
-
-public class TeleOpSticksNoFC extends LinearOpMode {
+public class IntakeTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    public DcMotor FrontRight = null;
-    public DcMotor FrontLeft = null;
-    public DcMotor BackRight = null;
-    public DcMotor BackLeft = null;
+    public DcMotor Intake = null;
 
-    double drive = 0;
-    double turn = 0;
+
+
 
     @Override
     public void runOpMode() {
@@ -74,86 +70,82 @@ public class TeleOpSticksNoFC extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
-        FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
-        BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
-        BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+        Intake = hardwareMap.get(DcMotor.class, "Intake");
+
 
         // Most robots need the motor on one side to be reversed to drive forward
       //   Reverse the motor that runs backwards when connected directly to the battery
-        FrontLeft.setDirection(DcMotor.Direction.FORWARD);
-        BackRight.setDirection(DcMotor.Direction.REVERSE);
-        FrontRight.setDirection(DcMotor.Direction.REVERSE);
-        BackLeft.setDirection(DcMotor.Direction.FORWARD);
+
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            FrontLeft.setPower(0);
-            FrontRight.setPower(0);
-            BackLeft.setPower(0);
-            BackRight.setPower(0);
-            //double strafe = 0;
-            double turn = gamepad1.right_stick_x;
-            double drive = -gamepad1.left_stick_y;
-            double strafe = gamepad1.left_stick_x;
-           //drive = Math.pow(drive, 3);
-           //turn = Math.pow(turn, 3);
-           //strafe = Math.pow(strafe, 3);
+            Intake.setPower(0);
+//            double strafe = 0;
+           double run = gamepad1.right_stick_x;
+//            double drive = -gamepad1.left_stick_y;
 
-////get rid of if statement if using sticks to control strafing
-//            if (gamepad1.right_bumper) {
-//                FrontRight.setPower(1);
+            //double strafe = gamepad1.left_stick_x;
+//            drive = Math.pow(drive, 1);
+//            turn = Math.pow(turn, 1);
+//            strafe = Math.pow(strafe, 1);
+
+
+//get rid of if statement if using sticks to control strafing
+//            if (gamepad1.right_trigger>0) {
+//                FrontRight.setPower(-1);
 //                FrontLeft.setPower(1);
 //                BackLeft.setPower(-1);
-//                BackRight.setPower(-1);
-//                strafe = -1;
-//            } else if (gamepad1.left_bumper) {
-//                FrontRight.setPower(-1);
+//                BackRight.setPower(1);
+//                strafe = 1;
+//            } else if (gamepad1.left_trigger>0) {
+//                FrontRight.setPower(1);
 //                FrontLeft.setPower(-1);
 //                BackLeft.setPower(1);
-//                BackRight.setPower(1);
+//                BackRight.setPower(-1);
 //                 strafe = -1;
 //            }
 
 
                 // Setup a variable for each drive wheel to save power level for telemetry
-                double frontleftPower;
-                double frontrightPower;
-                double backleftPower;
-                double backrightPower;
-                double r = turn;
-                double y = strafe;
-                double x = drive;
+//                double frontleftPower;
+//                double frontrightPower;
+//                double backleftPower;
+//                double backrightPower;
+//                double r = turn;
+//                double y = strafe;
+//                double x = drive;
+//
+//                //Normalize drive strafe and rotate equally to be in [-1,1]
+//                double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
+//
+//            if (normalize >= 1) {
+//                x = x / normalize;
+//                y = y / normalize;
+//                r = r / normalize;
+//            }
+//                frontleftPower = x + y +r;
+//                frontrightPower = x - y -r;
+//                backleftPower = x -y +r;
+//                backrightPower = x + y -r;
+//
+//
+//                double maxspeed = 1;
+//                // Send calculated power to wheels
+//                //multiply maxspeed by each power
+    Intake.setPower(run);
+//                FrontLeft.setPower(frontleftPower*maxspeed);
+//                BackLeft.setPower(backleftPower*maxspeed);
+//                BackRight.setPower(backrightPower*maxspeed);
 
-                double normalize = Math.max(Math.max(Math.abs(x), Math.abs(r)), Math.abs(y) );
-            if (normalize >= 1) {
-                x = x / normalize;
-                y = y / normalize;
-                r = r / normalize;
-            }
-
-                frontleftPower = x + y +r;
-                frontrightPower = x - y -r;
-                backleftPower = x -y +r;
-                backrightPower = x + y -r;
-
-
-
-            double maxspeed = 0.5;
-            // Send calculated power to wheels
-            //multiply maxspeed by each power
-            FrontRight.setPower(frontrightPower*maxspeed);
-            FrontLeft.setPower(frontleftPower*maxspeed);
-            BackLeft.setPower(backleftPower*maxspeed);
-            BackRight.setPower(backrightPower*maxspeed);
 
 
                 // Show the elapsed game time and wheel power.
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
-                telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontleftPower, frontrightPower);
+                //telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontleftPower, frontrightPower);
                 telemetry.update();
 
         }
