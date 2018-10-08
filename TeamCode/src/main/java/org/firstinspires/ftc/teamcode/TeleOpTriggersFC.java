@@ -98,16 +98,17 @@ public class TeleOpTriggersFC extends LinearOpMode {
             BackLeft.setPower(0);
             BackRight.setPower(0);
             double strafe = 0;
+            //Setting the gamepad controls
             double turn = gamepad1.right_stick_x;
             double drive = -gamepad1.left_stick_y;
 
-            //double strafe = gamepad1.left_stick_x;
-            drive = Math.pow(drive, 1);
-            turn = Math.pow(turn, 1);
-            strafe = Math.pow(strafe, 1);
+            // Set the fine controls
+            drive = Math.pow(drive, 3);
+            turn = Math.pow(turn, 3);
+            strafe = Math.pow(strafe, 3);
 
 
-//get rid of if statement if using sticks to control strafing
+//set triggers to strafe
             if (gamepad1.right_trigger>0) {
                 FrontRight.setPower(-1);
                 FrontLeft.setPower(1);
