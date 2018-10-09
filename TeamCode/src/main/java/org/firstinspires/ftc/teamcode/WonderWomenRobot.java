@@ -93,6 +93,16 @@ public class WonderWomenRobot{
         BackRight.setPower(backrightPower * maxspeed);
 
     }
+    public void setTankPower(double right, double left, double strafe, double maxspeed){
+
+        double drive = (right + left) / 2;
+        double turn = (left - right) /2 ;
+        setMecanumPower(drive, strafe, turn, maxspeed);;
+
+    }
+    public void setTankPower(double right, double left, double strafe){
+        setTankPower(right, left, strafe,1.0);
+    }
 
 
     }
