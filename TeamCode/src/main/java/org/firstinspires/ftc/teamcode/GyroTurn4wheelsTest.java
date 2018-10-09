@@ -87,12 +87,25 @@ public class GyroTurn4wheelsTest extends LinearOpMode {
         telemetry.addData("Mode", "Waiting for start");
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
-        sleep(1000);
+        sleep(2000);
+
+
 // Set up our telemetry dashboard
         while (opModeIsActive()) {
             telemetry.addData("imu heading", angles.firstAngle);
             telemetry.update();
-            robot.setMecanumPower(0,0,-0.5,0.5);
+
+            if(angles.firstAngle >90){
+                robot.setDrivePower(0,0,0,0);
+
+
+            }else if (angles.firstAngle >20) {
+                robot.setDrivePower(1,-1,-1,1,0.2);
+            }
+            else{
+                robot.setDrivePower(1,-1,-1,1,0.25);
+
+            }
 
 //            if(angles.firstAngle > 90 && angles.firstAngle < 180){
 //            robot.setDrivePower(0,0,0,0,1.0);
