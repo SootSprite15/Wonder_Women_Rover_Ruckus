@@ -80,12 +80,23 @@ public class TeleOpTriggersFC extends LinearOpMode {
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
 
+
+        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
         // Most robots need the motor on one side to be reversed to drive forward
       //   Reverse the motor that runs backwards when connected directly to the battery
         FrontLeft.setDirection(DcMotor.Direction.FORWARD);
         BackRight.setDirection(DcMotor.Direction.REVERSE);
         FrontRight.setDirection(DcMotor.Direction.REVERSE);
         BackLeft.setDirection(DcMotor.Direction.FORWARD);
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -93,11 +104,8 @@ public class TeleOpTriggersFC extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            FrontLeft.setPower(0);
-            FrontRight.setPower(0);
-            BackLeft.setPower(0);
-            BackRight.setPower(0);
-            double strafe = 0;
+
+            double strafe;
             //Setting the gamepad controls
             double turn = gamepad1.right_stick_x;
             double drive = -gamepad1.left_stick_y;
@@ -105,23 +113,29 @@ public class TeleOpTriggersFC extends LinearOpMode {
             // Set the fine controls
             drive = Math.pow(drive, 3);
             turn = Math.pow(turn, 3);
-            strafe = Math.pow(strafe, 3);
+            //strafe = Math.pow(strafe, 3);
 
-
-//set triggers to strafe
-            if (gamepad1.right_trigger>0) {
-                FrontRight.setPower(-1);
-                FrontLeft.setPower(1);
-                BackLeft.setPower(-1);
-                BackRight.setPower(1);
-                strafe = 1;
-            } else if (gamepad1.left_trigger>0) {
-                FrontRight.setPower(1);
-                FrontLeft.setPower(-1);
-                BackLeft.setPower(1);
-                BackRight.setPower(-1);
-                 strafe = -1;
+            if(gamepad1.right_trigger>0) {
+                strafe = gamepad1.right_trigger;
+            }else if(gamepad1.left_trigger>0){
+                strafe = -gamepad1.left_trigger;
+            }else{
+                strafe =0;
             }
+////set triggers to strafe
+//            if (gamepad1.right_trigger>0) {
+//                FrontRight.setPower(-1);
+//                FrontLeft.setPower(1);
+//                BackLeft.setPower(-1);
+//                BackRight.setPower(1);
+//                strafe = 1;
+//            } else if (gamepad1.left_trigger>0) {
+//                FrontRight.setPower(1);
+//                FrontLeft.setPower(-1);
+//                BackLeft.setPower(1);
+//                BackRight.setPower(-1);
+//                 strafe = -1;
+//            }
 
 
                 // Setup a variable for each drive wheel to save power level for telemetry
