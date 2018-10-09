@@ -87,10 +87,7 @@ public class WonderWomenRobot{
 
 
 
-        FrontRight.setPower(frontrightPower * maxspeed);
-        FrontLeft.setPower(frontleftPower * maxspeed);
-        BackLeft.setPower(backleftPower * maxspeed);
-        BackRight.setPower(backrightPower * maxspeed);
+        setDrivePower(frontrightPower, frontleftPower, backleftPower, backrightPower, maxspeed);
 
     }
     public void setTankPower(double right, double left, double strafe, double maxspeed){
@@ -104,7 +101,15 @@ public class WonderWomenRobot{
         setTankPower(right, left, strafe,1.0);
     }
 
-
+    public void setDrivePower(double frontrightPower, double frontleftPower, double backleftPower, double backrightPower, double maxspeed){
+        FrontRight.setPower(frontrightPower * maxspeed);
+        FrontLeft.setPower(frontleftPower * maxspeed);
+        BackLeft.setPower(backleftPower * maxspeed);
+        BackRight.setPower(backrightPower * maxspeed);
+    }
+    public void setDrivePower(double frontrightPower, double frontleftPower, double backleftPower, double backrightPower){
+        setDrivePower(frontrightPower, frontleftPower, backleftPower, backrightPower, 1.0);
+    }
     }
 
 
