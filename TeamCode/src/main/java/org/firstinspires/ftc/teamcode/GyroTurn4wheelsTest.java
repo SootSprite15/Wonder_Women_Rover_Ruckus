@@ -84,7 +84,7 @@ public class GyroTurn4wheelsTest extends LinearOpMode {
             robot.setMecanumPower(0,0,0.5,0.5);
 
             if(angles.firstAngle > 90){
-
+            robot.setDrivePower(0,0,0,0,0);
             }
 
 
