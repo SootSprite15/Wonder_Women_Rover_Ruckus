@@ -53,6 +53,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="TeleOp Bumpers, NoFC", group="Teleop")
+@Disabled
 
 public class TeleOpBumpersNoFC extends LinearOpMode {
 
