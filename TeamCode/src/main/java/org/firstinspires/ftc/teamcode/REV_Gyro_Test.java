@@ -2,9 +2,15 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous ;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -12,6 +18,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import java.util.Locale;
 
@@ -32,11 +43,12 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Gyro turn", group="")
-public class GyroTurn4wheelsTest extends LinearOpMode {
-    WonderWomenRobot robot = new WonderWomenRobot();
+@Autonomous(name="Rev_Gyro_test", group="K9bot")
+@Disabled
+public class REV_Gyro_Test extends LinearOpMode {
 
-
+    /* Declare OpMode members. */
+    DcMotor Hex_Motor;
 
     BNO055IMU imu;
 
@@ -49,8 +61,7 @@ public class GyroTurn4wheelsTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        robot.initRobot(hardwareMap, this);
-
+        Hex_Motor = hardwareMap.dcMotor.get("Hex_Motor");
         double turnspeed = 1;
 
 
@@ -77,27 +88,18 @@ public class GyroTurn4wheelsTest extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        telemetry.addData("Mode", "Calibrating...");
-        telemetry.update();
-        //make sure IMU is calibrated
-        while(!isStopRequested() && !imu.isGyroCalibrated()){
-            sleep(50);
-            idle();
-        }
-        telemetry.addData("Mode", "Waiting for start");
-        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
-        telemetry.update();
-        sleep(1000);
+
 // Set up our telemetry dashboard
         while (opModeIsActive()) {
-            telemetry.addData("imu heading", angles.firstAngle);
             telemetry.update();
-            robot.setMecanumPower(0,0,-0.5,0.5);
-
-//            if(angles.firstAngle > 90 && angles.firstAngle < 180){
-//            robot.setDrivePower(0,0,0,0,1.0);
-//            }
-
+            if(angles.firstAngle > 45){
+                Hex_Motor.setPower(turnspeed);
+            }
+            else if(angles.firstAngle<0){
+                Hex_Motor.setPower(-turnspeed);
+            }else{
+                Hex_Motor.setPower(0);
+            }
 
         }
     }
