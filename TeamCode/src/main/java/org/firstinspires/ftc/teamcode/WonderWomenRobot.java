@@ -70,9 +70,9 @@ public class WonderWomenRobot{
 
         double normalize = Math.max(Math.max(Math.abs(drive), Math.abs(turn)), Math.abs(strafe) );
 
-        drive = Math.pow(drive, 3);
-        turn = Math.pow(turn, 3);
-        strafe = Math.pow(strafe, 3);
+//        drive = Math.pow(drive, 3);
+//        turn = Math.pow(turn, 3);
+//        strafe = Math.pow(strafe, 3);
 
        if (normalize >= 1) {
            drive = drive / normalize;
