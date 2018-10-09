@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @TeleOp
-public class TeleOp_WonderWomenRobotTest extends LinearOpMode{
+public class TeleOpMecanum extends LinearOpMode{
     WonderWomenRobot robot = new WonderWomenRobot();
 
     @Override
@@ -13,6 +13,7 @@ public class TeleOp_WonderWomenRobotTest extends LinearOpMode{
         //initialize robot using hardware map and opmode
         robot.initRobot(hardwareMap, this);
         waitForStart();
+
         while(opModeIsActive()){
             //set gamepad controls
             double turn = gamepad1.right_stick_x;
@@ -27,7 +28,7 @@ public class TeleOp_WonderWomenRobotTest extends LinearOpMode{
             }else{
                 strafe =0;
             }
-            //low speed mode when bumpers are pressed
+            //enter low speed mode when bumpers are pressed
             if(gamepad1.right_bumper || gamepad1.left_bumper){
                 maxspeed = 0.5;
             }

@@ -2,14 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous ;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -17,11 +12,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import java.util.Locale;
 
@@ -42,11 +32,14 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Rev_Gyro_test", group="K9bot")
-public class Rev_Gyro_test extends LinearOpMode {
+@Autonomous(name="Gyro turn", group="")
+public class GyroTurn4wheelsTest extends LinearOpMode {
 
     /* Declare OpMode members. */
-    DcMotor Hex_Motor;
+    DcMotor FrontRight;
+    DcMotor FrontLeft;
+    DcMotor BackRight;
+    DcMotor BackLeft;
 
     BNO055IMU imu;
 
@@ -59,7 +52,11 @@ public class Rev_Gyro_test extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        Hex_Motor = hardwareMap.dcMotor.get("Hex_Motor");
+        FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
+        FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+        BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
+        BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+
         double turnspeed = 1;
 
 
@@ -90,14 +87,17 @@ public class Rev_Gyro_test extends LinearOpMode {
 // Set up our telemetry dashboard
         while (opModeIsActive()) {
             telemetry.update();
-            if(angles.firstAngle > 45){
-                Hex_Motor.setPower(turnspeed);
+            FrontRight.setPower(0.5);
+            FrontLeft.setPower(-0.5);
+            BackRight.setPower(0.5);
+            BackLeft.setPower(-0.5);
+            if(angles.firstAngle > 90){
+                FrontRight.setPower(0);
+                FrontLeft.setPower(0);
+                BackRight.setPower(0);
+                BackLeft.setPower(0);
             }
-            else if(angles.firstAngle<0){
-                Hex_Motor.setPower(-turnspeed);
-            }else{
-                Hex_Motor.setPower(0);
-            }
+
 
         }
     }

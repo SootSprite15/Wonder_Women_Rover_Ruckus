@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -50,6 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="TeleOp Tank Controls", group="Teleop")
+@Disabled
 //updated tank controls with new ports
 public class TeleOpTankControls extends LinearOpMode {
 
@@ -76,6 +78,11 @@ public class TeleOpTankControls extends LinearOpMode {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+
+        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery

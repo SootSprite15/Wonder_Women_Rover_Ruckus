@@ -52,9 +52,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeleOp Triggers FC", group="Teleop")
-
-public class TeleOpTriggersFC extends LinearOpMode {
+@TeleOp(name="TeleOp Triggers", group="Teleop")
+@Disabled
+public class TeleOpTriggers extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -110,9 +110,10 @@ public class TeleOpTriggersFC extends LinearOpMode {
             double turn = gamepad1.right_stick_x;
             double drive = -gamepad1.left_stick_y;
 
+            double maxspeed =1;
             // Set the fine controls
-            drive = Math.pow(drive, 3);
-            turn = Math.pow(turn, 3);
+            //drive = Math.pow(drive, 3);
+            //turn = Math.pow(turn, 3);
             //strafe = Math.pow(strafe, 3);
 
             if(gamepad1.right_trigger>0) {
@@ -121,6 +122,9 @@ public class TeleOpTriggersFC extends LinearOpMode {
                 strafe = -gamepad1.left_trigger;
             }else{
                 strafe =0;
+            }
+            if(gamepad1.right_bumper || gamepad1.left_bumper){
+                maxspeed = 0.5;
             }
 ////set triggers to strafe
 //            if (gamepad1.right_trigger>0) {
@@ -161,7 +165,7 @@ public class TeleOpTriggersFC extends LinearOpMode {
                 backrightPower = x + y -r;
 
 
-                double maxspeed = 1;
+
                 // Send calculated power to wheels
                 //multiply maxspeed by each power
                 FrontRight.setPower(frontrightPower*maxspeed);

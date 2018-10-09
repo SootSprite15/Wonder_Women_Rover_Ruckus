@@ -93,7 +93,9 @@ public class Rev_Gyro_test extends LinearOpMode {
             if(angles.firstAngle > 45){
                 Hex_Motor.setPower(turnspeed);
             }
-            else {
+            else if(angles.firstAngle<0){
+                Hex_Motor.setPower(-turnspeed);
+            }else{
                 Hex_Motor.setPower(0);
             }
 

@@ -18,17 +18,24 @@ public class WonderWomenRobot{
 
     //Initialize drive motors
     public void initDriveMotors(){
-
+    //naming the motors
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
 
+        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        //Reverse left motors
-        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        // The right motors needed to be reversed to run forward.
+        FrontLeft.setDirection(DcMotor.Direction.FORWARD);
+        BackRight.setDirection(DcMotor.Direction.REVERSE);
+        FrontRight.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.FORWARD);
 
+        // set power of motors to 0
         FrontLeft.setPower(0);
         FrontRight.setPower(0);
         BackLeft.setPower(0);
@@ -51,8 +58,11 @@ public class WonderWomenRobot{
     public void setOpMode(LinearOpMode opmode){
         this.opmode = opmode;
     }
-//sets mecanum power using drive, strafe, and turn
     public void setMecanumPower(double drive, double strafe, double turn){
+        setMecanumPower(drive, strafe, turn, 1.0);
+    }
+//sets mecanum power using drive, strafe, and turn
+    public void setMecanumPower(double drive, double strafe, double turn, double maxspeed){
         double frontleftPower;
         double frontrightPower;
         double backleftPower;
@@ -70,18 +80,24 @@ public class WonderWomenRobot{
            turn = turn / normalize;
        }
 
-        frontleftPower = drive + strafe +turn;
-        frontrightPower = drive- strafe -turn;
-        backleftPower = drive -strafe +turn;
-        backrightPower = drive + strafe -turn;
+        frontleftPower  = drive + strafe + turn;
+        frontrightPower = drive - strafe - turn;
+        backleftPower   = drive - strafe + turn;
+        backrightPower  = drive + strafe - turn;
 
-        FrontRight.setPower(frontrightPower);
-        FrontLeft.setPower(frontleftPower);
-        BackLeft.setPower(backleftPower);
-        BackRight.setPower(backrightPower);
+
+
+        FrontRight.setPower(frontrightPower * maxspeed);
+        FrontLeft.setPower(frontleftPower * maxspeed);
+        BackLeft.setPower(backleftPower * maxspeed);
+        BackRight.setPower(backrightPower * maxspeed);
+
+    }
+
+
     }
 
 
 
-}
+
 

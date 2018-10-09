@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
@@ -45,6 +46,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
 @Autonomous(name = "Sensor: LimitSwitch", group = "Test")
+@Disabled
 
 public class LimitSwitchTest extends LinearOpMode {
     /**
