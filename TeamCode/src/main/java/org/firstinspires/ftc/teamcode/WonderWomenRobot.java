@@ -56,7 +56,7 @@ public class WonderWomenRobot {
         BackLeft.setPower(0);
         BackRight.setPower(0);
     }
-    public void initIMUGyro(){
+    public void initIMUGyro() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -75,45 +75,16 @@ public class WonderWomenRobot {
         imu.initialize(parameters);
 
 
-
-
-
-
-
-
-//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-//        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-//        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-//        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-//        parameters.loggingEnabled = true;
-//        parameters.loggingTag = "IMU";
-//        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-//        imu = hardwareMap.get(BNO055IMU.class, "imu");
-//        imu.initialize(parameters);
-
-
     }
-//    public void calibIMUGyro(){
-//        while(!LinearOpMode.isStopRequested() && !imu.isGyroCalibrated()){
-//            LinearOpMode.sleep(50);
-//            LinearOpMode.idle();
-//        }
-    //}
 
     //initRobot initalizes motors and brings in the opmode and its hardware map
-    public void initRobot(HardwareMap hwMap, LinearOpMode opmode){
+    public void initRobot(HardwareMap hwMap, LinearOpMode opmode) {
         setHardwareMap(hwMap);
         setOpMode(opmode);
         initDriveMotors();
         initIMUGyro();
 
-
     }
-//    public void initRobot(HardwareMap hwMap){
-//        setHardwareMap(hwMap);
-//        setOpMode(OpMode);
-//
-//    }
     public double getIMUBearing(){
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return angles.firstAngle;
@@ -203,26 +174,32 @@ public class WonderWomenRobot {
         double backleftPower;
         double backrightPower;
 
-        double normalize = Math.max(Math.max(Math.abs(drive), Math.abs(turn)), Math.abs(strafe) );
+//        double normalize = Math.max(Math.max(Math.abs(drive), Math.abs(turn)), Math.abs(strafe) );
 
 //        drive = Math.pow(drive, 3);
 //        turn = Math.pow(turn, 3);
 //        strafe = Math.pow(strafe, 3);
 
-       if (normalize >= 1) {
-           drive = drive / normalize;
-           strafe = strafe / normalize;
-           turn = turn / normalize;
-       }
+//       if (normalize >= 1) {
+//           drive = drive / normalize;
+//           strafe = strafe / normalize;
+//           turn = turn / normalize;
+//       }
 
         frontleftPower  = drive + strafe + turn;
         frontrightPower = drive - strafe - turn;
         backleftPower   = drive - strafe + turn;
         backrightPower  = drive + strafe - turn;
+        double normalize = Math.max(Math.max(Math.max(Math.abs(frontleftPower), Math.abs(frontrightPower)), Math.abs(backleftPower)), Math.abs(backrightPower));
 
-
-
+        if (normalize > 1){
+            frontleftPower /= normalize;
+            backrightPower /= normalize;
+            backleftPower /= normalize;
+            frontrightPower /= normalize;
+        }
         setDrivePower(frontrightPower, frontleftPower, backleftPower, backrightPower, maxspeed);
+
 
     }
 

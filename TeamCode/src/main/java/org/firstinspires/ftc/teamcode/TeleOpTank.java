@@ -11,6 +11,9 @@ public class TeleOpTank extends LinearOpMode{
     public void runOpMode() {
         //initialize robot using hardware map and opmode
         robot.initRobot(hardwareMap, this);
+        gamepad1.setJoystickDeadzone((float) 0.05);
+        //gamepad2.setJoystickDeadzone((float) 0.05);
+
         waitForStart();
 
         while(opModeIsActive()){
@@ -34,6 +37,7 @@ public class TeleOpTank extends LinearOpMode{
 
             //set power to drive
             robot.setTankPower(right, left, strafe, maxspeed);
+            sleep(1);
         }
     }
 }

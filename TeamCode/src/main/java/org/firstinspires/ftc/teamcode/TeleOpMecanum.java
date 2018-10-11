@@ -12,6 +12,8 @@ public class TeleOpMecanum extends LinearOpMode{
     public void runOpMode() {
         //initialize robot using hardware map and opmode
         robot.initRobot(hardwareMap, this);
+        gamepad1.setJoystickDeadzone((float) 0.05);
+        //gamepad2.setJoystickDeadzone((float) 0.05);
         waitForStart();
 
         while(opModeIsActive()){
@@ -34,8 +36,8 @@ public class TeleOpMecanum extends LinearOpMode{
             }
 
             //set power to drive
-            //robot.setMecanumPower(drive, strafe, turn);
             robot.setMecanumPower(drive, strafe, turn, maxspeed);
+            sleep(1);
         }
     }
 }
