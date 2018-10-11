@@ -33,7 +33,6 @@ public class TeleOpTank extends LinearOpMode{
             }
 
             //set power to drive
-            //robot.setMecanumPower(drive, strafe, turn);
             robot.setTankPower(right, left, strafe, maxspeed);
         }
     }
