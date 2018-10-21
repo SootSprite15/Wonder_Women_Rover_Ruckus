@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+
 //not an opmode
 //to be used by every opmode
 //In this file we define the robot and its motions. Opmodes then use these motions.
@@ -30,6 +31,7 @@ public class WonderWomenRobot {
     private BNO055IMU imu;
     private Orientation angles;
 
+
     //Initialize drive motors
     public void initDriveMotors(){
     //naming the motors
@@ -43,6 +45,16 @@ public class WonderWomenRobot {
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // The right motors needed to be reversed to run forward.
         FrontLeft.setDirection(DcMotor.Direction.FORWARD);
@@ -225,6 +237,47 @@ public class WonderWomenRobot {
     }
     public void setHexMotorPower(){
         HexMotor.setPower(1);
+    }
+    public void driveByTicks(int ticks, double speed){
+        int newFrontLeftTarget;
+        int newBackLeftTarget;
+        int newBackRightTarget;
+        int newFrontRightTarget;
+        newFrontLeftTarget = FrontLeft.getCurrentPosition() + ticks;
+        newBackLeftTarget = BackLeft.getCurrentPosition() + ticks;
+        newBackRightTarget = BackRight.getCurrentPosition() + ticks;
+        newFrontRightTarget = FrontRight.getCurrentPosition() + ticks;
+
+        FrontLeft.setTargetPosition(newFrontLeftTarget);
+        BackLeft.setTargetPosition(newBackLeftTarget);
+        BackRight.setTargetPosition(newBackRightTarget);
+        FrontRight.setTargetPosition(newFrontRightTarget);
+
+        FrontLeft.setPower(Math.abs(speed));
+        BackLeft.setPower(Math.abs(speed));
+        BackRight.setPower(Math.abs(speed));
+        FrontRight.setPower(Math.abs(speed));
+
+//        while (opmode.opModeIsActive() &&
+//                (FrontLeft.isBusy() &&  FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy())) {
+//
+//        }
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
+
+
     }
 }
 
