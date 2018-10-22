@@ -2,93 +2,102 @@
 
 Welcome!
 
-Explanation of functions in WonderWomen class as of 10-21-18
+##Explanation of functions in WonderWomen class as of 10-21-18
 
 public void initDriveMotors() -
-	FUNCTION: reads hardware map and initializes DC motors for our robot
+- 	FUNCTION: reads hardware map and initializes DC motors for our robot
 
 
 public void initIMUGyro() -
-	FUNCTION: initializes gyro sensor built in on REV hub
+- 	FUNCTION: initializes gyro sensor built in on REV hub
 
 
 public void initRobot(HardwareMap hwMap, LinearOpMode opmode) -
-	INPUT: HardwareMap hwMap is hardwareMap ( you don’t need to change anything between opcodes)
+- 	INPUT: HardwareMap hwMap is hardwareMap ( you don’t need to change anything between opcodes)
 		LinearOpMode opmode is the type of opcode (usually this if extends Linear OpMode)
-	FUNCTION: to be used at the start of opcodes
+- 	FUNCTION: to be used at the start of opcodes
 		  gets robot ready to run (sets motors, sensors, etc.)
 
 
 public double getIMUBearing()
-	FUNCTION:reads IMU gyro sensor and returns the angle reading
+- FUNCTION:reads IMU gyro sensor and returns the angle reading
 
 
 public static double Angledistance(double alpha, double beta)
-    INPUT: alpha is 1st angle
-           beta is 2nd angle
-    OUTPUT : angle distance between 2 angles (if 0 is start of circle, left side goes from 0 through 180 and the right side goes from 0 through -180)
+-   INPUT: alpha is 1st angle
+           
+      beta is 2nd angle
+-   OUTPUT : angle distance between 2 angles (if 0 is start of circle, left side goes from 0 through 180 and the right side goes from 0 through -180)
 
 
 public void gyroTurn(double turnAngle)
-	INPUT: the angle degree you want to turn (- for right turns, + for left)
-	FUNCTION:turns robot that number of degrees
+- 	INPUT: the angle degree you want to turn (- for right turns, + for left)
+- 	FUNCTION:turns robot that number of degrees
 
 
  public void setHardwareMap(HardwareMap hwMap)
-	FUNCTION:sets the Hardware Map
-	INPUT: hardwareMap
+- 	FUNCTION:sets the Hardware Map
+- 	INPUT: hardwareMap
 
 
 public void setOpMode (LinearOpMode opcode)
-	FUNCTION:sets the OpMode
-	INPUT: current opcode (this)
+- 	FUNCTION:sets the OpMode
+- 	INPUT: current opcode (this)
 
 
 public void setMecanumPower(double drive, double strafe, double turn)
-	INPUTS: drive is the stick value in the TeleOp program for driving
+- 	INPUTS: Drive is the stick value in the TeleOp program for driving.
+
 		strafe is whether you strafed or not
+		
 		turn is the stick value in the TeleOp program for turning
-	FUNCTION: the reason we have this function and the one below it is because if no maxspeed is being inputed into this function, it automatically gets set to 1
+		
+- 	FUNCTION: the reason we have this function and the one below it is because if no maxspeed is being inputed into this function, it automatically gets set to 1
 
 
 public void setMecanumPower(double drive, double strafe, double turn, double maxspeed)
-	same as above except it has a max speed parameter so
-	if bumpers are being pressed, the maxspeed value will be able to change
+- 	same as above except it has a max speed parameter so
+ 	if bumpers are being pressed, the maxspeed value will be able to change
 
 
 public void setTankPower(double right, double left, double strafe, double maxspeed)
-	INPUTS: right is right stick value in TeleOp
+- 	INPUTS: right is right stick value in TeleOp
+
 		left is left stick value in TeleOp
+
 		strafe is whether you strafe
+
 		max speed is the max speed of the robot
-	FUNCTION: sets the motors to tank drive
+- 	FUNCTION: sets the motors to tank drive
 
 
  public void setTankPower(double right, double left, double strafe)
-	INPUTS are same as above and
-	FUNCTION: the reason for this function is the same reason as having the setMecanumPower function without a maxspeed parameter
+- 	INPUTS are same as above and
+- 	FUNCTION: the reason for this function is the same reason as having the setMecanumPower function without a maxspeed parameter
 
 
 public void setDrivePower(double frontrightPower, double frontleftPower, double 			backleftPower, double backrightPower, double maxspeed)
-	INPUTS: what they say (frontrightPower is the power for the front right wheel, etc.)
+- 	INPUTS: what they say (frontrightPower is the power for the front right wheel, etc.)
+
 		maxspeed is max speed
-	FUNCTION: this function sets the power of each motor to the parameter corresponding with the motor
+- 	FUNCTION: this function sets the power of each motor to the parameter corresponding with the motor
 
 
 public void setDrivePower(double frontrightPower, double frontleftPower, double 			backleftPower, double backrightPower)
-	INPUTS: same as other setDrivePower but no max speed
-	FUNCTION: purpose is to set max speed to 1 if not specified
+- 	INPUTS: same as other setDrivePower but no max speed
+- 	FUNCTION: purpose is to set max speed to 1 if not specified
 
 
 public void setHexMotorPower()
-	FUNCTION: sets the HexMotor to run (used for a test run)
+- 	FUNCTION: sets the HexMotor to run (used for a test run)
 
 
 public void driveByTicks(int ticks, double speed)
-	INPUT: ticks is # of ticks you want the motor to go
-		speed is the speed of the motors
+-	INPUT: ticks is # of ticks you want the motor to go
+ 
+ 		speed is the speed of the motors
 
-	FUNCTION: runs the motors until reached the # of ticks specified
+- 	FUNCTION: runs the motors until reached the # of ticks specified
 
 
 
