@@ -104,7 +104,7 @@ public void driveByTicks(int ticks, double speed)
 
 
 This module, TeamCode, is the place where you will write/paste the code for your team's
-robot controller App. This module is currently empty (a clean slate) but the
+rosbot controller App. This module is currently empty (a clean slate) but the
 process for adding OpModes is straightforward.
 
 ## Creating your own OpModes
