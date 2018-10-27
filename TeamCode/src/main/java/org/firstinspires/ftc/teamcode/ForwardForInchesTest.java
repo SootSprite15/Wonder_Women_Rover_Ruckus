@@ -12,8 +12,10 @@ public class ForwardForInchesTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException{
        robot.initRobot(hardwareMap, this);
 
-       robot.driveForInches(5,0.5);
-       robot.driveForInches(-5,0.5);
+       robot.driveForInches(12,0.5);
+       //positive angle = left turn
+       robot.gyroTurn(90);
+       robot.driveForInches(-12,0.5);
     }
 }
 
