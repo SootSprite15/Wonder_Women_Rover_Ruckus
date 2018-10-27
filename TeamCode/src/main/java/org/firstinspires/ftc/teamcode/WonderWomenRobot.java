@@ -24,11 +24,18 @@ public class WonderWomenRobot {
     private DcMotor FrontLeft = null;
     private DcMotor BackRight = null;
     private DcMotor BackLeft = null;
-    private DcMotor HexMotor = null;
     private HardwareMap hardwareMap = null;
     private LinearOpMode opmode = null;
     private BNO055IMU imu;
     private Orientation angles;
+    double TICKS = 2240;
+    double TICKSFORNEVEREST40MOTOR = 1120;
+    double PI = 3.1415926535897932384626433;
+    double wheelDiameter = 4;
+    double circumfrenceOfWheel = PI *  wheelDiameter;
+    double motorRotationTeeth =1;
+    double wheelRotationTeeth=1;
+    double ticksPerInch = TICKS * ( motorRotationTeeth / wheelRotationTeeth) * (1 / circumfrenceOfWheel);
 
     //Initialize drive motors
     public void initDriveMotors(){
@@ -37,18 +44,21 @@ public class WonderWomenRobot {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
-        HexMotor = hardwareMap.get(DcMotor.class, "HexMotor");
+       // HexMotor = hardwareMap.get(DcMotor.class, "HexMotor");
 //
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+
         // The right motors needed to be reversed to run forward.
         FrontLeft.setDirection(DcMotor.Direction.FORWARD);
         BackRight.setDirection(DcMotor.Direction.REVERSE);
         FrontRight.setDirection(DcMotor.Direction.REVERSE);
         BackLeft.setDirection(DcMotor.Direction.FORWARD);
+
+        resetEncoder();
 
         // set power of motors to 0
         FrontLeft.setPower(0);
@@ -223,10 +233,77 @@ public class WonderWomenRobot {
     public void setDrivePower(double frontrightPower, double frontleftPower, double backleftPower, double backrightPower){
         setDrivePower(frontrightPower, frontleftPower, backleftPower, backrightPower, 1.0);
     }
-    public void setHexMotorPower(){
-        HexMotor.setPower(1);
+    public void resetEncoder() {
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+    //to go backwards in driveForInches() you need to have negative inches NOT negative speed
+    public void driveForInches(int inches, double speed){
+        //declares tick target
+        //this is the amount of ticks each wheel respectively will move forward
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        int newFrontLeftTarget, newBackLeftTarget, newBackRightTarget, newFrontRightTarget;
+
+        //converts the tick value to inches
+
+        int newTicks = (int) Math.round(ticksPerInch * inches);
+
+        //sets the target to the current encoder value plus the number of ticks you want to go forward
+        newFrontLeftTarget = FrontLeft.getCurrentPosition() + newTicks;
+        newBackLeftTarget = BackLeft.getCurrentPosition() + newTicks;
+        newBackRightTarget = BackRight.getCurrentPosition() + newTicks;
+        newFrontRightTarget = FrontRight.getCurrentPosition() + newTicks;
+
+        //sets the encoder position to stop at the encoder value you want
+        FrontLeft.setTargetPosition(newFrontLeftTarget);
+        BackLeft.setTargetPosition(newBackLeftTarget);
+        BackRight.setTargetPosition(newBackRightTarget);
+        FrontRight.setTargetPosition(newFrontRightTarget);
+
+        //sets the power to the speed declared above
+        FrontLeft.setPower(Math.abs(speed));
+        BackLeft.setPower(Math.abs(speed));
+        BackRight.setPower(Math.abs(speed));
+        FrontRight.setPower(Math.abs(speed));
+
+//        while (opmode.opModeIsActive() &&
+//                (FrontLeft.isBusy() &&  FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy())) {
+//
+//        }
+
+        //stops the motors
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
+
+
     }
 }
+
+
+
+
+
+
+
+
 
 
 
