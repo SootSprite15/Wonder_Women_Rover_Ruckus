@@ -2,16 +2,19 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 //not an opmode
@@ -26,6 +29,9 @@ public class WonderWomenRobot {
     private DcMotor BackLeft = null;
     private HardwareMap hardwareMap = null;
     private LinearOpMode opmode = null;
+    private DistanceSensor sensorRange;//generic distance sensor
+    Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
+
     private BNO055IMU imu;
     private Orientation angles;
     double TICKS = 2240;
@@ -86,6 +92,17 @@ public class WonderWomenRobot {
 
 
     }
+
+    public void initDistanceSensor(){
+        sensorRange = hardwareMap.get(DistanceSensor.class, "DistanceSensor");
+        sensorTimeOfFlight = (Rev2mDistanceSensor)sensorRange;
+    }
+    public double getDistance(DistanceUnit unit){
+        //Available DistanceUnits are DistanceUnit.MM, DistanceUnit.CM, DistanceUnit.METER, DistanceUnit.INCH
+        return sensorRange.getDistance(unit);
+
+    }
+
 
     //initRobot initalizes motors and brings in the opmode and its hardware map
     public void initRobot(HardwareMap hwMap, LinearOpMode opmode) {
