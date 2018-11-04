@@ -39,8 +39,8 @@ public class WonderWomenRobot {
     double PI = 3.1415926535897932384626433;
     double wheelDiameter = 4;
     double circumfrenceOfWheel = PI *  wheelDiameter;
-    double motorRotationTeeth =1;
-    double wheelRotationTeeth=1;
+    double motorRotationTeeth =20;
+    double wheelRotationTeeth=10;
     double ticksPerInch = TICKS * ( motorRotationTeeth / wheelRotationTeeth) * (1 / circumfrenceOfWheel);
 
     //Initialize drive motors
