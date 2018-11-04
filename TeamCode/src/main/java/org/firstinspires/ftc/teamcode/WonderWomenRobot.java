@@ -37,7 +37,7 @@ public class WonderWomenRobot {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
-        HexMotor = hardwareMap.get(DcMotor.class, "HexMotor");
+       // HexMotor = hardwareMap.get(DcMotor.class, "HexMotor");
 //
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
