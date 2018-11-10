@@ -14,10 +14,10 @@ public class AutoTest extends LinearOpMode {
 
        robot.driveForInches(12,0.5);
        //positive angle = left turn
-       robot.gyroTurn(90);
-       robot.driveForInches(12,0.5);
-       robot.gyroTurn(45);
-       robot.driveForInches(12,0.5);
+      // robot.gyroTurn(90);
+       //robot.driveForInches(12,0.5);
+       //robot.gyroTurn(45);
+       //robot.driveForInches(12,0.5);
 
     }
 }
