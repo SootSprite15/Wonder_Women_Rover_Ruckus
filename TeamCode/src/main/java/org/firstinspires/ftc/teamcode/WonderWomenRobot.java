@@ -41,7 +41,7 @@ public class WonderWomenRobot {
     double circumfrenceOfWheel = PI *  wheelDiameter;
     double motorRotationTeeth =20;
     double wheelRotationTeeth=10;
-    double ticksPerInch = TICKS * ( wheelRotationTeeth / motorRotationTeeth) * (1 / circumfrenceOfWheel);
+    double ticksPerInch = TICKS * ( motorRotationTeeth / wheelRotationTeeth) * (1 / circumfrenceOfWheel);
 
     //Initialize drive motors
     public void initDriveMotors(){

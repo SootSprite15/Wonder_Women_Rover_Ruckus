@@ -9,7 +9,7 @@ public class AutoTest extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
 
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() {
        robot.initRobot(hardwareMap, this);
 
        robot.driveForInches(12,0.5);
