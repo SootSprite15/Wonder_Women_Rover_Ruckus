@@ -29,6 +29,7 @@ public class WonderWomenRobot {
     private DcMotor BackLeft = null;
     private HardwareMap hardwareMap = null;
     private LinearOpMode opmode = null;
+    private OpMode opMode1 = null;
     private DistanceSensor sensorRange;//generic distance sensor
     Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
 
