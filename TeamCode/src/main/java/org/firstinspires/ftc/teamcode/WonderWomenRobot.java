@@ -28,21 +28,21 @@ public class WonderWomenRobot {
     private DcMotor BackRight = null;
     private DcMotor BackLeft = null;
     private HardwareMap hardwareMap = null;
-    private LinearOpMode opmode = null;
-    private OpMode opMode1 = null;
+    private OpMode opmode = null;
+
     private DistanceSensor sensorRange;//generic distance sensor
     Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
 
     private BNO055IMU imu;
     private Orientation angles;
-    double TICKS = 2240;
-    double TICKSFORNEVEREST40MOTOR = 1120;
-    double PI = 3.1415926535897932384626433;
-    double wheelDiameter = 4;
-    double circumfrenceOfWheel = PI *  wheelDiameter;
-    double motorRotationTeeth =20;
-    double wheelRotationTeeth=10;
-    double ticksPerInch = TICKS * ( motorRotationTeeth / wheelRotationTeeth) * (1 / circumfrenceOfWheel);
+    static double TICKS = 2240;
+    static double TICKSFORNEVEREST40MOTOR = 1120;
+    static double PI = 3.1415926535897932384626433;
+    static double wheelDiameter = 4;
+    static double circumferenceOfWheel = PI *  wheelDiameter;
+    static double motorRotationTeeth =20;
+    static double wheelRotationTeeth=10;
+    static double ticksPerInch = TICKS * ( motorRotationTeeth / wheelRotationTeeth) * (1 / circumferenceOfWheel);
 
     //Initialize drive motors
     public void initDriveMotors(){
@@ -112,6 +112,12 @@ public class WonderWomenRobot {
         initDriveMotors();
         initIMUGyro();
 
+    }
+    public void initRobot(HardwareMap hwMap, OpMode opmode){
+        setHardwareMap(hwMap);
+        setOpMode(opmode);
+        initDriveMotors();
+        initIMUGyro();
     }
     public double getIMUBearing(){
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -189,9 +195,13 @@ public class WonderWomenRobot {
         this.hardwareMap = hwMap;
     }
     //brings in opmode
-    public void setOpMode(LinearOpMode opmode){
+//    public void setOpMode(LinearOpMode opmode){
+//        this.opmode = opmode;
+//    }
+    public void setOpMode(OpMode opmode){
         this.opmode = opmode;
     }
+
     public void setMecanumPower(double drive, double strafe, double turn){
         setMecanumPower(drive, strafe, turn, 1.0);
     }
@@ -290,10 +300,9 @@ public class WonderWomenRobot {
         BackRight.setPower(Math.abs(speed));
         FrontRight.setPower(Math.abs(speed));
 
-//        while (opmode.opModeIsActive() &&
-//                (FrontLeft.isBusy() &&  FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy())) {
-//
-//        }
+        while(FrontLeft.isBusy() ||  FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy()) {
+
+        }
 
         //stops the motors
         FrontLeft.setPower(0);
