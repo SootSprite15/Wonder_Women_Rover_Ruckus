@@ -23,3 +23,4 @@ public class GyroTurnWithClass extends LinearOpMode {
 }
 
 
+//robot.initRobot(hardwareMap, this);
