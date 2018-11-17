@@ -35,14 +35,15 @@ public class WonderWomenRobot {
 
     private BNO055IMU imu;
     private Orientation angles;
-    static double TICKS = 2240;
+    static double TICKS = -2240;
     static double TICKSFORNEVEREST40MOTOR = 1120;
     static double PI = 3.1415926535897932384626433;
     static double wheelDiameter = 4;
     static double circumferenceOfWheel = PI *  wheelDiameter;
     static double motorRotationTeeth =20;
     static double wheelRotationTeeth=10;
-    static double ticksPerInch = TICKS * ( motorRotationTeeth / wheelRotationTeeth) * (1 / circumferenceOfWheel);
+    static double gearRatio = 0.25;
+    static double ticksPerInch = TICKS * (gearRatio) * (1 / circumferenceOfWheel);
 
     //Initialize drive motors
     public void initDriveMotors(){
