@@ -19,7 +19,7 @@ public class TeleOpMecanum extends LinearOpMode{
         while(opModeIsActive()){
             //set gamepad controls
             double turn = gamepad1.right_stick_x;
-            double drive = -gamepad1.left_stick_y;
+            double drive = gamepad1.left_stick_y;
             double strafe = 0;
             double maxspeed = 1;
             //strafes with triggers
