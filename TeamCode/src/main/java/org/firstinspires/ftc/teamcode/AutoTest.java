@@ -19,12 +19,12 @@ public class AutoTest extends LinearOpMode {
        waitForStart();
 
        while (opModeIsActive()){
-           robot.driveForInches(12,0.5);
+           robot.driveForInches(2,0.1);
            //positive angle = left turn
-           robot.gyroTurn(90);
-           robot.driveForInches(12,0.5);
+           robot.gyroTurn(-45);
+           robot.driveForInches(2,0.1);
            robot.gyroTurn(45);
-           robot.driveForInches(12,0.5);
+           robot.driveForInches(2,0.1);
        }
 
 
