@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Rotation;
 
 //not an opmode
 //to be used by every opmode
@@ -27,14 +30,20 @@ public class WonderWomenRobot {
     private DcMotor FrontLeft = null;
     private DcMotor BackRight = null;
     private DcMotor BackLeft = null;
+    private DcMotor RotationArm = null;
+    private DcMotor Extender = null;
+    private DcMotor Intake = null;
     private HardwareMap hardwareMap = null;
     private OpMode opmode = null;
 
     private DistanceSensor sensorRange;//generic distance sensor
     Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
-
+     DigitalChannel LoweringLimitSwitch;
+     DigitalChannel RaisingLimitSwitch;
+     DigitalChannel RetractionLimitSwitch;
     private BNO055IMU imu;
     private Orientation angles;
+    private int rotatorStopDirection = 0;  //1 means can't go positive, -1 = can't go negative, 0 = can go both directions
     static double TICKS = -2240;
     static double TICKSFORNEVEREST40MOTOR = 1120;
     static double PI = 3.1415926535897932384626433;
@@ -46,13 +55,40 @@ public class WonderWomenRobot {
     static double ticksPerInch = TICKS * (gearRatio) * (1 / circumferenceOfWheel);
 
     //Initialize drive motors
-    public void initDriveMotors(){
+    public void initArmMotors(){
     //naming the motors
+        RotationArm = hardwareMap.get(DcMotor.class, "RotationArm");
+        Extender = hardwareMap.get(DcMotor.class, "Extender");
+        Intake = hardwareMap.get(DcMotor.class, "Intake");
+//
+        RotationArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // The right motors needed to be reversed to run forward.
+        Extender.setDirection(DcMotor.Direction.FORWARD);
+        RotationArm.setDirection(DcMotor.Direction.FORWARD);
+        Intake.setDirection(DcMotor.Direction.FORWARD);
+
+
+
+        // set power of motors to 0
+        Extender.setPower(0);
+        RotationArm.setPower(0);
+        Intake.setPower(0);
+
+        LoweringLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+        RaisingLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+        RetractionLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+
+    }
+    public void initDriveMotors(){
+        //naming the motors
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
-       // HexMotor = hardwareMap.get(DcMotor.class, "HexMotor");
+        // HexMotor = hardwareMap.get(DcMotor.class, "HexMotor");
 //
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -74,6 +110,7 @@ public class WonderWomenRobot {
         BackLeft.setPower(0);
         BackRight.setPower(0);
     }
+
     public void initIMUGyro() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -111,6 +148,7 @@ public class WonderWomenRobot {
         setHardwareMap(hwMap);
         setOpMode(opmode);
         initDriveMotors();
+        initArmMotors();
         initIMUGyro();
 
     }
@@ -268,6 +306,14 @@ public class WonderWomenRobot {
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+    public void RetractAndResetArmEncoder() {
+        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            while(RetractionLimitSwitch.getState() == true){
+                 Extender.setPower(-0.5);
+            }
+        Extender.setPower(0);
+        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
     //to go backwards in driveForInches() you need to have negative inches NOT negative speed
     public void driveForInches(int inches, double speed){
         //declares tick target
@@ -323,7 +369,104 @@ public class WonderWomenRobot {
 
 
     }
-}
+    public void RaiseRotationArm(){
+
+        // set the digital channel to input.
+        RaisingLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+
+        while (RaisingLimitSwitch.getState() == true) {
+
+            RotationArm.setPower(0.5);
+            //telemetry.addData("Limit Switch", "Is Not close");
+        }
+        RotationArm.setPower(0);
+                //telemetry.addData("Limit Switch", "Is close");
+            }
+
+    public void LowerRotationArm(){
+
+        // set the digital channel to input.
+        LoweringLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+
+        while (LoweringLimitSwitch.getState() == true) {
+
+            RotationArm.setPower(-0.5);
+            //telemetry.addData("Limit Switch", "Is Not close");
+        }
+        RotationArm.setPower(0);
+        //telemetry.addData("Limit Switch", "Is close");
+    }
+    public void RetractingArm(){
+
+        // set the digital channel to input.
+        RetractionLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+
+        while (RetractionLimitSwitch.getState() == true) {
+
+            Extender.setPower(-0.5);
+            //telemetry.addData("Limit Switch", "Is Not close");
+        }
+        Extender.setPower(0);
+        //telemetry.addData("Limit Switch", "Is close");
+    }
+
+    public void setRotationArmPower(double power){
+        RotationArm.setPower(power);
+    }
+    public void setExtenderArmPower(double power){
+        Extender.setPower(power);
+    }
+    public void setIntakePower(double power){
+        Intake.setPower(power);
+    }
+    public void extenderController(double extender){
+
+        if(extender > 0.05 && rotatorStopDirection == 0 && RetractionLimitSwitch.getState() == true){
+            setExtenderArmPower(0.5);
+        }else if(extender > 0.05 && rotatorStopDirection == 1 ){
+            setExtenderArmPower(0);
+        }else if(extender > 0.05 && rotatorStopDirection == -1){
+            rotatorStopDirection = 0;
+            setExtenderArmPower(0.5); //backing out of situation. turn off flag
+        }else if (extender > 0.05 && rotatorStopDirection == 0 && RetractionLimitSwitch.getState() == false){
+            setExtenderArmPower(0);
+            rotatorStopDirection = 1;
+        }else if(extender < -0.05 && rotatorStopDirection == 0 && RetractionLimitSwitch.getState() == true) {
+            setExtenderArmPower(-0.5);
+        }else if(extender < -0.05 && rotatorStopDirection == 1){
+            setExtenderArmPower(-0.5);
+            rotatorStopDirection = 0;
+        }else if(extender < -0.05 && rotatorStopDirection == -1){
+            setExtenderArmPower(0);
+        }else if(extender < -0.05 && rotatorStopDirection == 0 && RetractionLimitSwitch.getState() == false){
+            setExtenderArmPower(0);
+            rotatorStopDirection = -1;
+        }
+    }
+    public void rotatorController(double rotator){
+        if (LoweringLimitSwitch.getState() == true && rotator < -0.05) {
+
+            setRotationArmPower(-0.5);
+
+            //telemetry.addData("Limit Switch", "Is Not close");
+        }
+        else if (RaisingLimitSwitch.getState() == true && rotator > 0.05){
+            setRotationArmPower(0.5);
+        }
+        else if(RaisingLimitSwitch.getState()== false && rotator > 0.05){
+            setRotationArmPower(0);
+        }
+        else if (LoweringLimitSwitch.getState() == false && rotator < -0.05){
+            setRotationArmPower(0);
+        }
+        else{
+            setRotationArmPower(0);
+        }
+
+    }
+
+    }
+
 
 
 
