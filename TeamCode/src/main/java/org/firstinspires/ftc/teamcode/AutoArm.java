@@ -49,6 +49,8 @@ import org.opencv.core.Size;
 
 public class AutoArm extends OpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
+
+    int rotatorStopDirection = 0;
     @Override
     public void init() {
         robot.initRobot(hardwareMap, this);
@@ -60,6 +62,7 @@ public class AutoArm extends OpMode {
      */
     @Override
     public void init_loop() {
+
     }
 
     /*
@@ -68,22 +71,34 @@ public class AutoArm extends OpMode {
     @Override
     public void start() {
 
-    }
-
-    /*
-     * Code to run REPEATEDLY when the driver hits PLAY
-     */
-    @Override
-    public void loop() {
 
     }
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
+
+
+        /*
+         * Code to run REPEATEDLY when the driver hits PLAY
+         */
+        @Override
+        public void loop () {
+
+            if (rotatorStopDirection == 0 && robot.RetractionLimitSwitch.getState() == true) {
+                robot.setExtenderArmPower(0.5);
+            } else if (rotatorStopDirection == 1) {
+                robot.setExtenderArmPower(0);
+            } else if (rotatorStopDirection == -1) {
+                rotatorStopDirection = 0;
+                robot.setExtenderArmPower(0.5); //backing out of situation. turn off flag
+            } else if (rotatorStopDirection == 0 && robot.RetractionLimitSwitch.getState() == false) {
+                robot.setExtenderArmPower(0);
+                rotatorStopDirection = 1;
+            }
+        }
+
+        /*
+         * Code to run ONCE after the driver hits STOP
+         */
+        @Override
+        public void stop () { }
 
     }
-
-}
