@@ -45,7 +45,7 @@ import org.opencv.core.Mat;
  * -------------------------------------------------------------------------------------
  */
 
-public class CustomCameraView extends JavaCameraView {
+public class CustomCameraView extends MyJavaCameraView {
     private static final String TAG = "CustomCameraView";
 
     public CustomCameraView(Context context, int cameraId) {

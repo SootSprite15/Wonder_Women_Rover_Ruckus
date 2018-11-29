@@ -50,7 +50,7 @@ public abstract class OpenCVPipeline implements CameraBridgeViewBase.CvCameraVie
             // pass
         }
     }
-    protected JavaCameraView cameraView;
+    protected MyJavaCameraView cameraView;
     protected DrawViewSource rawView;
     private ViewDisplay viewDisplay;
     protected Context context;
@@ -144,7 +144,7 @@ public abstract class OpenCVPipeline implements CameraBridgeViewBase.CvCameraVie
      * Exposes the underlying JavaCameraView used. Before init() is called, this is null.
      * @return the JavaCameraView.
      */
-    public JavaCameraView getCameraView() {
+    public MyJavaCameraView getCameraView() {
         return cameraView;
     }
 
