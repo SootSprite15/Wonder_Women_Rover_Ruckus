@@ -66,25 +66,25 @@ public class OldTeleOpMecanum extends LinearOpMode{
                 robot.setRotationArmPower(0);
             }
 
-            if(extender > 0.05 && rotatorStopDirection == 0 && robot.RetractionLimitSwitch.getState() == true){
+            if(extender > 0.05 && rotatorStopDirection == 0 && robot.RetractionTouchSensor.getState() == true){
                 robot.setExtenderArmPower(0.5);
             }else if(extender > 0.05 && rotatorStopDirection == 1 ){
                 robot.setExtenderArmPower(0);
             }else if(extender > 0.05 && rotatorStopDirection == -1){
                 rotatorStopDirection = 0;
                 robot.setExtenderArmPower(0.5); //backing out of situation. turn off flag
-            }else if (extender > 0.05 && rotatorStopDirection == 0 && robot.RetractionLimitSwitch.getState() == false){
+            }else if (extender > 0.05 && rotatorStopDirection == 0 && robot.RetractionTouchSensor.getState() == false){
                 robot.setExtenderArmPower(0);
                 rotatorStopDirection = 1;
 
-            }else if(extender < -0.05 && rotatorStopDirection == 0 && robot.RetractionLimitSwitch.getState() == true) {
+            }else if(extender < -0.05 && rotatorStopDirection == 0 && robot.RetractionTouchSensor.getState() == true) {
                 robot.setExtenderArmPower(-0.5);
             }else if(extender < -0.05 && rotatorStopDirection == 1){
                 robot.setExtenderArmPower(-0.5);
                 rotatorStopDirection = 0;
             }else if(extender < -0.05 && rotatorStopDirection == -1){
                  robot.setExtenderArmPower(0);
-            }else if(extender < -0.05 && rotatorStopDirection == 0 && robot.RetractionLimitSwitch.getState() == false){
+            }else if(extender < -0.05 && rotatorStopDirection == 0 && robot.RetractionTouchSensor.getState() == false){
                 robot.setExtenderArmPower(0);
                 rotatorStopDirection = -1;
             }
