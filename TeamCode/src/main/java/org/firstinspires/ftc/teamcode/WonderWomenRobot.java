@@ -74,7 +74,7 @@ public class WonderWomenRobot {
 
         // The right motors needed to be reversed to run forward.
         Extender.setDirection(DcMotor.Direction.FORWARD);
-        RotationArm.setDirection(DcMotor.Direction.FORWARD);
+        RotationArm.setDirection(DcMotor.Direction.REVERSE);
         Intake.setDirection(DcMotor.Direction.FORWARD);
 
 
@@ -484,8 +484,8 @@ public class WonderWomenRobot {
 
         if (tele == true) {
             //add telemetry
-            opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
-            opmode.telemetry.update();
+            //opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
+            //opmode.telemetry.update();
         }
     }
 
@@ -503,35 +503,65 @@ public class WonderWomenRobot {
 //            setRotationArmPower(0);
 //        } else {
 //            setRotationArmPower(0);
-        if (rotator > 0.05 && rotatorStopDirection == 0 && RaisingLimitSwitch.getState() == true) {
-            setRotationArmPower(1);
-            opmode.telemetry.addData("RaisingLimitSwitch detected is", false);
-        } else if (rotator > 0.05 && rotatorStopDirection == 1) {
-            setRotationArmPower(0);
-        } else if (rotator > 0.05 && rotatorStopDirection == -1) {
-            rotatorStopDirection = 0;
-            setRotationArmPower(1); //backing out of situation. turn off flag
-        } else if (rotator > 0.05 && rotatorStopDirection == 0 && RaisingLimitSwitch.getState() == false) {
-            setRotationArmPower(0);
-            opmode.telemetry.addData("RaisingLimitSwitch detected is", true);
-            rotatorStopDirection = 1;
-        } else if (rotator < -0.05 && rotatorStopDirection == 0 && LoweringLimitSwitch.getState() == true) {
-            setRotationArmPower(-1);
-            opmode.telemetry.addData("LoweringLimitSwitch detected is", false);
-        } else if (rotator < -0.05 && rotatorStopDirection == 1) {
-            setRotationArmPower(-1);
-            rotatorStopDirection = 0;
-        } else if (rotator < -0.05 && rotatorStopDirection == -1) {
-            setRotationArmPower(0);
-        } else if (rotator < -0.05 && rotatorStopDirection == 0 && LoweringLimitSwitch.getState() == false) {
-            setRotationArmPower(0);
-            rotatorStopDirection = -1;
-            opmode.telemetry.addData("LoweringLimitSwitch detected is", true);
-        }else{
-            setRotationArmPower(0);
-        }
-        opmode.telemetry.update();
-
+//        if (rotator > 0.05 && rotatorStopDirection == 0 && RaisingLimitSwitch.getState() == true) {
+//            setRotationArmPower(1);
+//            opmode.telemetry.addData("RaisingLimitSwitch detected is", false);
+//        } else if (rotator > 0.05 && rotatorStopDirection == 1) {
+//            setRotationArmPower(0);
+//        } else if (rotator > 0.05 && rotatorStopDirection == -1) {
+//            rotatorStopDirection = 0;
+//            setRotationArmPower(1); //backing out of situation. turn off flag
+//        } else if (rotator > 0.05 && rotatorStopDirection == 0 && RaisingLimitSwitch.getState() == false) {
+//            setRotationArmPower(0);
+//            opmode.telemetry.addData("RaisingLimitSwitch detected is", true);
+//            rotatorStopDirection = 1;
+//        } else if (rotator < -0.05 && rotatorStopDirection == 0 && LoweringLimitSwitch.getState() == true) {
+//            setRotationArmPower(-1);
+//            opmode.telemetry.addData("LoweringLimitSwitch detected is", false);
+//        } else if (rotator < -0.05 && rotatorStopDirection == 1) {
+//            setRotationArmPower(-1);
+//            rotatorStopDirection = 0;
+//        } else if (rotator < -0.05 && rotatorStopDirection == -1) {
+//            setRotationArmPower(0);
+//        } else if (rotator < -0.05 && rotatorStopDirection == 0 && LoweringLimitSwitch.getState() == false) {
+//            setRotationArmPower(0);
+//            rotatorStopDirection = -1;
+//            opmode.telemetry.addData("LoweringLimitSwitch detected is", true);
+//        }else{
+//            setRotationArmPower(0);
+//        }
+//        opmode.telemetry.update();
+//
+//    }
+    if (rotator > 0.05 && RaisingLimitSwitch.getState() == false){
+        setRotationArmPower(0);
+        opmode.telemetry.addData("rotator state", 1);
+    }else if(rotator > 0.05 && RaisingLimitSwitch.getState() == false){
+        setRotationArmPower(-1);
+        opmode.telemetry.addData("rotator state", 2);
+    }else if(rotator < -0.05 && RaisingLimitSwitch.getState() == true){
+        setRotationArmPower(1);
+        opmode.telemetry.addData("rotator state", 3);
+    }else if(rotator > 0.05 && RaisingLimitSwitch.getState() == true){
+        setRotationArmPower(-1);
+        opmode.telemetry.addData("rotator state", 4);
+    }else if( rotator < -0.05 && LoweringLimitSwitch.getState() == false){
+        setRotationArmPower(1);
+        opmode.telemetry.addData("rotator state", 5);
+    }else if(rotator > 0.05 && LoweringLimitSwitch.getState() == false){
+        setRotationArmPower(-1);
+        opmode.telemetry.addData("rotator state", 6);
+    }else if(rotator < -0.05 && LoweringLimitSwitch.getState() == true){
+        setRotationArmPower(1);
+        opmode.telemetry.addData("rotator state", 7);
+    }else if(rotator> 0.05 && LoweringLimitSwitch.getState() == true){
+        setRotationArmPower(-1);
+        opmode.telemetry.addData("rotator state", 8);
+    }else{
+        setRotationArmPower(0);
+        opmode.telemetry.addData("rotator state", 9);
+    }
+    opmode.telemetry.update();
     }
 //
 //    public void extenderForTicks(int ticks, double speed) {
