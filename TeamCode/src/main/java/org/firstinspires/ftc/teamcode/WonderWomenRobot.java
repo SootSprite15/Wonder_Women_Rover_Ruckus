@@ -60,6 +60,16 @@ public class WonderWomenRobot {
     static double circumferenceOfSecondGear = PI * gearDiameter;
     static double extenderTicksPerInch = EXTENDER_TICKS * (extenderGearRatio) * ( 1 / circumferenceOfSecondGear);
     static double ticksPerInch = TICKS * (gearRatio) * (1 / circumferenceOfWheel);
+    static int raisingArmTicks = 200;
+    enum rotatorDirect {UP, STOP, DOWN};
+    enum rotatorPrevent {UP, NONE, DOWN};
+    rotatorPrevent rotatorState = rotatorPrevent.NONE;
+
+    enum extenderDirect {NEG, STOP, POS};
+    enum extenderPrevent {NEG, NONE, POS};
+    extenderPrevent extenderstate = extenderPrevent.NONE;
+
+
 
     //Initialize drive motors
     public void initArmMotors() {
@@ -67,7 +77,7 @@ public class WonderWomenRobot {
         RotationArm = hardwareMap.get(DcMotor.class, "RotationArm");
         Extender = hardwareMap.get(DcMotor.class, "Extender");
         Intake = hardwareMap.get(DcMotor.class, "Intake");
-       // RetractionTouchSensor = hardwareMap.get(DigitalChannel.class, "RetractionTouchSensor");
+        RetractionTouchSensor = hardwareMap.get(DigitalChannel.class, "RetractionTouchSensor");
         RotationArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -83,7 +93,7 @@ public class WonderWomenRobot {
         RotationArm.setPower(0);
         Intake.setPower(0);
 
-       // Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         LoweringLimitSwitch = hardwareMap.get(DigitalChannel.class, "LoweringLimitSwitch");
         RaisingLimitSwitch = hardwareMap.get(DigitalChannel.class, "RaisingLimitSwitch");
@@ -103,7 +113,7 @@ public class WonderWomenRobot {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
-        // HexMotor = hardwareMap.get(DcMotor.class, "HexMotor");
+
 //
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -334,14 +344,14 @@ public class WonderWomenRobot {
         FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-//    public void RetractAndResetArmEncoder() {
-//        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        while (RetractionTouchSensor.getState() == true) {
-//            Extender.setPower(-0.5);
-//        }
-//        Extender.setPower(0);
-//        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//    }
+    public void RetractAndResetArmEncoder() {
+        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        while (RetractionTouchSensor.getState() == true) {
+            Extender.setPower(-0.5);
+        }
+        Extender.setPower(0);
+        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
     //to go backwards in driveForInches() you need to have negative inches NOT negative speed
     public void driveForInches(int inches, double speed) {
@@ -455,130 +465,122 @@ public class WonderWomenRobot {
         extenderController(extender, false);
     }
 
+    public void SUPERUNSAFEEXTENDERCONTROLLER(double extender){
+        setExtenderArmPower(extender);
+    }
+    public void resetExtender(){
+        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
     public void extenderController(double extender, boolean tele) {
+        double deadZone = 0.05;
+        extenderDirect direction; //this is motor direction NOT arm direction
+        if(extender > deadZone){
+            direction = extenderDirect.POS;
+        }else if(extender < -deadZone){
+            direction = extenderDirect.NEG;
+        }else{
+            direction = extenderDirect.STOP;
+        }
 
-        if (extender > 0.05 && extenderStopDirection == 0 && RetractionTouchSensor.getState() == true) {
-            setExtenderArmPower(1);
-            //opmode.telemetry.addData("RetractionTouchSensor detected is", false);
-        } else if (extender > 0.05 && extenderStopDirection == 1) {
-            setExtenderArmPower(0);
-        } else if (extender > 0.05 && extenderStopDirection == -1) {
-            rotatorStopDirection = 0;
-            setExtenderArmPower(1); //backing out of situation. turn off flag
-        } else if (extender > 0.05 && extenderStopDirection == 0 && RetractionTouchSensor.getState() == false) {
-            setExtenderArmPower(0);
-            extenderStopDirection = 1;
-        } else if (extender < -0.05 && extenderStopDirection == 0 && RetractionTouchSensor.getState() == true) {
-            setExtenderArmPower(-1);
-        } else if (extender < -0.05 && extenderStopDirection == 1) {
-            setExtenderArmPower(-1);
-            extenderStopDirection = 0;
-        } else if (extender < -0.05 && extenderStopDirection == -1) {
-            setExtenderArmPower(0);
-        } else if (extender < -0.05 && extenderStopDirection == 0 && RetractionTouchSensor.getState() == false) {
-            setExtenderArmPower(0);
-            extenderStopDirection = -1;
+        if(RetractionTouchSensor.getState() == false){//this might change based on motor direction
+            if(Extender.getCurrentPosition() < 0){ //don't go down anymore
+                extenderstate = extenderPrevent.NEG;
+            }else{
+                extenderstate = extenderPrevent.POS; //don't go up anymore
+            }
+        }
+
+        if( direction == extenderDirect.POS){ //pushing up on stick
+            if(extenderstate != extenderPrevent.POS){ //you can go up
+                setExtenderArmPower(extender);
+                extenderstate = extenderPrevent.NONE;
+            }else{
+                setExtenderArmPower(0);
+            }
+        }else if (direction == extenderDirect.NEG){
+            if(extenderstate != extenderPrevent.NEG){
+                setExtenderArmPower(extender);
+                extenderstate = extenderPrevent.NONE;
+            }
         }else{
             setExtenderArmPower(0);
         }
-
         if (tele == true) {
             //add telemetry
-            //opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
-            //opmode.telemetry.update();
+            opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
+            opmode.telemetry.addData("Prevent Extender State", extenderstate);
+            opmode.telemetry.update();
         }
+
     }
 
+
+  public void rotatorController(double rotator, boolean tele) {
+      double deadZone = 0.05;
+      rotatorDirect direction;
+      if (rotator > deadZone) {
+          direction = rotatorDirect.UP;
+      } else if (rotator < -deadZone) {
+          direction = rotatorDirect.DOWN;
+      } else {
+          direction = rotatorDirect.STOP;
+      }
+
+      if (RaisingLimitSwitch.getState() == false) {
+          rotatorState = rotatorPrevent.UP;
+      } else if (LoweringLimitSwitch.getState() == false) {
+          rotatorState = rotatorPrevent.DOWN;
+      }
+
+      if (direction == rotatorDirect.UP) { // if you want to go up
+          if (rotatorState != rotatorPrevent.UP) { // if you can go up
+              setRotationArmPower(rotator); //go up
+              rotatorState = rotatorPrevent.NONE;
+          } else { //can't go up but want to
+              setRotationArmPower(0); //don't go up
+          }
+      } else if (direction == rotatorDirect.DOWN) { //if you want to go down
+            if (rotatorState != rotatorPrevent.DOWN){ //and you can go down
+                setRotationArmPower(rotator);// go down
+                rotatorState = rotatorPrevent.NONE;
+            }else{
+                setRotationArmPower(0);
+            }
+      }else{
+          setRotationArmPower(0);//must be in stop
+
+      }
+      if (tele == true) {
+          //add telemetry
+          opmode.telemetry.addData("Rotator encoder", RotationArm.getCurrentPosition());
+          opmode.telemetry.addData("Prevent Rotator State", rotatorState);
+          opmode.telemetry.update();
+      }
+  }
     public void rotatorController(double rotator) {
-//        if (LoweringLimitSwitch.getState() == true && rotator < -0.05) {
-//
-//            setRotationArmPower(-0.5);
-//
-//            //telemetry.addData("Limit Switch", "Is Not close");
-//        } else if (RaisingLimitSwitch.getState() == true && rotator > 0.05) {
-//            setRotationArmPower(0.5);
-//        } else if (RaisingLimitSwitch.getState() == false && rotator > 0.05) {
-//            setRotationArmPower(0);
-//        } else if (LoweringLimitSwitch.getState() == false && rotator < -0.05) {
-//            setRotationArmPower(0);
-//        } else {
-//            setRotationArmPower(0);
-//        if (rotator > 0.05 && rotatorStopDirection == 0 && RaisingLimitSwitch.getState() == true) {
-//            setRotationArmPower(1);
-//            opmode.telemetry.addData("RaisingLimitSwitch detected is", false);
-//        } else if (rotator > 0.05 && rotatorStopDirection == 1) {
-//            setRotationArmPower(0);
-//        } else if (rotator > 0.05 && rotatorStopDirection == -1) {
-//            rotatorStopDirection = 0;
-//            setRotationArmPower(1); //backing out of situation. turn off flag
-//        } else if (rotator > 0.05 && rotatorStopDirection == 0 && RaisingLimitSwitch.getState() == false) {
-//            setRotationArmPower(0);
-//            opmode.telemetry.addData("RaisingLimitSwitch detected is", true);
-//            rotatorStopDirection = 1;
-//        } else if (rotator < -0.05 && rotatorStopDirection == 0 && LoweringLimitSwitch.getState() == true) {
-//            setRotationArmPower(-1);
-//            opmode.telemetry.addData("LoweringLimitSwitch detected is", false);
-//        } else if (rotator < -0.05 && rotatorStopDirection == 1) {
-//            setRotationArmPower(-1);
-//            rotatorStopDirection = 0;
-//        } else if (rotator < -0.05 && rotatorStopDirection == -1) {
-//            setRotationArmPower(0);
-//        } else if (rotator < -0.05 && rotatorStopDirection == 0 && LoweringLimitSwitch.getState() == false) {
-//            setRotationArmPower(0);
-//            rotatorStopDirection = -1;
-//            opmode.telemetry.addData("LoweringLimitSwitch detected is", true);
-//        }else{
-//            setRotationArmPower(0);
-//        }
-//        opmode.telemetry.update();
-//
-//    }
-    if (rotator > 0.05 && RaisingLimitSwitch.getState() == false){
-        setRotationArmPower(0);
-        opmode.telemetry.addData("rotator state", 1);
-    }else if(rotator > 0.05 && RaisingLimitSwitch.getState() == false){
-        setRotationArmPower(-1);
-        opmode.telemetry.addData("rotator state", 2);
-    }else if(rotator < -0.05 && RaisingLimitSwitch.getState() == true){
-        setRotationArmPower(1);
-        opmode.telemetry.addData("rotator state", 3);
-    }else if(rotator > 0.05 && RaisingLimitSwitch.getState() == true){
-        setRotationArmPower(-1);
-        opmode.telemetry.addData("rotator state", 4);
-    }else if( rotator < -0.05 && LoweringLimitSwitch.getState() == false){
-        setRotationArmPower(1);
-        opmode.telemetry.addData("rotator state", 5);
-    }else if(rotator > 0.05 && LoweringLimitSwitch.getState() == false){
-        setRotationArmPower(-1);
-        opmode.telemetry.addData("rotator state", 6);
-    }else if(rotator < -0.05 && LoweringLimitSwitch.getState() == true){
-        setRotationArmPower(1);
-        opmode.telemetry.addData("rotator state", 7);
-    }else if(rotator> 0.05 && LoweringLimitSwitch.getState() == true){
-        setRotationArmPower(-1);
-        opmode.telemetry.addData("rotator state", 8);
-    }else{
-        setRotationArmPower(0);
-        opmode.telemetry.addData("rotator state", 9);
+        rotatorController( rotator, false);
     }
-    opmode.telemetry.update();
+
+    public void extenderForTicks(int ticks, double speed) {
+        int newExtenderTarget;
+        newExtenderTarget = Extender.getCurrentPosition() + ticks;
+        Extender.setTargetPosition(newExtenderTarget);
+        Extender.setPower(Math.abs(speed));
+
+        while (Extender.isBusy()) {
+
+        }
+        Extender.setPower(0);
+        // Turn off RUN_TO_POSITION
+        Extender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
-//
-//    public void extenderForTicks(int ticks, double speed) {
-//        int newExtenderTarget;
-//        newExtenderTarget = Extender.getCurrentPosition() + ticks;
-//        Extender.setTargetPosition(newExtenderTarget);
-//        Extender.setPower(Math.abs(speed));
-//
-//        while (Extender.isBusy()) {
-//
-//        }
-//        Extender.setPower(0);
-//        // Turn off RUN_TO_POSITION
-//        Extender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//    }
-//
+
+    public void ExtendingArm(){
+        extenderForTicks( raisingArmTicks, 1);
+    }
+
+
 //    public void extenderForInches(int inches, double speed) {
 //        //declares tick target
 //        //this is the amount of ticks each wheel respectively will move forward
@@ -616,7 +618,7 @@ public class WonderWomenRobot {
 //        Extender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //
 //    }
-//
+
 }
 //
 

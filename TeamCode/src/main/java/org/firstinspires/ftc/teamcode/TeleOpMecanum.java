@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 @TeleOp
@@ -45,9 +46,11 @@ public class TeleOpMecanum extends LinearOpMode{
 
 
             //MANIPULATOR CONTROLS
+            if(gamepad2.a && gamepad2.b){
+                robot.resetExtender();
+            }
 
-
-            robot.rotatorController(rotator);
+            robot.rotatorController(rotator, true);
             robot.extenderController(extender, true);
 
 
