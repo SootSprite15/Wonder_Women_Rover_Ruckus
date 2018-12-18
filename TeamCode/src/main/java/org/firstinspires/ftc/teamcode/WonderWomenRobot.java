@@ -36,7 +36,7 @@ public class WonderWomenRobot {
     private DcMotor Intake = null;
     private HardwareMap hardwareMap = null;
     private OpMode opmode = null;
-    private LinearOpMode opmode1 = null;
+ //   private LinearOpMode opmode1 = null;
 
     private DistanceSensor sensorRange;//generic distance sensor
     Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
@@ -84,7 +84,7 @@ public class WonderWomenRobot {
         Intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // The right motors needed to be reversed to run forward.
-        Extender.setDirection(DcMotor.Direction.FORWARD);
+        Extender.setDirection(DcMotor.Direction.REVERSE);
         RotationArm.setDirection(DcMotor.Direction.REVERSE);
         Intake.setDirection(DcMotor.Direction.FORWARD);
 
@@ -94,7 +94,7 @@ public class WonderWomenRobot {
         RotationArm.setPower(0);
         Intake.setPower(0);
 
-        Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Extender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         LoweringLimitSwitch = hardwareMap.get(DigitalChannel.class, "LoweringLimitSwitch");
         RaisingLimitSwitch = hardwareMap.get(DigitalChannel.class, "RaisingLimitSwitch");
@@ -171,9 +171,9 @@ public class WonderWomenRobot {
 
 
     //initRobot initalizes motors and brings in the opmode and its hardware map
-    public void initRobot(HardwareMap hwMap, LinearOpMode opmode1) {
+    public void initRobot(HardwareMap hwMap, LinearOpMode opmode) {
         setHardwareMap(hwMap);
-        setOpMode(opmode1);
+        setOpMode(opmode);
         initDriveMotors();
         initArmMotors();
         initIMUGyro();
@@ -184,6 +184,7 @@ public class WonderWomenRobot {
         setHardwareMap(hwMap);
         setOpMode(opmode);
         initDriveMotors();
+        initArmMotors();
         initIMUGyro();
     }
 
@@ -267,8 +268,8 @@ public class WonderWomenRobot {
     }
 
    // brings in opmode
-    public void setOpMode(LinearOpMode opmode1){
-        this.opmode = opmode1;
+    public void setOpMode(LinearOpMode opmode){
+        this.opmode = opmode;
     }
     public void setOpMode(OpMode opmode) {
         this.opmode = opmode;
@@ -471,6 +472,7 @@ public class WonderWomenRobot {
     }
     public void resetExtender(){
         Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Extender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public void extenderController(double extender, boolean tele) {
         double deadZone = 0.05;
@@ -510,6 +512,7 @@ public class WonderWomenRobot {
             //add telemetry
             opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
             opmode.telemetry.addData("Prevent Extender State", extenderstate);
+            opmode.telemetry.addData("Direction Extender", direction);
             opmode.telemetry.update();
         }
 
@@ -553,8 +556,8 @@ public class WonderWomenRobot {
       }
       if (tele == true) {
           //add telemetry
-          opmode.telemetry.addData("Rotator encoder", RotationArm.getCurrentPosition());
-          opmode.telemetry.addData("Prevent Rotator State", rotatorState);
+          //opmode.telemetry.addData("Rotator encoder", RotationArm.getCurrentPosition());
+          //opmode.telemetry.addData("Prevent Rotator State", rotatorState);
           opmode.telemetry.update();
       }
   }
