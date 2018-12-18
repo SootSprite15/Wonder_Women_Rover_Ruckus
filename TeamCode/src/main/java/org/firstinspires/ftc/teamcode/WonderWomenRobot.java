@@ -36,6 +36,7 @@ public class WonderWomenRobot {
     private DcMotor Intake = null;
     private HardwareMap hardwareMap = null;
     private OpMode opmode = null;
+    private LinearOpMode opmode1 = null;
 
     private DistanceSensor sensorRange;//generic distance sensor
     Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
@@ -170,9 +171,9 @@ public class WonderWomenRobot {
 
 
     //initRobot initalizes motors and brings in the opmode and its hardware map
-    public void initRobot(HardwareMap hwMap, LinearOpMode opmode) {
+    public void initRobot(HardwareMap hwMap, LinearOpMode opmode1) {
         setHardwareMap(hwMap);
-        setOpMode(opmode);
+        setOpMode(opmode1);
         initDriveMotors();
         initArmMotors();
         initIMUGyro();
@@ -265,10 +266,10 @@ public class WonderWomenRobot {
         this.hardwareMap = hwMap;
     }
 
-    //brings in opmode
-//    public void setOpMode(LinearOpMode opmode){
-//        this.opmode = opmode;
-//    }
+   // brings in opmode
+    public void setOpMode(LinearOpMode opmode1){
+        this.opmode = opmode1;
+    }
     public void setOpMode(OpMode opmode) {
         this.opmode = opmode;
     }
