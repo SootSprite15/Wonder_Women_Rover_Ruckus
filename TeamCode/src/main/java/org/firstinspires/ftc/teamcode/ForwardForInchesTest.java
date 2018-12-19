@@ -4,23 +4,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-
 @Autonomous
-public class GyroTurnWithClass extends LinearOpMode {
+public class ForwardForInchesTest extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
 
     @Override
     public void runOpMode() throws InterruptedException{
-        robot.initRobot(hardwareMap, this);
-        while (!isStarted()) {
-            telemetry.addData("0", "robot ready");
+       robot.initRobot(hardwareMap, this);
 
-        }
-        robot.gyroTurn(90);
-        robot.gyroTurn(-90);
-
+       robot.driveForInches(12,0.5);
+       //positive angle = left turn
+       //robot.gyroTurn(90);
+       //robot.driveForInches(-12,0.5);
     }
 }
 
 
-//robot.initRobot(hardwareMap, this);

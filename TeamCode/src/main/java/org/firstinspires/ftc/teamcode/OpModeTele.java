@@ -1,3 +1,6 @@
+package org.firstinspires.ftc.teamcode;//package org.firstinspires.ftc.teamcode;
+
+
 /* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,40 +30,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
 
+
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.DogeCV;
+import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+import com.disnodeteam.dogecv.detectors.roverrukus.SilverDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
-//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import org.opencv.core.Size;
 
-/*
- * This is an example LinearOpMode that shows how to use
- * a REV Robotics Touch Sensor.
- *
- * It assumes that the touch sensor is configured with a name of "digitalTouch".
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- */
 @TeleOp
-@Disabled
-public class TeleOpMecanum extends LinearOpMode {
-    WonderWomenRobot robot = new WonderWomenRobot();
-    @Override
-    public void runOpMode() {
 
+public class OpModeTele extends OpMode {
+    WonderWomenRobot robot = new WonderWomenRobot();
+
+
+    @Override
+    public void init() {
         robot.initRobot(hardwareMap, this);
 
-        // wait for the start button to be pressed.
-        waitForStart();
+    }
+    /*
+     * Code to run REPEATEDLY when the driver hits INIT
+     */
+    @Override
+    public void init_loop() {
 
-        // while the op mode is active, loop and read the light levels.
-        // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
-        while (opModeIsActive()) {
+    }
+    /*
+     * Code to run ONCE when the driver hits PLAY
+     */
+    @Override
+    public void start() {
+
+    }
+        /*
+         * Code to run REPEATEDLY when the driver hits PLAY
+         */
+        @Override
+        public void loop () {
             double turn = gamepad1.right_stick_x;
             double drive = gamepad1.left_stick_y;
             double rotator = -gamepad2.left_stick_y;
@@ -106,6 +120,13 @@ public class TeleOpMecanum extends LinearOpMode {
                 robot.setIntakePower(0);
             }
 
+
+//sleep(1);
         }
+        /*
+         * Code to run ONCE after the driver hits STOP
+         */
+        @Override
+        public void stop () { }
+
     }
-}

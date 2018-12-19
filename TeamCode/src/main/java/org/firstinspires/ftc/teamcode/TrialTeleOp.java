@@ -1,10 +1,14 @@
-package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+        package org.firstinspires.ftc.teamcode;
+
+        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+        import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.WonderWomenRobot;
 
 @TeleOp
-public class TeleOpTank extends LinearOpMode{
+public class TrialTeleOp extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
 
     @Override
@@ -13,13 +17,12 @@ public class TeleOpTank extends LinearOpMode{
         robot.initRobot(hardwareMap, this);
         gamepad1.setJoystickDeadzone((float) 0.05);
         //gamepad2.setJoystickDeadzone((float) 0.05);
-
         waitForStart();
 
         while(opModeIsActive()){
             //set gamepad controls
-            double right = -gamepad1.right_stick_y;
-            double left = -gamepad1.left_stick_y;
+            double turn = gamepad1.right_stick_x;
+            double drive = gamepad1.left_stick_y;
             double strafe = 0;
             double maxspeed = 1;
             //strafes with triggers
@@ -36,7 +39,7 @@ public class TeleOpTank extends LinearOpMode{
             }
 
             //set power to drive
-            robot.setTankPower(right, left, strafe, maxspeed);
+            robot.setMecanumPower(drive, strafe, turn, maxspeed);
             sleep(1);
         }
     }
