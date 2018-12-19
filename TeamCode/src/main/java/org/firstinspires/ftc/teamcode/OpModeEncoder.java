@@ -33,10 +33,12 @@ package org.firstinspires.ftc.teamcode;
 import android.hardware.Camera;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-
+@Disabled
 @Autonomous
+
 // (name="Gold Example", group="DogeCV")
 
 public class OpModeEncoder extends OpMode {

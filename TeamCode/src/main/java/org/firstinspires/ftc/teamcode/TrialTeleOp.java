@@ -1,12 +1,13 @@
 
         package org.firstinspires.ftc.teamcode;
 
+        import com.qualcomm.robotcore.eventloop.opmode.Disabled;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
         import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.WonderWomenRobot;
-
+@Disabled
 @TeleOp
 public class TrialTeleOp extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
