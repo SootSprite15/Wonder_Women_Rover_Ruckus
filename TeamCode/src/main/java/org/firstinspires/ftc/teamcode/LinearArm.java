@@ -30,10 +30,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
@@ -46,9 +44,8 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
-@TeleOp
-@Disabled
-public class TeleOpMecanum extends LinearOpMode {
+@Autonomous
+public class LinearArm extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
     @Override
     public void runOpMode() {
@@ -60,51 +57,9 @@ public class TeleOpMecanum extends LinearOpMode {
 
         // while the op mode is active, loop and read the light levels.
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
-        while (opModeIsActive()) {
-            double turn = gamepad1.right_stick_x;
-            double drive = gamepad1.left_stick_y;
-            double rotator = -gamepad2.left_stick_y;
-            double extender = -gamepad2.right_stick_y;
-            double strafe = 0;
-            double maxspeed = 1;
-            //strafes with triggers
-            if(gamepad1.right_trigger>0) {
-                strafe = gamepad1.right_trigger;
-            }else if(gamepad1.left_trigger>0){
-                strafe = -gamepad1.left_trigger;
-            }else{
-                strafe =0;
-            }
 
-            //enter low speed mode when bumpers are pressed
-            if(gamepad1.right_bumper || gamepad1.left_bumper){
-                maxspeed = 0.5;
-            }
-
-            //set power to drive
-            robot.setMecanumPower(drive, strafe, turn, maxspeed);
-
-
-
-            //MANIPULATOR CONTROLS
-            if(gamepad2.a && gamepad2.b){
-                robot.resetExtender();
-            }
-
-            robot.rotatorController(rotator, true);
-            robot.extenderController(extender, true);
-
-
-
-
-            if(gamepad2.right_bumper){
-                robot.setIntakePower(1);
-            }
-            else if(gamepad2.left_bumper){
-                robot.setIntakePower(-1);
-            }else{
-                robot.setIntakePower(0);
-            }
+            robot.extenderForTicks(40000,1);
+        while(opModeIsActive()){
 
         }
     }

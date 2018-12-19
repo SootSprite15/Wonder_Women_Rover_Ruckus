@@ -76,8 +76,8 @@ public class OpModeTele extends OpMode {
         @Override
         public void loop () {
             double turn = gamepad1.right_stick_x;
-            double drive = -gamepad1.left_stick_y;
-            double rotator = gamepad2.left_stick_y;
+            double drive = gamepad1.left_stick_y;
+            double rotator = -gamepad2.left_stick_y;
             double extender = -gamepad2.right_stick_y;
             double strafe = 0;
             double maxspeed = 1;

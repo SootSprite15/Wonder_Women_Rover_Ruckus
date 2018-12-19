@@ -61,7 +61,7 @@ public class WonderWomenRobot {
     static double circumferenceOfSecondGear = PI * gearDiameter;
     static double extenderTicksPerInch = EXTENDER_TICKS * (extenderGearRatio) * ( 1 / circumferenceOfSecondGear);
     static double ticksPerInch = TICKS * (gearRatio) * (1 / circumferenceOfWheel);
-    static int raisingArmTicks = 200;
+    static int raisingArmTicks = -50193;
     enum rotatorDirect {UP, STOP, DOWN};
     enum rotatorPrevent {UP, NONE, DOWN};
     rotatorPrevent rotatorState = rotatorPrevent.NONE;
@@ -128,7 +128,7 @@ public class WonderWomenRobot {
         FrontRight.setDirection(DcMotor.Direction.REVERSE);
         BackLeft.setDirection(DcMotor.Direction.FORWARD);
 
-        resetEncoder();
+       // resetEncoder();
 
         // set power of motors to 0
         FrontLeft.setPower(0);
@@ -487,27 +487,44 @@ public class WonderWomenRobot {
 
         if(RetractionTouchSensor.getState() == false){//this might change based on motor direction
             if(Extender.getCurrentPosition() < 0){ //don't go down anymore
-                extenderstate = extenderPrevent.NEG;
+                extenderstate = extenderPrevent.POS;
             }else{
-                extenderstate = extenderPrevent.POS; //don't go up anymore
+                extenderstate = extenderPrevent.NEG; //don't go up anymore
             }
         }
-
-        if( direction == extenderDirect.POS){ //pushing up on stick
-            if(extenderstate != extenderPrevent.POS){ //you can go up
+        if(extenderstate == extenderPrevent.NEG){
+            if(direction == extenderDirect.NEG){
+                setExtenderArmPower(0);
+            }else{
                 setExtenderArmPower(extender);
                 extenderstate = extenderPrevent.NONE;
-            }else{
-                setExtenderArmPower(0);
             }
-        }else if (direction == extenderDirect.NEG){
-            if(extenderstate != extenderPrevent.NEG){
+        }else if(extenderstate == extenderPrevent.POS) {
+            if (direction == extenderDirect.POS) {
+                setExtenderArmPower(0);
+            } else {
                 setExtenderArmPower(extender);
                 extenderstate = extenderPrevent.NONE;
             }
         }else{
-            setExtenderArmPower(0);
+            setExtenderArmPower(extender);
         }
+
+//        if( direction == extenderDirect.POS){ //pushing up on stick
+//            if(extenderstate != extenderPrevent.POS){ //you can go up
+//                setExtenderArmPower(extender);
+//                extenderstate = extenderPrevent.NONE;
+//            }else{
+//                setExtenderArmPower(0);
+//            }
+//        }else if (direction == extenderDirect.NEG){
+//            if(extenderstate != extenderPrevent.NEG){
+//                setExtenderArmPower(extender);
+//                extenderstate = extenderPrevent.NONE;
+//            }
+//        }else{
+//            setExtenderArmPower(0);
+//        }
         if (tele == true) {
             //add telemetry
             opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
@@ -566,17 +583,24 @@ public class WonderWomenRobot {
     }
 
     public void extenderForTicks(int ticks, double speed) {
+
+        resetExtender();
+        Extender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         int newExtenderTarget;
+        int startPosition = Extender.getCurrentPosition();
         newExtenderTarget = Extender.getCurrentPosition() + ticks;
         Extender.setTargetPosition(newExtenderTarget);
         Extender.setPower(Math.abs(speed));
-
-        while (Extender.isBusy()) {
-
+//isbusy did not work. Maybe this motor encoder does not return isbusy
+        while (Math.abs(Extender.getCurrentPosition() - startPosition) < Math.abs(ticks)) {
+            opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
+            opmode.telemetry.addData("ticks so far", Extender.getCurrentPosition()-startPosition);
+            opmode.telemetry.update();
         }
         Extender.setPower(0);
         // Turn off RUN_TO_POSITION
         Extender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
     }
 
