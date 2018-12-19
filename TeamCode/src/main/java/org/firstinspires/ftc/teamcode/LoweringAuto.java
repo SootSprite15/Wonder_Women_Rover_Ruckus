@@ -64,11 +64,15 @@ public class LoweringAuto extends LinearOpMode {
             robot.setMecanumPower(0,0,0,0);
             robot.resetEncoder();
             sleep(20);
-            robot.driveForInches(36,-0.1);
+            robot.driveForInches(45,-0.1);
             robot.setMecanumPower(0,0,0,0);
             robot.LowerRotationArm();
+            robot.setIntakePower(-1);
+            sleep(1200);
+            robot.setIntakePower(0);
            // robot.RotatorForTicks(-10,1);
             sleep(100);
+            robot.RaiseRotationArm();
             //robot.RotatorForTicks(10,1);
            // robot.extenderForTicks(2500,1);
         while(opModeIsActive()){

@@ -414,7 +414,7 @@ public class WonderWomenRobot {
 
         while (RaisingLimitSwitch.getState() == true) {
 
-            RotationArm.setPower(0.5);
+            RotationArm.setPower(1);
             //telemetry.addData("Limit Switch", "Is Not close");
         }
         RotationArm.setPower(0);
@@ -428,7 +428,7 @@ public class WonderWomenRobot {
 
         while (LoweringLimitSwitch.getState() == true) {
 
-            RotationArm.setPower(-0.5);
+            RotationArm.setPower(-1);
             //telemetry.addData("Limit Switch", "Is Not close");
         }
         RotationArm.setPower(0);
