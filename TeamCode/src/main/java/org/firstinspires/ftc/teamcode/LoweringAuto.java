@@ -58,7 +58,11 @@ public class LoweringAuto extends LinearOpMode {
         // while the op mode is active, loop and read the light levels.
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
-            robot.extenderForTicks(40000,1);
+           // robot.extenderForTicks(40000,1);
+            robot.setMecanumPower(0,1,0,1);
+            robot.resetEncoder();
+            robot.driveForInches(8,-0.5);
+
         while(opModeIsActive()){
 
         }

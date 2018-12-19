@@ -129,7 +129,6 @@ public class WonderWomenRobot {
         BackLeft.setDirection(DcMotor.Direction.FORWARD);
 
        // resetEncoder();
-
         // set power of motors to 0
         FrontLeft.setPower(0);
         FrontRight.setPower(0);
