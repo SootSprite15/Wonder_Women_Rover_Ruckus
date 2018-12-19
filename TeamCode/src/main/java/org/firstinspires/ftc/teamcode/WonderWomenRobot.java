@@ -473,6 +473,10 @@ public class WonderWomenRobot {
         Extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Extender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+    public void resetRotator(){
+        RotationArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RotationArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
     public void extenderController(double extender, boolean tele) {
         double deadZone = 0.05;
         extenderDirect direction; //this is motor direction NOT arm direction
@@ -571,9 +575,9 @@ public class WonderWomenRobot {
 
       }
       if (tele == true) {
-          //add telemetry
-          //opmode.telemetry.addData("Rotator encoder", RotationArm.getCurrentPosition());
-          //opmode.telemetry.addData("Prevent Rotator State", rotatorState);
+//          add telemetry
+          opmode.telemetry.addData("Rotator encoder", RotationArm.getCurrentPosition());
+          opmode.telemetry.addData("Prevent Rotator State", rotatorState);
           opmode.telemetry.update();
       }
   }
@@ -592,9 +596,9 @@ public class WonderWomenRobot {
         Extender.setPower(Math.abs(speed));
 //isbusy did not work. Maybe this motor encoder does not return isbusy
         while (Math.abs(Extender.getCurrentPosition() - startPosition) < Math.abs(ticks)) {
-            opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
-            opmode.telemetry.addData("ticks so far", Extender.getCurrentPosition()-startPosition);
-            opmode.telemetry.update();
+//            opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
+//            opmode.telemetry.addData("ticks so far", Extender.getCurrentPosition()-startPosition);
+//            opmode.telemetry.update();
         }
         Extender.setPower(0);
         // Turn off RUN_TO_POSITION
@@ -602,6 +606,28 @@ public class WonderWomenRobot {
 
 
     }
+    public void RotatorForTicks(int ticks, double speed) {
+
+        resetRotator();
+        RotationArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int newExtenderTarget;
+        int startPosition = RotationArm.getCurrentPosition();
+        newExtenderTarget = RotationArm.getCurrentPosition() + ticks;
+        RotationArm.setTargetPosition(newExtenderTarget);
+        RotationArm.setPower(Math.abs(speed));
+//isbusy did not work. Maybe this motor encoder does not return isbusy
+        while (Math.abs(RotationArm.getCurrentPosition() - startPosition) < Math.abs(ticks)) {
+            opmode.telemetry.addData("Rotator encoder", RotationArm.getCurrentPosition());
+            opmode.telemetry.addData("ticks so far", RotationArm.getCurrentPosition()-startPosition);
+            opmode.telemetry.update();
+        }
+        RotationArm.setPower(0);
+        // Turn off RUN_TO_POSITION
+        RotationArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+    }
+
 
     public void ExtendingArm(){
         extenderForTicks( raisingArmTicks, 1);

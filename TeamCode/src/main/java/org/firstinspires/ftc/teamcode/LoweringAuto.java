@@ -59,10 +59,18 @@ public class LoweringAuto extends LinearOpMode {
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
            // robot.extenderForTicks(40000,1);
-            robot.setMecanumPower(0,1,0,1);
+            robot.setMecanumPower(0,1,0,-0.4);
+            sleep(400);
+            robot.setMecanumPower(0,0,0,0);
             robot.resetEncoder();
-            robot.driveForInches(8,-0.5);
-
+            sleep(20);
+            robot.driveForInches(36,-0.1);
+            robot.setMecanumPower(0,0,0,0);
+            robot.LowerRotationArm();
+           // robot.RotatorForTicks(-10,1);
+            sleep(100);
+            //robot.RotatorForTicks(10,1);
+           // robot.extenderForTicks(2500,1);
         while(opModeIsActive()){
 
         }
