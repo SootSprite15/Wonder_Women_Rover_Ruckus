@@ -65,6 +65,7 @@ public class WonderWomenRobot {
     static int raisingArmTicks = -50193;
     static double idealX = 450;
     static double idealY = 250;
+    static double idealThreshold = 10;
     enum rotatorDirect {UP, STOP, DOWN};
     enum rotatorPrevent {UP, NONE, DOWN};
     rotatorPrevent rotatorState = rotatorPrevent.NONE;
@@ -660,6 +661,10 @@ public class WonderWomenRobot {
     }
     public void findGold(MyGoldDetector detector){
         detector.enable();
+        while(detector.getFoundRect() == null){
+            setMecanumPower(0,0.4,0,0);
+        }
+        setMecanumPower(0,0,0,0);
 
 
     }
