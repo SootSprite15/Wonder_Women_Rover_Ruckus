@@ -20,6 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Rotation;
+import org.opencv.core.Point;
 
 //not an opmode
 //to be used by every opmode
@@ -62,6 +63,8 @@ public class WonderWomenRobot {
     static double extenderTicksPerInch = EXTENDER_TICKS * (extenderGearRatio) * ( 1 / circumferenceOfSecondGear);
     static double ticksPerInch = TICKS * (gearRatio) * (1 / circumferenceOfWheel);
     static int raisingArmTicks = -50193;
+    static double idealX = 450;
+    static double idealY = 250;
     enum rotatorDirect {UP, STOP, DOWN};
     enum rotatorPrevent {UP, NONE, DOWN};
     rotatorPrevent rotatorState = rotatorPrevent.NONE;
@@ -624,6 +627,39 @@ public class WonderWomenRobot {
         RotationArm.setPower(0);
         // Turn off RUN_TO_POSITION
         RotationArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+    }
+    public void alignGold(MyGoldDetector detector){
+        detector.enable();
+        Point RectPoint = detector.getScreenPosition();
+        if(RectPoint == null){
+            detector.disable();
+            return;
+
+        }
+        double pointX = RectPoint.x;
+        double pointY = RectPoint.y;
+
+        double diffX = pointX - idealX; //if diffX = a + then go right
+        double diffY = pointY - idealY; // if diff Y = a + then go forward
+        double distance = Math.sqrt((diffX * diffX) + (diffY * diffY));
+        double gainX = 1;
+        double gainY = -1;
+        while(distance > idealThreshold){
+            setMecanumPower(diffY * gainY, diffX * gainX, 0,0.4 );
+            RectPoint = detector.getScreenPosition();// ideally we should check to make sure it's still on screen
+            pointX = RectPoint.x;
+            pointY = RectPoint.y;
+            diffX = idealX - pointX; //if diffX = a + then go right
+            diffY = idealY - pointY; // if diff Y = a + then go forward
+            distance = Math.sqrt((diffX * diffX) + (diffY * diffY));
+        }
+        setMecanumPower(0,0,0,0);
+        detector.disable();
+    }
+    public void findGold(MyGoldDetector detector){
+        detector.enable();
 
 
     }
