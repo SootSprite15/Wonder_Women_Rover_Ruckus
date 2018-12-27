@@ -69,6 +69,8 @@ public class WonderWomenRobot {
     enum rotatorDirect {UP, STOP, DOWN};
     enum rotatorPrevent {UP, NONE, DOWN};
     rotatorPrevent rotatorState = rotatorPrevent.NONE;
+    enum mineral {LEFT, MIDDLE, RIGHT, UNKNOWN};
+    mineral goldSide = mineral.UNKNOWN;
 
     enum extenderDirect {NEG, STOP, POS};
     enum extenderPrevent {NEG, NONE, POS};
@@ -360,6 +362,7 @@ public class WonderWomenRobot {
 
     //to go backwards in driveForInches() you need to have negative inches NOT negative speed
     public void driveForInches(int inches, double speed) {
+
         //declares tick target
         //this is the amount of ticks each wheel respectively will move forward
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -377,6 +380,60 @@ public class WonderWomenRobot {
         newFrontLeftTarget = FrontLeft.getCurrentPosition() + newTicks;
         newBackLeftTarget = BackLeft.getCurrentPosition() + newTicks;
         newBackRightTarget = BackRight.getCurrentPosition() + newTicks;
+        newFrontRightTarget = FrontRight.getCurrentPosition() + newTicks;
+
+        //sets the encoder position to stop at the encoder value you want
+        FrontLeft.setTargetPosition(newFrontLeftTarget);
+        BackLeft.setTargetPosition(newBackLeftTarget);
+        BackRight.setTargetPosition(newBackRightTarget);
+        FrontRight.setTargetPosition(newFrontRightTarget);
+
+        //sets the power to the speed declared above
+        FrontLeft.setPower(Math.abs(speed));
+        BackLeft.setPower(Math.abs(speed));
+        BackRight.setPower(Math.abs(speed));
+        FrontRight.setPower(Math.abs(speed));
+
+        while (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy()) {
+            //  opmode.telemetry.addData("")
+
+        }
+
+        //stops the motors
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+    }
+    public void strafeForInches(int inches, double speed) {
+
+        //declares tick target
+        //this is the amount of ticks each wheel respectively will move forward
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        int newFrontLeftTarget, newBackLeftTarget, newBackRightTarget, newFrontRightTarget;
+
+        //converts the tick value to inches
+
+        int newTicks = (int) Math.round(ticksPerInch * inches);
+
+        //sets the target to the current encoder value plus the number of ticks you want to go forward
+
+
+        newFrontLeftTarget = FrontLeft.getCurrentPosition() - newTicks;
+        newBackLeftTarget = BackLeft.getCurrentPosition() + newTicks;
+        newBackRightTarget = BackRight.getCurrentPosition() - newTicks;
         newFrontRightTarget = FrontRight.getCurrentPosition() + newTicks;
 
         //sets the encoder position to stop at the encoder value you want
@@ -610,6 +667,29 @@ public class WonderWomenRobot {
 
 
     }
+    public void IntakeForTicks(int ticks, double speed) {
+
+        //resetExtender();
+        Intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       Intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Intake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int newIntakeTarget;
+        int startPosition = Intake.getCurrentPosition();
+        newIntakeTarget = Intake.getCurrentPosition() + ticks;
+        Intake.setTargetPosition(newIntakeTarget);
+        Intake.setPower(Math.abs(speed));
+//isbusy did not work. Maybe this motor encoder does not return isbusy
+        while (Math.abs(Intake.getCurrentPosition() - startPosition) < Math.abs(ticks)) {
+//            opmode.telemetry.addData("Extender encoder", Extender.getCurrentPosition());
+//            opmode.telemetry.addData("ticks so far", Extender.getCurrentPosition()-startPosition);
+//            opmode.telemetry.update();
+        }
+        Intake.setPower(0);
+        // Turn off RUN_TO_POSITION
+        Intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+    }
     public void RotatorForTicks(int ticks, double speed) {
 
         resetRotator();
@@ -632,7 +712,7 @@ public class WonderWomenRobot {
 
     }
     public void alignGold(MyGoldDetector detector){
-        detector.enable();
+        //detector.enable();
         Point RectPoint = detector.getScreenPosition();
         if(RectPoint == null){
             detector.disable();
@@ -645,10 +725,10 @@ public class WonderWomenRobot {
         double diffX = pointX - idealX; //if diffX = a + then go right
         double diffY = pointY - idealY; // if diff Y = a + then go forward
         double distance = Math.sqrt((diffX * diffX) + (diffY * diffY));
-        double gainX = 1;
+        double gainX = -1;
         double gainY = -1;
-        while(distance > idealThreshold){
-            setMecanumPower(diffY * gainY, diffX * gainX, 0,0.4 );
+        while(diffX > idealX){
+            setMecanumPower(0, diffX * gainX, 0,0.4 );
             RectPoint = detector.getScreenPosition();// ideally we should check to make sure it's still on screen
             pointX = RectPoint.x;
             pointY = RectPoint.y;
@@ -657,17 +737,134 @@ public class WonderWomenRobot {
             distance = Math.sqrt((diffX * diffX) + (diffY * diffY));
         }
         setMecanumPower(0,0,0,0);
-        detector.disable();
+        //detector.disable();
     }
     public void findGold(MyGoldDetector detector){
-        detector.enable();
-        while(detector.getFoundRect() == null){
-            setMecanumPower(0,0.4,0,0);
+        //detector.enable();
+
+        Point screenPos = detector.getScreenPosition();
+        if(screenPos.x > 50 && screenPos.x < 430){
+            strafeForInches(4,0.1);
+          //  RotatorForTicks(-50,1);
+           // setRotationArmPower(0);
+            driveForInches(30,0.1);
+            goldSide = mineral.MIDDLE;
+        }else{
+            strafeForInches(14,0.1);
+            screenPos = detector.getScreenPosition();
+            setMecanumPower(0,0,0,0);
+            if(screenPos.x > 50 && screenPos.x < 430){
+               // screenPos = detector.getScreenPosition();
+                strafeForInches(4,0.1);
+                setMecanumPower(0,0,0,0);
+                driveForInches(36, 0.05);
+               goldSide = mineral.RIGHT;
+            }else{
+                strafeForInches(-28,0.1);
+                driveForInches(30,0.05);
+                goldSide = mineral.LEFT;
         }
-        setMecanumPower(0,0,0,0);
+            opmode.telemetry.addData("gold detected", goldSide);
+            opmode.telemetry.update();
+
+        }
+
+        }
+        public void depotClaimFromDepot(){
+            if(goldSide == mineral.LEFT){
+                gyroTurn(-20);
+                driveForInches(12,0.4);
+                LowerRotationArm();
+            }
+            if(goldSide == mineral.RIGHT){
+                gyroTurn(35);
+                LowerRotationArm();
+            }
+            if(goldSide == mineral.MIDDLE){
+                LowerRotationArm();
+
+            }
+        }
+        public void goToCraterFromDepot(){
+
+            initIMUGyro();
+           // goldSide = mineral.RIGHT;
+            if(goldSide == mineral.LEFT){
+
+                gyroTurn(45);
+
+                driveForInches(12,0.4);
+                gyroTurn(90);
+                driveForInches(12,0.4); //needs to be 48ish
+                LowerRotationArm();
+            }
+            if(goldSide == mineral.RIGHT){
+
+                gyroTurn(45);
+                // driveForInches(82,0.4);
+                driveForInches(15,0.4);
+                gyroTurn(90);
+                driveForInches(12,0.4);//needs to be 48ish
+                LowerRotationArm();
 
 
-    }
+            }
+            if(goldSide == mineral.MIDDLE){
+
+                gyroTurn(45);
+                // driveForInches(72,0.4);
+                driveForInches(15,0.4);
+                gyroTurn(90);
+                driveForInches(12,0.4);//needs to be 48ish
+
+                LowerRotationArm();
+            }
+            opmode.telemetry.addData("goldSide ", goldSide);
+            opmode.telemetry.update();
+        }
+//        public void lineToGold(MyGoldDetector detector) {
+//                //detector.enable();
+//               // double Xnull = 0;
+//            FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                Point screenPos = detector.getScreenPosition();
+//                //resetEncoder();
+//
+//                    while (screenPos.x < 250 || screenPos.x > 430) {
+//                        //setMecanumPower(0,0,1,-0.3);
+//                        setMecanumPower(0, 1, 0, -0.2);
+//                        screenPos = detector.getScreenPosition();
+//                        opmode.telemetry.addData("Strafe encoder", FrontLeft.getCurrentPosition());
+//                        opmode.telemetry.update();
+//                        if(screenPos.x > 250 && screenPos.x < 430){
+//                            opmode.telemetry.addData("Strafe encoder", FrontLeft.getCurrentPosition());
+//                            opmode.telemetry.update();
+//                            break;
+//
+//
+//                        }
+//
+//                    }
+//                    setMecanumPower(0, 0, 0, 0);
+//
+//
+//            }
+
+
+
+
+
+
+
+          //  driveForInches(4,0.5);
+
+
+        //setMecanumPower(0,0,0,0);
+
+
+
+
+
 
 
     public void ExtendingArm(){
