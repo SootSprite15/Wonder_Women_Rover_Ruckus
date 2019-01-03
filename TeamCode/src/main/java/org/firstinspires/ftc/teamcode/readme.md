@@ -4,6 +4,10 @@ Welcome!
 
 ## Explanation of functions in WonderWomen class as of 1-3-19
 
+Our WonderWomen class has many functions that we make to use in both Autonomous and TeleOp programs. This makes reusing code easy.
+If you see a reference to a MyGoldDetector detector, this is the MyGoldDetector program. This program is one that came
+with the OpenCV file we found online. We have modified this file to fit our needs and outline the gold mineral with a rectangle.
+
 ##### public void initArmMotors()
 	FUNCTION: 
         - reads hardware map and initializes DC arm motors for our robot, initializes the limit switches and touch sensor for the arm
@@ -308,7 +312,7 @@ Welcome!
         - this function finds the gold mineral by checking the middle first, then the right, then the left. Once the mineral is found, it sets the goldSide enum to the side the gold is on. This enum is used in later functions.
 
 
-#####public void depotClaimFromDepot()
+##### public void depotClaimFromDepot()
 	FUNCTION:
         - used in auto that starts at the depot; uses the goldSide enum to get to the depot depending on which side the gold mineral was on
 
@@ -320,11 +324,12 @@ Welcome!
 
 
 
+
+## Creating your own OpModes
+
 This module, TeamCode, is the place where you will write/paste the code for your team's
 rosbot controller App. This module is currently empty (a clean slate) but the
 process for adding OpModes is straightforward.
-
-## Creating your own OpModes
 
 The easiest way to create your own OpMode is to copy a Sample OpMode and make it your own.
 
