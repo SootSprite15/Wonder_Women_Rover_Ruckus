@@ -2,244 +2,320 @@
 
 Welcome!
 
-# Explanation of functions in WonderWomen class as of 1-3-19
+## Explanation of functions in WonderWomen class as of 1-3-19
 
-public void initArmMotors()-
--	FUNCTION: reads hardware map and initializes DC arm motors for our robot, initializes the limit switches and touch sensor for the arm
--	NOTES: Used in initRobot function
-
-
-public void initDriveMotors() -
-- 	FUNCTION: reads hardware map and initializes DC drive motors for our robot
--	NOTES: Used in initRobot function
+##### public void initArmMotors()
+	FUNCTION: 
+        - reads hardware map and initializes DC arm motors for our robot, initializes the limit switches and touch sensor for the arm
+	NOTES: 
+	    - Used in initRobot function
 
 
-public void initIMUGyro() -
-- 	FUNCTION: initializes gyro sensor built in on REV hub
--	NOTES: Used in initRobot function
+##### public void initDriveMotors() 
+ 	FUNCTION: 
+        - reads hardware map and initializes DC drive motors for our robot
+	NOTES: 
+        -Used in initRobot function
+
+
+##### public void initIMUGyro() 
+ 	FUNCTION: 
+        -initializes gyro sensor built in on REV hub
+	NOTES: 
+        -Used in initRobot function
 
 
 
-public void initRobot(HardwareMap hwMap, LinearOpMode opmode) -
-- 	INPUT: HardwareMap hwMap is hardwareMap ( you don’t need to change anything between opmodes)
-		LinearOpMode opmode is the type of opmode (usually this if extends Linear OpMode)
-- 	FUNCTION: to be used at the start of opmodes
-		  gets robot ready to run (sets motors, sensors, etc.)
+##### public void initRobot(HardwareMap hwMap, LinearOpMode opmode) 
+ 	INPUT: 
+        - HardwareMap hwMap is hardwareMap ( you don’t need to change anything between opmodes)
+        - LinearOpMode opmode is the type of opmode (usually this if extends Linear OpMode)
+ 	FUNCTION: 
+        - to be used at the start of opmodes
+		- gets robot ready to run (sets motors, sensors, etc.)
 
-public void initRobot(HardwareMap hwMap, OpMode opmode) -
-- 	INPUT: HardwareMap hwMap is hardwareMap ( you don’t need to change anything between opcodes)
-		OpMode opmode is the type of opcode 
-- 	FUNCTION: same as LinearOpMode initRobot, but initializes for an iterative OpMode		  gets robot ready to run (sets motors, sensors, etc.)
-
-
-public double getIMUBearing()
--	FUNCTION:reads IMU gyro sensor and returns the angle reading
-
-
-public static double Angledistance(double alpha, double beta)
--	INPUT:  alpha is 1st angle
-      		beta is 2nd angle
--	OUTPUT : angle distance between 2 angles (if 0 is start of circle, left side goes from 0 through 180 and the right side goes from 0 through -180)
+##### public void initRobot(HardwareMap hwMap, OpMode opmode) -
+ 	INPUT: 
+        - HardwareMap hwMap is hardwareMap ( you don’t need to change anything between opcodes)
+        - OpMode opmode is the type of opcode 
+ 	FUNCTION: 
+        - same as LinearOpMode initRobot, but initializes for an iterative OpMode		
+        - gets robot ready to run (sets motors, sensors, etc.)
 
 
-public void gyroTurn(double turnAngle)
-- 	INPUT: the angle degree you want to turn (- for right turns, + for left)
-- 	FUNCTION: turns robot that number of degrees
+##### public double getIMUBearing()
+	FUNCTION:
+        - reads IMU gyro sensor and returns the angle reading
 
 
- public void setHardwareMap(HardwareMap hwMap)
-- 	FUNCTION:sets the Hardware Map
-- 	INPUT: hardwareMap
+##### public static double Angledistance(double alpha, double beta)
+	INPUT:  
+        - alpha is 1st angle
+      	- beta is 2nd angle
+	OUTPUT : 
+        - angle distance between 2 angles (if 0 is start of circle, left side goes from 0 through 180 and the right side goes from 0 through -180)
 
 
-public void setOpMode (LinearOpMode opcode)
-- 	FUNCTION:sets the OpMode to use LinearOpMode
-- 	INPUT: current opcode (this)
-
-public void setOpMode (OpMode opcode)
-- 	FUNCTION:sets the OpMode to use an iterative OpMode
-- 	INPUT: current opcode (this)
+##### public void gyroTurn(double turnAngle)
+ 	INPUT: 
+        - the angle degree you want to turn (- for right turns, + for left)
+ 	FUNCTION: 
+        - turns robot that number of degrees
 
 
-public void setMecanumPower(double drive, double strafe, double turn)
-- 	INPUTS: Drive is the stick value in the TeleOp program for driving.
+##### public void setHardwareMap(HardwareMap hwMap)
+ 	FUNCTION:
+        - sets the Hardware Map
+ 	INPUT: 
+        - hardwareMap
 
-		strafe is whether you strafed or not
+
+##### public void setOpMode (LinearOpMode opcode)
+ 	FUNCTION:
+        - sets the OpMode to use LinearOpMode
+ 	INPUT: 
+        - current opcode (this)
+
+##### public void setOpMode (OpMode opcode)
+ 	FUNCTION:
+        - sets the OpMode to use an iterative OpMode
+ 	INPUT: 
+        - current opcode (this)
+
+
+##### public void setMecanumPower(double drive, double strafe, double turn)
+	INPUTS: 
+        - Drive is the stick value in the TeleOp program for driving.
+		- strafe is whether you strafed or not
+		- turn is the stick value in the TeleOp program for turning
 		
-		turn is the stick value in the TeleOp program for turning
-		
-- 	FUNCTION: the reason we have this function and the one below it is because if no maxspeed is being inputed into this function, it automatically gets set to 1
+ 	FUNCTION: 
+        - the reason we have this function and the one below it is because if no maxspeed is being inputed into this function, it automatically gets set to 1
 
 
-public void setMecanumPower(double drive, double strafe, double turn, double maxspeed)
-- 	same as above except it has a max speed parameter so
+##### public void setMecanumPower(double drive, double strafe, double turn, double maxspeed)
+ 	same as above except it has a max speed parameter so
  	if bumpers are being pressed, the maxspeed value will be able to change
 
 
-public void setTankPower(double right, double left, double strafe, double maxspeed)
-- 	INPUTS: right is right stick value in TeleOp
-
-		left is left stick value in TeleOp
-
-		strafe is whether you strafe
-
-		max speed is the max speed of the robot
-- 	FUNCTION: sets the motors to tank drive
-
-
- public void setTankPower(double right, double left, double strafe)
-- 	INPUTS are same as above and
-- 	FUNCTION: the reason for this function is the same reason as having the setMecanumPower function without a maxspeed parameter
+##### public void setTankPower(double right, double left, double strafe, double maxspeed)
+ 	INPUTS: 
+        - right is right stick value in TeleOp
+        - left is left stick value in TeleOp
+		- strafe is whether you strafe
+        - max speed is the max speed of the robot
+ 	FUNCTION: 
+        - sets the motors to tank drive
 
 
-public void setDrivePower(double frontrightPower, double frontleftPower, double 			backleftPower, double backrightPower, double maxspeed)
-- 	INPUTS: what they say (frontrightPower is the power for the front right wheel, etc.)
-
-		maxspeed is max speed
-- 	FUNCTION: this function sets the power of each motor to the parameter corresponding with the motor
-
-
-public void setDrivePower(double frontrightPower, double frontleftPower, double 			backleftPower, double backrightPower)
-- 	INPUTS: same as other setDrivePower but no max speed
-- 	FUNCTION: purpose is to set max speed to 1 if not specified
+ ##### public void setTankPower(double right, double left, double strafe)
+ 	INPUTS:
+        - same as above
+ 	FUNCTION: 
+        - the reason for this function is the same reason as having the setMecanumPower function without a maxspeed parameter
 
 
-public void driveByTicks(int ticks, double speed)
--	INPUT: ticks is # of ticks you want the motor to go
- 
- 		speed is the speed of the motors
-
-- 	FUNCTION: runs the motors until reached the # of ticks specified
-
-
-public void resetEncoder()
--	FUNCTION: resets the drive motors’ encoders
--	NOTES: Do not use before TeleOp because TeleOp does not work in the STOP_AND_RESET_ENCODER RunMode
+##### public void setDrivePower(double frontrightPower, double frontleftPower, double backleftPower, double backrightPower, double maxspeed)
+ 	INPUTS: 
+        - what they say (frontrightPower is the power for the front right wheel, etc.)
+		- maxspeed is max speed
+ 	FUNCTION: 
+        - this function sets the power of each motor to the parameter corresponding with the motor
 
 
-public void RetractAndResetArmEncoder()
--	FUNCTION: retracts extender until touching the touch sensor and resets the encoder
--	NOTES: This was created for testing purposes, however we do not use this in our programs or to initialze. Our extender TeleOp cannot be reset at this position. (see extenderController below)
+#####public void setDrivePower(double frontrightPower, double frontleftPower, double backleftPower, double backrightPower)
+ 	INPUTS: 
+        - same as other setDrivePower but no max speed
+ 	FUNCTION:
+        - purpose is to set max speed to 1 if not specified
 
 
-public void driveForInches(int inches, double speed)
--	INPUT:  int inches: the number of inches you need to go forward
-		double speed: speed of robot
--	FUNCTION: drives the robot forward a certain number of inches using the encoders
--	NOTES: to go backwards, use negative inches, not negative speed
+##### public void driveByTicks(int ticks, double speed)
+	INPUT: 
+        - ticks is # of ticks you want the motor to go
+        - speed is the speed of the motors
+
+ 	FUNCTION: 
+        - runs the motors until reached the # of ticks specified
 
 
-public void strafeForInches(int inches, double speed)
--	INPUT:  int inches: the number of inches you need to strafe 
-		double speed: speed of robot
--	FUNCTION: strafes the robot a certain number of inches 
--	NOTES: positive inches is right, negative is left
+##### public void resetEncoder()
+	FUNCTION: 
+        - resets the drive motors’ encoders
+	NOTES: 
+        - Do not use before TeleOp because TeleOp does not work in the STOP_AND_RESET_ENCODER RunMode
 
 
-public void RaiseRotationArm()
--	FUNCTION: rotates the arm up until the limit switch is activated
+##### public void RetractAndResetArmEncoder()	FUNCTION: 
+        - retracts extender until touching the touch sensor and resets the encoder
+	NOTES: 
+        - This was created for testing purposes, however we do not use this in our programs or to initialze. Our extender TeleOp cannot be reset at this position. (see extenderController below)
 
 
-public void LowerRotationArm()
--	FUNCTION: rotates the arm down until the limit switch is activated
+##### public void driveForInches(int inches, double speed)
+	INPUT:  
+        - int inches: the number of inches you need to go forward
+		- double speed: speed of robot
+	FUNCTION:
+        - drives the robot forward a certain number of inches using the encoders
+	NOTES:
+        - to go backwards, use negative inches, not negative speed
 
 
-public void RetractingArm()
--	FUNCTION: retracts extender until touch sensor is pressed
+##### public void strafeForInches(int inches, double speed)
+	INPUT:  
+        - int inches: the number of inches you need to strafe 
+		- double speed: speed of robot
+	FUNCTION: 
+        - strafes the robot a certain number of inches 
+	NOTES: 
+        - positive inches is right, negative is left
 
 
-public void ExtendingArm()
--	FUNCTION: extends arm up to lower from lander; uses encoder and a pre-set number of ticks
+##### public void RaiseRotationArm()
+	FUNCTION: 
+        - rotates the arm up until the limit switch is activated
 
 
-public void setRotationArmPower(double power)
--	INPUT: double power: power of motor
--	FUNCTION: sets the rotation arm motor to set power
+##### public void LowerRotationArm()
+	FUNCTION: 
+        - rotates the arm down until the limit switch is activated
 
 
-public void setExtenderArmPower(double power)
--	INPUT: double power: power of motor
--	FUNCTION: sets the extendermotor to set power
+##### public void RetractingArm()
+	FUNCTION:
+	        - retracts extender until touch sensor is pressed
 
 
-public void setIntakePower(double power)
--	INPUT: double power: power of motor
--	FUNCTION: sets the intake motor to set power
--	NOTES: for auto, we use seconds to run the intake motor, so we this function should be used in the actual OpMode/LinearOpMode program, not inside the WonderWomen class
+##### public void ExtendingArm()
+	FUNCTION:
+        - extends arm up to lower from lander; uses encoder and a pre-set number of ticks
 
 
-public void SUPERUNSAFEEXTENDERCONTROLLER(double extender)
--	INPUT: double extender: joystick value (for use in TeleOp)
--	FUNCTION: sets extender motor to power of joystick
--	NOTES: We do not use this in our TeleOp because it is unsafe for our motors. It will not stop at the touch sensor, so we could break our motors. This was used for testing purposes only
+##### public void setRotationArmPower(double power)
+	INPUT: 
+        - double power: power of motor
+	FUNCTION:
+        - sets the rotation arm motor to set power
 
 
-public void resetExtender()
--	FUNCTION: resets the extender encoder and resets the mode to run using encoder
-
-public void resetRotator()
--	FUNCTION: resets the orator encoder and resets the mode to run using encoder
-
-
-public void extenderController(double extender)
--	INPUTS: double extender: joystick value for extender motor
--	FUNCTION: same as extenderController(double extender, boolean tele) but does not have telemetry for the extender motor
-
-public void extenderController(double extender, boolean tele)
--	INPUTS:  double extender: joystick value for extender motor
-		 boolean tele: whether you want telemetry for the extender motor
--	FUNCTION: sets the extender motor value to joystick value if it’s possible (checks direction of extender and compares it to the touch sensor) It stops the motor if touch sensor is pressed, but allows you to go the other direction.. It shows the telemetry reading for the extender motor’s encoder, the prevention state (the direction it cannot go in) and direction you want to go.
+##### public void setExtenderArmPower(double power)
+	INPUT: 
+        - double power: power of motor
+	FUNCTION: 
+        - sets the extendermotor to set power
 
 
-public void rotatorController(double rotator, boolean tele)
--	INPUT:  double rotator: joystick value for rotator motor
-		boolean tele: whether you want telemetry for the rotator motor
--	FUNCTION: sets the rotator motor value to joystick value if it’s possible (checks direction of rotator and compares it to the limit switches) It stops the motor if limit switches are activated, but allows you to go the other direction. It shows the telemetry reading for the rotator motor’s encoder and the prevention state (the direction it cannot go in)
+##### public void setIntakePower(double power)
+	INPUT: 
+        - double power: power of motor
+	FUNCTION: 
+        - sets the intake motor to set power
+	NOTES:
+        - for auto, we use seconds to run the intake motor, so we this function should be used in the actual OpMode/LinearOpMode program, not inside the WonderWomen class
 
 
-public void rotatorController(double rotator)
--	INPUT: double rotator: joystick value for rotator motor
--	FUNCTION: same as rotatorController above but does not show telemetry reading
+##### public void SUPERUNSAFEEXTENDERCONTROLLER(double extender)
+	INPUT:
+        - double extender: joystick value (for use in TeleOp)
+	FUNCTION:
+        - sets extender motor to power of joystick
+	NOTES:
+        - We do not use this in our TeleOp because it is unsafe for our motors. It will not stop at the touch sensor, so we could break our motors. This was used for testing purposes only
 
 
-public void extenderForTicks(int ticks, double speed)
--	INPUT:  int ticks: number of ticks you want to go
-		double speed: the speed of the extender motor (should be 1; it’s REALLY slow)
--	FUNCTION: runs extender to go for a set number of ticks
--	NOTES: to go down, use negative ticks, not negative speed
+##### public void resetExtender()
+	FUNCTION: 
+        - resets the extender encoder and resets the mode to run using encoder
+
+##### public void resetRotator()
+	FUNCTION: 
+        - resets the orator encoder and resets the mode to run using encoder
 
 
-public void IntakeForTicks(int ticks, double speed)
-	INPUT:  int ticks: number of ticks you want to go
-		double speed: the speed of the intake motor
--	FUNCTION: runs intake for a set number of ticks
--	NOTES: to go the opposite direction, use negative ticks, not negative speed
+##### public void extenderController(double extender)
+	INPUTS:
+        - double extender: joystick value for extender motor
+	FUNCTION: 
+        - same as extenderController(double extender, boolean tele) but does not have telemetry for the extender motor
+
+##### public void extenderController(double extender, boolean tele)
+	INPUTS:  
+        - double extender: joystick value for extender motor
+        - boolean tele: whether you want telemetry for the extender motor
+	FUNCTION: 
+        - sets the extender motor value to joystick value if it’s possible (checks direction of extender and compares it to the touch sensor) It stops the motor if touch sensor is pressed, but allows you to go the other direction.. It shows the telemetry reading for the extender motor’s encoder, the prevention state (the direction it cannot go in) and direction you want to go.
 
 
-public void RotatorForTicks(int ticks, double speed)
-	INPUT:  int ticks: number of ticks you want to go
-		double speed: the speed of the rotator motor
--	FUNCTION: runs rotator for a set number of ticks
--	NOTES: to go down, use negative ticks, not negative speed
+##### public void rotatorController(double rotator, boolean tele)
+	INPUT:  
+        - double rotator: joystick value for rotator motor
+        - boolean tele: whether you want telemetry for the rotator motor
+	FUNCTION: 
+        - sets the rotator motor value to joystick value if it’s possible (checks direction of rotator and compares it to the limit switches) It stops the motor if limit switches are activated, but allows you to go the other direction. It shows the telemetry reading for the rotator motor’s encoder and the prevention state (the direction it cannot go in)
 
 
-public void alignGold(MyGoldDetector detector)
--	INPUT: MyGoldDetector detector: the gold detector needs to be declared in the actual OpMode, but we need functions from the detector, so this input allows us to access the detector
--	FUNCTION: goes forward until the gold block on the camera is in the “ideal spot”, which we set above
--NOTES: We do not use this function in our auto. It did work as reliably as we intended.
+##### public void rotatorController(double rotator)
+	INPUT: 
+        - double rotator: joystick value for rotator motor
+	FUNCTION: 
+        - same as rotatorController above but does not show telemetry reading
 
 
-public void findGold(MyGoldDetector detector)
--	INPUT: MyGoldDetector detector: the gold detector needs to be declared in the actual OpMode, but we need functions from the detector, so this input allows us to access the detector
--	FUNCTION: this function finds the gold mineral by checking the middle first, then the right, then the left. Once the mineral is found, it sets the goldSide enum to the side the gold is on. This enum is used in later functions.
+##### public void extenderForTicks(int ticks, double speed)
+	INPUT: 
+        - int ticks: number of ticks you want to go
+        - double speed: the speed of the extender motor (should be 1; it’s REALLY slow)
+	FUNCTION: 
+        - runs extender to go for a set number of ticks
+	NOTES:
+        - to go down, use negative ticks, not negative speed
 
 
-public void depotClaimFromDepot()
--	FUNCTION: used in auto that starts at the depot; uses the goldSide enum to get to the depot depending on which side the gold mineral was on
+##### public void IntakeForTicks(int ticks, double speed)
+	INPUT:  
+         - int ticks: number of ticks you want to go
+         - double speed: the speed of the intake motor
+	FUNCTION: 
+        - runs intake for a set number of ticks
+	NOTES: 
+        - to go the opposite direction, use negative ticks, not negative speed
 
 
-public void goToCraterFromDepot()
--	FUNCTION: depending on the goldSide enum, it moves the robot to end in the crater. Used in depotAuto
+##### public void RotatorForTicks(int ticks, double speed)
+	INPUT:  
+	    - int ticks: number of ticks you want to go
+	    - double speed: the speed of the rotator motor
+	FUNCTION: 
+        - runs rotator for a set number of ticks
+	NOTES: 
+        - to go down, use negative ticks, not negative speed
+
+
+##### public void alignGold(MyGoldDetector detector)
+    INPUT: 
+        - MyGoldDetector detector: the gold detector needs to be declared in the actual OpMode, but we need functions from the detector, so this input allows us to access the detector
+	FUNCTION:
+        - goes forward until the gold block on the camera is in the “ideal spot”, which we set above
+    NOTES: 
+        - We do not use this function in our auto. It did work as reliably as we intended.
+
+
+##### public void findGold(MyGoldDetector detector)
+	INPUT: 
+        - MyGoldDetector detector: the gold detector needs to be declared in the actual OpMode, but we need functions from the detector, so this input allows us to access the detector
+	FUNCTION: 
+        - this function finds the gold mineral by checking the middle first, then the right, then the left. Once the mineral is found, it sets the goldSide enum to the side the gold is on. This enum is used in later functions.
+
+
+#####public void depotClaimFromDepot()
+	FUNCTION:
+        - used in auto that starts at the depot; uses the goldSide enum to get to the depot depending on which side the gold mineral was on
+
+
+##### public void goToCraterFromDepot()
+	FUNCTION:
+        - depending on the goldSide enum, it moves the robot to end in the crater. Used in depotAuto
 
 
 
