@@ -25,6 +25,8 @@ import org.opencv.core.Point;
 //not an opmode
 //to be used by every opmode
 //In this file we define the robot and its motions. Opmodes then use these motions.
+
+
 public class WonderWomenRobot {
 
     //OpMode members
@@ -35,19 +37,23 @@ public class WonderWomenRobot {
     private DcMotor RotationArm = null;
     private DcMotor Extender = null;
     private DcMotor Intake = null;
+
     private HardwareMap hardwareMap = null;
     private OpMode opmode = null;
  //   private LinearOpMode opmode1 = null;
 
     private DistanceSensor sensorRange;//generic distance sensor
+    private BNO055IMU imu;
+    private Orientation angles;
     Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
+
     DigitalChannel LoweringLimitSwitch;
     DigitalChannel RaisingLimitSwitch;
     DigitalChannel RetractionTouchSensor;
-    private BNO055IMU imu;
-    private Orientation angles;
+
     private int rotatorStopDirection = 0;  //1 means can't go positive, -1 = can't go negative, 0 = can go both directions
     private int extenderStopDirection = 0;
+
     static double TICKS = -2240;
     static double EXTENDER_TICKS = -2240;
     static double TICKSFORNEVEREST40MOTOR = 1120;
@@ -62,23 +68,28 @@ public class WonderWomenRobot {
     static double circumferenceOfSecondGear = PI * gearDiameter;
     static double extenderTicksPerInch = EXTENDER_TICKS * (extenderGearRatio) * ( 1 / circumferenceOfSecondGear);
     static double ticksPerInch = TICKS * (gearRatio) * (1 / circumferenceOfWheel);
-    static int raisingArmTicks = -50193;
+    static int raisingArmTicks = 40000;
+
     static double idealX = 450;
     static double idealY = 250;
     static double idealThreshold = 10;
+
     enum rotatorDirect {UP, STOP, DOWN};
     enum rotatorPrevent {UP, NONE, DOWN};
     rotatorPrevent rotatorState = rotatorPrevent.NONE;
-    enum mineral {LEFT, MIDDLE, RIGHT, UNKNOWN};
-    mineral goldSide = mineral.UNKNOWN;
 
     enum extenderDirect {NEG, STOP, POS};
     enum extenderPrevent {NEG, NONE, POS};
     extenderPrevent extenderstate = extenderPrevent.NONE;
 
+    enum mineral {LEFT, MIDDLE, RIGHT, UNKNOWN};
+    mineral goldSide = mineral.UNKNOWN;
 
 
-    //Initialize drive motors
+
+
+
+    //Initialize drive motors for the arm (Extender, Intake, and RotationArm)
     public void initArmMotors() {
         //naming the motors
         RotationArm = hardwareMap.get(DcMotor.class, "RotationArm");
@@ -163,17 +174,16 @@ public class WonderWomenRobot {
 
     }
 
-    public void initDistanceSensor() {
-        sensorRange = hardwareMap.get(DistanceSensor.class, "DistanceSensor");
-        sensorTimeOfFlight = (Rev2mDistanceSensor) sensorRange;
-    }
-
-    public double getDistance(DistanceUnit unit) {
-        //Available DistanceUnits are DistanceUnit.MM, DistanceUnit.CM, DistanceUnit.METER, DistanceUnit.INCH
-        return sensorRange.getDistance(unit);
-
-    }
-
+//    public void initDistanceSensor() {
+//        sensorRange = hardwareMap.get(DistanceSensor.class, "DistanceSensor");
+//        sensorTimeOfFlight = (Rev2mDistanceSensor) sensorRange;
+//    }
+//
+//    public double getDistance(DistanceUnit unit) {
+//        //Available DistanceUnits are DistanceUnit.MM, DistanceUnit.CM, DistanceUnit.METER, DistanceUnit.INCH
+//        return sensorRange.getDistance(unit);
+//
+//    }
 
     //initRobot initalizes motors and brings in the opmode and its hardware map
     public void initRobot(HardwareMap hwMap, LinearOpMode opmode) {
@@ -510,6 +520,11 @@ public class WonderWomenRobot {
         //telemetry.addData("Limit Switch", "Is close");
     }
 
+    public void ExtendingArm(){
+        extenderForTicks( raisingArmTicks, 1);
+    }
+
+
     public void setRotationArmPower(double power) {
         RotationArm.setPower(power);
     }
@@ -520,11 +535,6 @@ public class WonderWomenRobot {
 
     public void setIntakePower(double power) {
         Intake.setPower(power);
-    }
-
-    public void extenderController(double extender) {
-
-        extenderController(extender, false);
     }
 
     public void SUPERUNSAFEEXTENDERCONTROLLER(double extender){
@@ -538,6 +548,12 @@ public class WonderWomenRobot {
         RotationArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         RotationArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
+    public void extenderController(double extender) {
+
+        extenderController(extender, false);
+    }
+
     public void extenderController(double extender, boolean tele) {
         double deadZone = 0.05;
         extenderDirect direction; //this is motor direction NOT arm direction
@@ -867,10 +883,6 @@ public class WonderWomenRobot {
 
 
 
-    public void ExtendingArm(){
-        extenderForTicks( raisingArmTicks, 1);
-    }
-
 
 //    public void extenderForInches(int inches, double speed) {
 //        //declares tick target
@@ -911,17 +923,3 @@ public class WonderWomenRobot {
 //    }
 
 }
-//
-
-
-
-
-
-
-
-
-
-
-
-
-

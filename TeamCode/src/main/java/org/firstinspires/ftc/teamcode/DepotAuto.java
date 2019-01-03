@@ -98,7 +98,7 @@ public class DepotAuto extends LinearOpMode {
         robot.RotatorForTicks(200,1);
         robot.goToCraterFromDepot();
         telemetry.addData("Status", "at crater");
-        robot.extenderForTicks(-40000,1);
+       // robot.extenderForTicks(-40000,1);
         telemetry.update();
         sleep(1000);
 
