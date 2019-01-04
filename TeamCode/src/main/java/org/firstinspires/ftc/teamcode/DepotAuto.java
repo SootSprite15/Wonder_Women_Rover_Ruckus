@@ -94,7 +94,7 @@ public class DepotAuto extends LinearOpMode {
         telemetry.addData("Status", "found gold");
         telemetry.update();
 
-
+//
 
         robot.depotClaimFromDepot(); //goes to depot
         telemetry.addData("Status", "went to depot");
