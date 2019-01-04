@@ -760,24 +760,25 @@ public class WonderWomenRobot {
 
         Point screenPos = detector.getScreenPosition();
         if(screenPos.x > 50 && screenPos.x < 430){
-            strafeForInches(4,0.1);
+            strafeForInches(9,0.4);
           //  RotatorForTicks(-50,1);
            // setRotationArmPower(0);
-            driveForInches(30,0.1);
+            driveForInches(25,0.4);
             goldSide = mineral.MIDDLE;
         }else{
-            strafeForInches(14,0.1);
+            strafeForInches(21,0.4);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0,0,0,0);
             if(screenPos.x > 50 && screenPos.x < 430){
                // screenPos = detector.getScreenPosition();
-                strafeForInches(4,0.1);
+                strafeForInches(6,0.4);
                 setMecanumPower(0,0,0,0);
-                driveForInches(36, 0.05);
+                driveForInches(36, 0.4);
+                driveForInches(-6,0.4);
                goldSide = mineral.RIGHT;
             }else{
-                strafeForInches(-28,0.1);
-                driveForInches(30,0.05);
+                strafeForInches(-28,0.4);
+                driveForInches(30,0.4);
                 goldSide = mineral.LEFT;
         }
             opmode.telemetry.addData("gold detected", goldSide);
@@ -786,42 +787,80 @@ public class WonderWomenRobot {
         }
 
         }
-        public void depotClaimFromDepot(){
+    public void findGoldCrater(MyGoldDetector detector){
+        //detector.enable();
+
+        Point screenPos = detector.getScreenPosition();
+        if(screenPos.x > 50 && screenPos.x < 430){
+            strafeForInches(9,0.4);
+            //  RotatorForTicks(-50,1);
+            // setRotationArmPower(0);
+            driveForInches(12,0.4);
+            goldSide = mineral.MIDDLE;
+        }else{
+            strafeForInches(21,0.4);
+            screenPos = detector.getScreenPosition();
+            setMecanumPower(0,0,0,0);
+            if(screenPos.x > 50 && screenPos.x < 430){
+                // screenPos = detector.getScreenPosition();
+                strafeForInches(6,0.4);
+                setMecanumPower(0,0,0,0);
+                driveForInches(16, 0.4);
+                //driveForInches(-6,0.4);
+                goldSide = mineral.RIGHT;
+            }else{
+                strafeForInches(-28,0.4);
+                driveForInches(16,0.4);
+                goldSide = mineral.LEFT;
+            }
+            opmode.telemetry.addData("gold detected", goldSide);
+            opmode.telemetry.update();
+
+
+        }
+
+    }
+    public void depotClaimFromDepot(){
             if(goldSide == mineral.LEFT){
                 gyroTurn(-20);
-                driveForInches(12,0.4);
-                LowerRotationArm();
+                driveForInches(5,0.4);
+               LowerRotationArm();
+               // RotatorForTicks(-1300,1);
             }
             if(goldSide == mineral.RIGHT){
                 gyroTurn(35);
-                LowerRotationArm();
+                 LowerRotationArm();
+                //RotatorForTicks(-1300,1);
             }
             if(goldSide == mineral.MIDDLE){
-                LowerRotationArm();
+                 LowerRotationArm();
+                //RotatorForTicks(-1300,1);
 
             }
         }
-        public void goToCraterFromDepot(){
+    public void goToCraterFromDepot(){
 
-            initIMUGyro();
-           // goldSide = mineral.RIGHT;
+           // initIMUGyro();
+            //goldSide = mineral.LEFT;
             if(goldSide == mineral.LEFT){
 
-                gyroTurn(45);
+                gyroTurn(150);
 
-                driveForInches(12,0.4);
-                gyroTurn(90);
-                driveForInches(12,0.4); //needs to be 48ish
-                LowerRotationArm();
+//                driveForInches(12,0.4);
+//                gyroTurn(90);
+                driveForInches(45,0.4); //needs to be 48ish
+                 LowerRotationArm();
+               // RotatorForTicks(-1300,1);
             }
             if(goldSide == mineral.RIGHT){
 
-                gyroTurn(45);
-                // driveForInches(82,0.4);
-                driveForInches(15,0.4);
-                gyroTurn(90);
-                driveForInches(12,0.4);//needs to be 48ish
-                LowerRotationArm();
+//                gyroTurn(45);
+//                // driveForInches(82,0.4);
+                driveForInches(25,0.4);
+                gyroTurn(80);
+                driveForInches(55,0.4);//needs to be 48ish
+                 LowerRotationArm();
+                //RotatorForTicks(-1300,1);
 
 
             }
@@ -829,15 +868,50 @@ public class WonderWomenRobot {
 
                 gyroTurn(45);
                 // driveForInches(72,0.4);
-                driveForInches(15,0.4);
-                gyroTurn(90);
-                driveForInches(12,0.4);//needs to be 48ish
+                driveForInches(20,0.4);
+                gyroTurn(80);
+                driveForInches(45,0.4);//needs to be 48ish
 
-                LowerRotationArm();
+                 LowerRotationArm();
+                //RotatorForTicks(-1300,1);
             }
             opmode.telemetry.addData("goldSide ", goldSide);
             opmode.telemetry.update();
         }
+
+
+    public void goToDepotFromCrater(){
+
+        // initIMUGyro();
+        //goldSide = mineral.LEFT;
+        driveForInches(-8,0.4);
+
+        if(goldSide == mineral.LEFT){
+            gyroTurn(45);
+            driveForInches(20,0.4);
+
+        }
+        if(goldSide == mineral.RIGHT){
+            gyroTurn(90);
+            driveForInches(25,0.4);
+            gyroTurn(-45);
+            driveForInches(25,0.4);
+        }
+        if(goldSide == mineral.MIDDLE){
+            gyroTurn(90);
+            driveForInches(10,1);
+            gyroTurn(-45);
+            driveForInches(25,0.4);
+
+        }
+
+        gyroTurn(75);
+        driveForInches(45,0.4);
+        LowerRotationArm();
+
+        opmode.telemetry.addData("goldSide ", goldSide);
+        opmode.telemetry.update();
+    }
 //        public void lineToGold(MyGoldDetector detector) {
 //                //detector.enable();
 //               // double Xnull = 0;
