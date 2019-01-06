@@ -569,37 +569,36 @@ public class WonderWomenRobot {
     public void extenderController(double extender, boolean tele) {
         double deadZone = 0.05;
         extenderDirect direction; //this is motor direction NOT arm direction
-        if (extender > deadZone) {
+        if(extender > deadZone){
             direction = extenderDirect.POS;
-        } else if (extender < -deadZone) {
+        }else if(extender < -deadZone){
             direction = extenderDirect.NEG;
-        } else {
+        }else{
             direction = extenderDirect.STOP;
         }
 
-        if (RetractionTouchSensor.getState() == false) {//this might change based on motor direction
-            if (Extender.getCurrentPosition() < 0) { //don't go down anymore
-                extenderstate = extenderPrevent.NEG;
-            } else {
-                extenderstate = extenderPrevent.POS; //don't go up anymore
+        if(RetractionTouchSensor.getState() == false){//this might change based on motor direction
+            if(Extender.getCurrentPosition() < 0){ //don't go down anymore
+                extenderstate = extenderPrevent.POS;
+            }else{
+                extenderstate = extenderPrevent.NEG; //don't go up anymore
             }
         }
-
-        if (extenderstate == extenderPrevent.NEG) {
-            if (direction == extenderDirect.NEG) {
+        if(extenderstate == extenderPrevent.NEG){
+            if(direction == extenderDirect.NEG){
                 setExtenderArmPower(0);
-            } else {
+            }else{
                 setExtenderArmPower(extender);
                 extenderstate = extenderPrevent.NONE;
             }
-        } else if (extenderstate == extenderPrevent.POS) {
+        }else if(extenderstate == extenderPrevent.POS) {
             if (direction == extenderDirect.POS) {
                 setExtenderArmPower(0);
             } else {
                 setExtenderArmPower(extender);
                 extenderstate = extenderPrevent.NONE;
             }
-        } else {
+        }else{
             setExtenderArmPower(extender);
         }
 
@@ -627,6 +626,7 @@ public class WonderWomenRobot {
         }
 
     }
+
 
 
     public void rotatorController(double rotator, boolean tele) {
