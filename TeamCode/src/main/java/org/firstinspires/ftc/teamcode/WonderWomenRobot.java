@@ -584,6 +584,7 @@ public class WonderWomenRobot {
                 extenderstate = extenderPrevent.NEG; //don't go up anymore
             }
         }
+
         if(extenderstate == extenderPrevent.NEG){
             if(direction == extenderDirect.NEG){
                 setExtenderArmPower(0);
