@@ -579,11 +579,12 @@ public class WonderWomenRobot {
 
         if (RetractionTouchSensor.getState() == false) {//this might change based on motor direction
             if (Extender.getCurrentPosition() < 0) { //don't go down anymore
-                extenderstate = extenderPrevent.POS;
+                extenderstate = extenderPrevent.NEG;
             } else {
-                extenderstate = extenderPrevent.NEG; //don't go up anymore
+                extenderstate = extenderPrevent.POS; //don't go up anymore
             }
         }
+
         if (extenderstate == extenderPrevent.NEG) {
             if (direction == extenderDirect.NEG) {
                 setExtenderArmPower(0);
@@ -641,8 +642,11 @@ public class WonderWomenRobot {
 
         if (RaisingLimitSwitch.getState() == false) {
             rotatorState = rotatorPrevent.UP;
-        } else if (LoweringLimitSwitch.getState() == false) {
+        }else if (LoweringLimitSwitch.getState() == false) {
             rotatorState = rotatorPrevent.DOWN;
+        }
+        else{
+            rotatorState = rotatorPrevent.NONE;
         }
 
         if (direction == rotatorDirect.UP) { // if you want to go up
