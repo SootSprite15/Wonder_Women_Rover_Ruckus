@@ -29,12 +29,10 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.disnodeteam.dogecv.CameraViewDisplay;
-import com.disnodeteam.dogecv.DogeCV;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import org.opencv.core.Size;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
@@ -47,33 +45,14 @@ import org.opencv.core.Size;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
+@Disabled
 @Autonomous
-public class LoweringAuto extends LinearOpMode {
+public class OldLoweringAuto extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
-    private MyGoldDetector detector;
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "DogeCV 2018.0 - Gold SilverDetector Example");
-
-        // Setup detector
-        detector = new MyGoldDetector(); // Create detector
-        detector.setAdjustedSize(new Size(480, 270)); // Set detector size
-        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
-        detector.useDefaults(); // Set default detector settings
-        // Optional tuning
-
-        detector.downscale = 0.4; // How much to downscale the input frames
-
-        detector.areaScoringMethod = DogeCV.AreaScoringMethod.PERFECT_AREA; // Can also be PERFECT_AREA
-        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
-        detector.maxAreaScorer.weight = 0.005;
-
-        detector.ratioScorer.weight = 5;
-        detector.ratioScorer.perfectRatio = 1.0;
 
         robot.initRobot(hardwareMap, this);
-        detector.enable();
-       // robot.initRobot(hardwareMap, this);
 
         // wait for the start button to be pressed.
         waitForStart();
@@ -81,16 +60,25 @@ public class LoweringAuto extends LinearOpMode {
         // while the op mode is active, loop and read the light levels.
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
-
-        robot.extenderForTicks(12000,1); //needs to raise 23 inches
-        robot.strafeForInches(-7, 1); //strafe off lander
-        robot.setMecanumPower(0,0,0,0);
-
-
-
+           // robot.extenderForTicks(40000,1);
+            robot.setMecanumPower(0,1,0,-0.4);
+            sleep(400);
+            robot.setMecanumPower(0,0,0,0);
+            robot.resetEncoder();
+            sleep(20);
+            robot.driveForInches(45,-0.1);
+            robot.setMecanumPower(0,0,0,0);
+            robot.LowerRotationArm();
+            robot.setIntakePower(-1);
+            sleep(1200);
+            robot.setIntakePower(0);
+           // robot.RotatorForTicks(-10,1);
+            sleep(100);
+            robot.RaiseRotationArm();
+            //robot.RotatorForTicks(10,1);
+           // robot.extenderForTicks(2500,1);
         while(opModeIsActive()){
-            telemetry.addData("Screen Position", detector.getScreenPosition());
-            telemetry.update();
+
         }
     }
 }

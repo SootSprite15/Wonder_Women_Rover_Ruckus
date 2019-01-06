@@ -82,7 +82,7 @@ public class CraterAuto extends LinearOpMode {
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
 
-       // robot.extenderForTicks(12000,1); //needs to raise 23 inches
+        robot.extenderForTicks(12000,1); //needs to raise 23 inches
         robot.strafeForInches(-7, 1); //strafe off lander
         robot.setMecanumPower(0,0,0,0);
         robot.driveForInches(16,0.2);//forward to avoid hitting the lander

@@ -48,7 +48,7 @@ import org.opencv.core.Size;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
 @Autonomous
-public class LoweringAuto extends LinearOpMode {
+public class DoubleSample extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
     private MyGoldDetector detector;
     @Override
@@ -84,8 +84,37 @@ public class LoweringAuto extends LinearOpMode {
 
         robot.extenderForTicks(12000,1); //needs to raise 23 inches
         robot.strafeForInches(-7, 1); //strafe off lander
+        robot.RotatorForTicks(-200,1);
         robot.setMecanumPower(0,0,0,0);
+        robot.driveForInches(16,0.2);//forward to avoid hitting the lander
+        //  robot.strafeForInches(-6,1);//strafe to line up to middle mineral
 
+        robot.findGold(detector);//find the gold mineral and pushes out
+
+        telemetry.addData("Status", "found gold");
+        telemetry.update();
+
+//
+
+        robot.depotClaimFromDepot(); //goes to depot
+        telemetry.addData("Status", "went to depot");
+        telemetry.update();
+        robot.setIntakePower(-1); // pushes marker into depot
+        sleep(1600);
+        robot.setIntakePower(0);
+        //  robot.RaiseRotationArm();
+        robot.RotatorForTicks(1200,1); //raises arm
+        telemetry.addData("Status", "arm raised");
+        telemetry.update();
+        robot.driveForInches(-12,0.4);
+        robot.goToSecondSampling();
+        robot.findGoldCrater(detector);
+        robot.LowerRotationArm();
+
+        telemetry.addData("Status", "at crater");
+        // robot.extenderForTicks(-40000,1);
+        telemetry.update();
+        sleep(1000);
 
 
         while(opModeIsActive()){
