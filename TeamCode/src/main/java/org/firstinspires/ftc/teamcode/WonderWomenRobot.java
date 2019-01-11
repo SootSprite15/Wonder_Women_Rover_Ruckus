@@ -534,7 +534,6 @@ public class WonderWomenRobot {
         extenderForTicks(raisingArmTicks, 1);
     }
 
-
     public void setRotationArmPower(double power) {
         RotationArm.setPower(power);
     }
@@ -569,6 +568,7 @@ public class WonderWomenRobot {
     public void extenderController(double extender, boolean tele) {
         double deadZone = 0.05;
         extenderDirect direction; //this is motor direction NOT arm direction
+
         if(extender > deadZone){
             direction = extenderDirect.POS;
         }else if(extender < -deadZone){
@@ -627,8 +627,6 @@ public class WonderWomenRobot {
         }
 
     }
-
-
 
     public void rotatorController(double rotator, boolean tele) {
         double deadZone = 0.05;
@@ -903,7 +901,6 @@ public class WonderWomenRobot {
         opmode.telemetry.addData("goldSide ", goldSide);
         opmode.telemetry.update();
     }
-
 
     public void goToDepotFromCrater() {
 

@@ -36,7 +36,7 @@ public class TrialTeleOp extends LinearOpMode {
             }
             //enter low speed mode when bumpers are pressed
             if(gamepad1.right_bumper || gamepad1.left_bumper){
-                maxspeed = 0.5;
+                maxspeed = 0.25;
             }
 
             //set power to drive
