@@ -48,7 +48,7 @@ import org.opencv.core.Size;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
 @Autonomous
-public class DepotAuto extends LinearOpMode {
+public class OppCraterAuto extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
     private MyGoldDetector detector;
     @Override
@@ -72,7 +72,6 @@ public class DepotAuto extends LinearOpMode {
         detector.ratioScorer.perfectRatio = 1.0;
 
         robot.initRobot(hardwareMap, this);
-       // robot.initDriveMotorsAuto();
         detector.enable();
        // robot.initRobot(hardwareMap, this);
 
@@ -83,44 +82,39 @@ public class DepotAuto extends LinearOpMode {
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
 
-       // robot.extenderForTicks(4200,1); //needs to raise 23 inches
+       // robot.extenderForTicks(12000,1); //needs to raise 23 inches
         robot.strafeForInches(-7, 1); //strafe off lander
-       // robot.RotatorForTicks(-200,1);
         robot.setMecanumPower(0,0,0,0);
-        robot.driveForInches(19,0.2);//forward to avoid hitting the lander
+        robot.driveForInches(16,0.2);//forward to avoid hitting the lander
         robot.strafeForInches(-6,1);//strafe to line up to middle mineral
-
-        robot.findGold(detector);//find the gold mineral and pushes out
+        robot.findGoldCrater(detector);//find the gold mineral and pushes out
 
         telemetry.addData("Status", "found gold");
         telemetry.update();
-
 //
-
-        robot.depotClaimFromDepot(); //goes to depot
+       robot.goToDepotFromCrater();
         telemetry.addData("Status", "went to depot");
         telemetry.update();
         robot.setIntakePower(-1); // pushes marker into depot
         sleep(1600);
         robot.setIntakePower(0);
-      //  robot.RaiseRotationArm();
+         robot.RaiseRotationArm();
 
-        robot.RotatorForTicks(1200,1); //raises arm
+       // robot.RotatorForTicks(1250,1); //raises arm
         telemetry.addData("Status", "arm raised");
         telemetry.update();
         robot.goToCraterFromDepot(); //goes to crater
         telemetry.addData("Status", "at crater");
        // robot.extenderForTicks(-40000,1);
         telemetry.update();
-      //  sleep(1000);
+        sleep(1000);
         detector.disable();
 
-        while(opModeIsActive()){
-//            telemetry.addData("Screen Position", detector.getScreenPosition());
-//            telemetry.update();
-            //sleep(20000);
-          //  detector.disable();
 
+
+        while(opModeIsActive()){
+            telemetry.addData("Screen Position", detector.getScreenPosition());
+            telemetry.update();
         }
     }
 }

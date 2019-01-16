@@ -82,7 +82,7 @@ public class CraterAuto extends LinearOpMode {
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
 
-        robot.extenderForTicks(12000,1); //needs to raise 23 inches
+       // robot.extenderForTicks(4200,1); //needs to raise 23 inches
         robot.strafeForInches(-7, 1); //strafe off lander
         robot.setMecanumPower(0,0,0,0);
         robot.driveForInches(16,0.2);//forward to avoid hitting the lander
@@ -95,19 +95,20 @@ public class CraterAuto extends LinearOpMode {
        robot.goToDepotFromCrater();
         telemetry.addData("Status", "went to depot");
         telemetry.update();
-        robot.setIntakePower(-1); // pushes marker into depot
+        robot.setIntakePower(-1);
         sleep(1600);
         robot.setIntakePower(0);
-        robot.RaiseRotationArm();
+         robot.RaiseRotationArm();
 
-        robot.RotatorForTicks(1250,1); //raises arm
+       // robot.RotatorForTicks(1250,1); //raises arm
         telemetry.addData("Status", "arm raised");
         telemetry.update();
-        robot.goToCraterFromDepot(); //goes to crater
+        robot.goToSameCraterFromDepot(); //goes to crater
         telemetry.addData("Status", "at crater");
        // robot.extenderForTicks(-40000,1);
         telemetry.update();
         sleep(1000);
+        detector.disable();
 
 
 

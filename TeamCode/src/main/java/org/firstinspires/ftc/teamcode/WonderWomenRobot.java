@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -21,6 +22,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Rotation;
 import org.opencv.core.Point;
+
+import java.util.Timer;
 
 //not an opmode
 //to be used by every opmode
@@ -160,6 +163,33 @@ public class WonderWomenRobot {
         BackLeft.setPower(0);
         BackRight.setPower(0);
     }
+    public void initDriveMotorsAuto() {
+        //naming the motors
+        FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
+        FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+        BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
+        BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+
+//
+        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+
+        // The right motors needed to be reversed to run forward.
+        FrontLeft.setDirection(DcMotor.Direction.FORWARD);
+        BackRight.setDirection(DcMotor.Direction.REVERSE);
+        FrontRight.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.FORWARD);
+
+        // resetEncoder();
+        // set power of motors to 0
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
+   }
 
     public void initIMUGyro() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -202,7 +232,22 @@ public class WonderWomenRobot {
         initIMUGyro();
 
     }
+    public void initRobotAuto(HardwareMap hwMap, LinearOpMode opmode) {
+        setHardwareMap(hwMap);
+        setOpMode(opmode);
+        initDriveMotorsAuto();
+        initArmMotors();
+        initIMUGyro();
 
+    }
+    public void initRobotAuto(HardwareMap hwMap, OpMode opmode) {
+        setHardwareMap(hwMap);
+        setOpMode(opmode);
+        initDriveMotorsAuto();
+        initArmMotors();
+        initIMUGyro();
+
+    }
     public void initRobot(HardwareMap hwMap, OpMode opmode) {
         setHardwareMap(hwMap);
         setOpMode(opmode);
@@ -413,7 +458,7 @@ public class WonderWomenRobot {
         BackRight.setPower(Math.abs(speed));
         FrontRight.setPower(Math.abs(speed));
 
-        while (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy()) {
+        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
             //  opmode.telemetry.addData("")
 
         }
@@ -434,13 +479,15 @@ public class WonderWomenRobot {
     }
 
     public void strafeForInches(int inches, double speed) {
-
+         ElapsedTime RunTime = new ElapsedTime();
+         RunTime.reset();
         //declares tick target
         //this is the amount of ticks each wheel respectively will move forward
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
         int newFrontLeftTarget, newBackLeftTarget, newBackRightTarget, newFrontRightTarget;
 
@@ -468,7 +515,8 @@ public class WonderWomenRobot {
         BackRight.setPower(Math.abs(speed));
         FrontRight.setPower(Math.abs(speed));
 
-        while (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy()) {
+        //while ((FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())&& RunTime.time() < 5 ) {
+        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy() ) {
             //  opmode.telemetry.addData("")
 
         }
@@ -780,24 +828,24 @@ public class WonderWomenRobot {
 
         Point screenPos = detector.getScreenPosition();
         if (screenPos.x > 50 && screenPos.x < 430) {
-            strafeForInches(9, 0.4);
+            strafeForInches(9, 0.2);
             //  RotatorForTicks(-50,1);
             // setRotationArmPower(0);
             driveForInches(25, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(21, 0.4);
+            strafeForInches(21, 0.2);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
                 // screenPos = detector.getScreenPosition();
-                strafeForInches(6, 0.4);
+                strafeForInches(8, 0.2);
                 setMecanumPower(0, 0, 0, 0);
                 driveForInches(36, 0.4);
                 driveForInches(-6, 0.4);
                 goldSide = mineral.RIGHT;
             } else {
-                strafeForInches(-28, 0.4);
+                strafeForInches(-31, 0.2);
                 driveForInches(30, 0.4);
                 goldSide = mineral.LEFT;
             }
@@ -813,24 +861,24 @@ public class WonderWomenRobot {
 
         Point screenPos = detector.getScreenPosition();
         if (screenPos.x > 50 && screenPos.x < 430) {
-            strafeForInches(9, 0.4);
+            strafeForInches(9, 0.2);
             //  RotatorForTicks(-50,1);
             // setRotationArmPower(0);
             driveForInches(12, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(21, 0.4);
+            strafeForInches(21, 0.2);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
                 // screenPos = detector.getScreenPosition();
-                strafeForInches(6, 0.4);
+                strafeForInches(8, 0.2);
                 setMecanumPower(0, 0, 0, 0);
                 driveForInches(16, 0.4);
                 //driveForInches(-6,0.4);
                 goldSide = mineral.RIGHT;
             } else {
-                strafeForInches(-28, 0.4);
+                strafeForInches(-31, 0.2);
                 driveForInches(16, 0.4);
                 goldSide = mineral.LEFT;
             }
@@ -850,7 +898,7 @@ public class WonderWomenRobot {
             // RotatorForTicks(-1300,1);
         }
         if (goldSide == mineral.RIGHT) {
-            gyroTurn(35);
+            gyroTurn(20);
             LowerRotationArm();
             //RotatorForTicks(-1300,1);
         }
@@ -871,17 +919,18 @@ public class WonderWomenRobot {
 
 //                driveForInches(12,0.4);
 //                gyroTurn(90);
-            driveForInches(45, 0.4); //needs to be 48ish
+            driveForInches(50, 0.6); //needs to be 48ish
             LowerRotationArm();
             // RotatorForTicks(-1300,1);
         }
         if (goldSide == mineral.RIGHT) {
 
-//                gyroTurn(45);
+//                gyroTurn(45);m kn
 //                // driveForInches(82,0.4);
-            driveForInches(25, 0.4);
+            gyroTurn(15);
+            driveForInches(20, 0.4);
             gyroTurn(80);
-            driveForInches(55, 0.4);//needs to be 48ish
+            driveForInches(76, 0.6);//needs to be 48ish
             LowerRotationArm();
             //RotatorForTicks(-1300,1);
 
@@ -891,9 +940,9 @@ public class WonderWomenRobot {
 
             gyroTurn(45);
             // driveForInches(72,0.4);
-            driveForInches(20, 0.4);
+            driveForInches(15, 0.4);
             gyroTurn(80);
-            driveForInches(45, 0.4);//needs to be 48ish
+            driveForInches(50, 0.6);//needs to be 48ish
 
             LowerRotationArm();
             //RotatorForTicks(-1300,1);
@@ -902,32 +951,39 @@ public class WonderWomenRobot {
         opmode.telemetry.update();
     }
 
+    public void goToSameCraterFromDepot(){
+        driveForInches(-20,0.4);
+        gyroTurn(-182);
+        driveForInches(24,0.4);
+        LowerRotationArm();
+    }
+
     public void goToDepotFromCrater() {
 
         // initIMUGyro();
         //goldSide = mineral.LEFT;
-        driveForInches(-8, 0.4);
+        driveForInches(-12, 0.4);
 
         if (goldSide == mineral.LEFT) {
             gyroTurn(45);
-            driveForInches(20, 0.4);
+            driveForInches(20, 0.6);
 
         }
         if (goldSide == mineral.RIGHT) {
             gyroTurn(90);
-            driveForInches(25, 0.4);
+            driveForInches(30, 0.4);
             gyroTurn(-45);
-            driveForInches(25, 0.4);
+            driveForInches(20, 0.6);
         }
         if (goldSide == mineral.MIDDLE) {
             gyroTurn(90);
-            driveForInches(10, 1);
+            driveForInches(17, 1);
             gyroTurn(-45);
-            driveForInches(25, 0.4);
+            driveForInches(25, 0.6);
 
         }
 
-        gyroTurn(75);
+        gyroTurn(80);
         driveForInches(45, 0.4);
         LowerRotationArm();
 
@@ -1037,6 +1093,67 @@ public class WonderWomenRobot {
 //        Extender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //
 //    }
+
+    }
+    public void gyroPID(double inches, double target){
+
+       // double current = getIMUBearing();
+
+        //declares tick target
+        //this is the amount of ticks each wheel respectively will move forward
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        int newFrontLeftTarget, newBackLeftTarget, newBackRightTarget, newFrontRightTarget;
+
+        //converts the tick value to inches
+
+        int newTicks = (int) Math.round(ticksPerInch * inches);
+
+        //sets the target to the current encoder value plus the number of ticks you want to go forward
+        newFrontLeftTarget = FrontLeft.getCurrentPosition() + newTicks;
+        newBackLeftTarget = BackLeft.getCurrentPosition() + newTicks;
+        newBackRightTarget = BackRight.getCurrentPosition() + newTicks;
+        newFrontRightTarget = FrontRight.getCurrentPosition() + newTicks;
+
+        //sets the encoder position to stop at the encoder value you want
+        FrontLeft.setTargetPosition(newFrontLeftTarget);
+        BackLeft.setTargetPosition(newBackLeftTarget);
+        BackRight.setTargetPosition(newBackRightTarget);
+        FrontRight.setTargetPosition(newFrontRightTarget);
+
+//
+//        //sets the power to the speed declared above
+//        FrontLeft.setPower(Math.abs(speed));
+//        BackLeft.setPower(Math.abs(speed));
+//        BackRight.setPower(Math.abs(speed));
+//        FrontRight.setPower(Math.abs(speed))
+// ;
+       double max = 5;
+        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
+            //  opmode.telemetry.addData("")
+            double bearing = getIMUBearing();
+            double diff = bearing - target;
+            double power = diff/max;
+            setDrivePower(power,-power,power,-power,0.5);
+        }
+
+        //stops the motors
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
 
     }
 }

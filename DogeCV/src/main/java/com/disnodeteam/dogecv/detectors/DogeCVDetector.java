@@ -66,6 +66,7 @@ public abstract class DogeCVDetector extends OpenCVPipeline{
         if(useFixedDownscale){
             adjustedSize = downscaleResolution;
         }else{
+            //could you make this size (width (initSize.width, initSize.height /2)? to only view the bottom of the camera screen?
             adjustedSize = new Size(initSize.width * downscale, initSize.height * downscale);
         }
 
