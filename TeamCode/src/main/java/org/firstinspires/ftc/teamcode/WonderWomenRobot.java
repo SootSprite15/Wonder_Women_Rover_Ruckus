@@ -1147,7 +1147,7 @@ public class WonderWomenRobot {
             rot_power = (rot_power < -1) ? -1 : rot_power;
             setMecanumPower( 1-Math.abs(rot_power),0, rot_power,Math.abs(speed));
         }
-
+//
         //stops the motors
         FrontLeft.setPower(0);
         FrontRight.setPower(0);

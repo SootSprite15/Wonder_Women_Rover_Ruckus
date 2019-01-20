@@ -120,7 +120,9 @@ public class OpModeTele extends OpMode {
                 robot.setIntakePower(0);
             }
 
+        telemetry.addData("Diana believes in you!", "Go Jessica and Amelia!");
 
+            telemetry.update();
 //sleep(1);
         }
         /*
