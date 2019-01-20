@@ -914,7 +914,7 @@ public class WonderWomenRobot {
         // initIMUGyro();
         //goldSide = mineral.LEFT;
         if (goldSide == mineral.LEFT) {
-
+            double target1 = getIMUBearing();
             gyroTurn(150);
 
 //                driveForInches(12,0.4);
@@ -929,6 +929,7 @@ public class WonderWomenRobot {
 //                // driveForInches(82,0.4);
             gyroTurn(15);
             driveForInches(20, 0.4);
+            double target1 = getIMUBearing();
             gyroTurn(80);
             driveForInches(76, 0.6);//needs to be 48ish
             LowerRotationArm();
@@ -941,6 +942,7 @@ public class WonderWomenRobot {
             gyroTurn(45);
             // driveForInches(72,0.4);
             driveForInches(15, 0.4);
+             double target1 = getIMUBearing();
             gyroTurn(80);
             driveForInches(50, 0.6);//needs to be 48ish
 
@@ -949,6 +951,7 @@ public class WonderWomenRobot {
         }
         opmode.telemetry.addData("goldSide ", goldSide);
         opmode.telemetry.update();
+
     }
 
     public void goToSameCraterFromDepot(){
@@ -1137,7 +1140,7 @@ public class WonderWomenRobot {
             double bearing = getIMUBearing();
             double diff = bearing - target;
             double power = diff/max;
-            setDrivePower(power,-power,power,-power,0.5);
+            setMecanumPower(Math.abs(1-power),0, power,0.5);
         }
 
         //stops the motors

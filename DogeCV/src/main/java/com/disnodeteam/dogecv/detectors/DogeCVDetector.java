@@ -7,6 +7,7 @@ import com.disnodeteam.dogecv.scoring.DogeCVScorer;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -66,7 +67,6 @@ public abstract class DogeCVDetector extends OpenCVPipeline{
         if(useFixedDownscale){
             adjustedSize = downscaleResolution;
         }else{
-            //could you make this size (width (initSize.width, initSize.height /2)? to only view the bottom of the camera screen?
             adjustedSize = new Size(initSize.width * downscale, initSize.height * downscale);
         }
 
@@ -76,6 +76,17 @@ public abstract class DogeCVDetector extends OpenCVPipeline{
             return rgba;
         }
         Imgproc.resize(workingMat, workingMat,adjustedSize); // Downscale
+
+
+        int height = (int) Math.round(adjustedSize.height/2);
+
+        int width = (int) Math.round(adjustedSize.width);
+
+        Rect myROI = new Rect(0, height, width, height);
+        Mat halfScreen = new Mat(workingMat.clone(), myROI);
+       // workingMat = halfScreen;
+
+      //  workingMat = process(workingMat);
         Imgproc.resize(process(workingMat),workingMat,getInitSize()); // Process and scale back to original size for viewing
         //Print Info
         Imgproc.putText(workingMat,"DogeCV 2018.2 " + detectorName + ": " + getAdjustedSize().toString() + " - " + speed.toString() ,new Point(5,30),0,0.5,new Scalar(0,255,255),2);
