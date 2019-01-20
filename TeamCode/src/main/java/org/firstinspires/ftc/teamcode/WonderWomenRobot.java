@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.hardware.Sensor;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
@@ -45,7 +47,7 @@ public class WonderWomenRobot {
     private OpMode opmode = null;
     //   private LinearOpMode opmode1 = null;
 
-    private DistanceSensor sensorRange;//generic distance sensor
+    private DistanceSensor distanceSensor;//generic distance sensor
     private BNO055IMU imu;
     private Orientation angles;
     Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
@@ -53,6 +55,7 @@ public class WonderWomenRobot {
     DigitalChannel LoweringLimitSwitch;
     DigitalChannel RaisingLimitSwitch;
     DigitalChannel RetractionTouchSensor;
+
 
     private int rotatorStopDirection = 0;  //1 means can't go positive, -1 = can't go negative, 0 = can go both directions
     private int extenderStopDirection = 0;
@@ -1098,7 +1101,7 @@ public class WonderWomenRobot {
 //    }
 
     }
-    public void gyroPID(double inches, double target){
+    public void gyroPForInches(double inches, double target, double speed){
 
        // double current = getIMUBearing();
 
@@ -1127,20 +1130,86 @@ public class WonderWomenRobot {
         BackRight.setTargetPosition(newBackRightTarget);
         FrontRight.setTargetPosition(newFrontRightTarget);
 
-//
-//        //sets the power to the speed declared above
-//        FrontLeft.setPower(Math.abs(speed));
-//        BackLeft.setPower(Math.abs(speed));
-//        BackRight.setPower(Math.abs(speed));
-//        FrontRight.setPower(Math.abs(speed))
-// ;
-       double max = 5;
+
+        //sets the power to the speed declared above
+        FrontLeft.setPower(Math.abs(speed));
+        BackLeft.setPower(Math.abs(speed));
+        BackRight.setPower(Math.abs(speed));
+        FrontRight.setPower(Math.abs(speed));
+       double max = 15;
         while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
             //  opmode.telemetry.addData("")
             double bearing = getIMUBearing();
             double diff = bearing - target;
-            double power = diff/max;
-            setMecanumPower(Math.abs(1-power),0, power,0.5);
+            double rot_power = diff/max;
+            //double sign_power = Math.signum(power);
+            rot_power = (rot_power > 1) ? 1 : rot_power;
+            rot_power = (rot_power < -1) ? -1 : rot_power;
+            setMecanumPower( 1-Math.abs(rot_power),0, rot_power,Math.abs(speed));
+        }
+
+        //stops the motors
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
+    }
+    public void distancePForInches(double inches, double target, double speed){
+
+        // double current = getIMUBearing();
+
+        //declares tick target
+        //this is the amount of ticks each wheel respectively will move forward
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        int newFrontLeftTarget, newBackLeftTarget, newBackRightTarget, newFrontRightTarget;
+
+        //converts the tick value to inches
+
+        int newTicks = (int) Math.round(ticksPerInch * inches);
+
+        //sets the target to the current encoder value plus the number of ticks you want to go forward
+        newFrontLeftTarget = FrontLeft.getCurrentPosition() + newTicks;
+        newBackLeftTarget = BackLeft.getCurrentPosition() + newTicks;
+        newBackRightTarget = BackRight.getCurrentPosition() + newTicks;
+        newFrontRightTarget = FrontRight.getCurrentPosition() + newTicks;
+
+        //sets the encoder position to stop at the encoder value you want
+        FrontLeft.setTargetPosition(newFrontLeftTarget);
+        BackLeft.setTargetPosition(newBackLeftTarget);
+        BackRight.setTargetPosition(newBackRightTarget);
+        FrontRight.setTargetPosition(newFrontRightTarget);
+
+
+        //sets the power to the speed declared above
+        FrontLeft.setPower(Math.abs(speed));
+        BackLeft.setPower(Math.abs(speed));
+        BackRight.setPower(Math.abs(speed));
+        FrontRight.setPower(Math.abs(speed));
+
+        double max = 3;
+        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
+            //  opmode.telemetry.addData("")
+            double distance = distanceSensor.getDistance(DistanceUnit.INCH);
+            double diff = distance - target;
+            double rot_power = diff/max;
+            //double sign_power = Math.signum(power);
+            rot_power = (rot_power > 1) ? 1 : rot_power;
+            rot_power = (rot_power < -1) ? -1 : rot_power;
+            setMecanumPower( 1-Math.abs(rot_power),0, rot_power, Math.abs(speed));
         }
 
         //stops the motors

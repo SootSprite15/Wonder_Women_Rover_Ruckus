@@ -48,7 +48,7 @@ import org.opencv.core.Size;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
 @Autonomous
-public class DepotAuto extends LinearOpMode {
+public class GyroPIDTest extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
     private MyGoldDetector detector;
     @Override
@@ -73,7 +73,7 @@ public class DepotAuto extends LinearOpMode {
 
         robot.initRobot(hardwareMap, this);
        // robot.initDriveMotorsAuto();
-        detector.enable();
+       // detector.enable();
        // robot.initRobot(hardwareMap, this);
 
         // wait for the start button to be pressed.
@@ -81,40 +81,9 @@ public class DepotAuto extends LinearOpMode {
 
         // while the op mode is active, loop and read the light levels.
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
-
-
-       // robot.extenderForTicks(4200,1); //needs to raise 23 inches
-        robot.strafeForInches(-7, 1); //strafe off lander
-       // robot.RotatorForTicks(-200,1);
-        robot.setMecanumPower(0,0,0,0);
-        robot.driveForInches(19,0.2);//forward to avoid hitting the lander
-        robot.strafeForInches(-6,1);//strafe to line up to middle mineral
-
-        robot.findGold(detector);//find the gold mineral and pushes out
-
-        telemetry.addData("Status", "found gold");
-        telemetry.update();
-
-//
-
-        robot.depotClaimFromDepot(); //goes to depot
-        telemetry.addData("Status", "went to depot");
-        telemetry.update();
-        robot.setIntakePower(-1); // pushes marker into depot
-        sleep(1600);
-        robot.setIntakePower(0);
-      //  robot.RaiseRotationArm();
-
-        robot.RotatorForTicks(1200,1); //raises arm
-        telemetry.addData("Status", "arm raised");
-        telemetry.update();
-        robot.goToCraterFromDepot(); //goes to crater
-        robot.extenderForTicks(8000,1);
-        telemetry.addData("Status", "at crater");
-       // robot.extenderForTicks(-40000,1);
-        telemetry.update();
-      //  sleep(1000);
-        detector.disable();
+        double origBearing = robot.getIMUBearing();
+        robot.gyroTurn(90);
+        robot.gyroPForInches(12,origBearing+90, 0.4);
 
         while(opModeIsActive()){
 //            telemetry.addData("Screen Position", detector.getScreenPosition());
