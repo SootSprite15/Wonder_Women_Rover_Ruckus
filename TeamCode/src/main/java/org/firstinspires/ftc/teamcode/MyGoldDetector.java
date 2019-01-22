@@ -86,7 +86,7 @@ public class MyGoldDetector extends DogeCVDetector {
             Imgproc.rectangle(displayMat, rect.tl(), rect.br(), new Scalar(0,0,255),2); // Draw rect
 
             // If the result is better then the previously tracked one, set this rect as the new best
-            if(score < bestDiffrence && rect.y  > 200){ //looks for only the rectangles that are in the bottom (height-200 pixels) of the screen to avoid picking up minerals in the crater
+            if(score < bestDiffrence && rect.y < 150){ //looks for only the rectangles that are in the bottom (height-200 pixels) of the screen to avoid picking up minerals in the crater
 
                 bestDiffrence = score;
                 bestRect = rect;

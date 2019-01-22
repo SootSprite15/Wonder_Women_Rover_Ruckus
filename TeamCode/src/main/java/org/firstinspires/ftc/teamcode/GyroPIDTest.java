@@ -83,7 +83,7 @@ public class GyroPIDTest extends LinearOpMode {
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
         double origBearing = robot.getIMUBearing();
         robot.gyroTurn(90);
-        robot.gyroPForInches(12,origBearing+90, 0.4);
+        robot.gyroPForInches(36,origBearing+90, 0.4);
 
         while(opModeIsActive()){
 //            telemetry.addData("Screen Position", detector.getScreenPosition());

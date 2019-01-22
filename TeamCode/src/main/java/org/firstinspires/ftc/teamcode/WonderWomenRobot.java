@@ -47,7 +47,7 @@ public class WonderWomenRobot {
     private OpMode opmode = null;
     //   private LinearOpMode opmode1 = null;
 
-    private DistanceSensor distanceSensor;//generic distance sensor
+    private Rev2mDistanceSensor distanceSensor;//generic distance sensor
     private BNO055IMU imu;
     private Orientation angles;
     Rev2mDistanceSensor sensorTimeOfFlight;//extra fancy distance sensor extends DistanceSensor
@@ -837,7 +837,7 @@ public class WonderWomenRobot {
             driveForInches(25, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(21, 0.2);
+            strafeForInches(16, 0.1);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
@@ -870,7 +870,7 @@ public class WonderWomenRobot {
             driveForInches(12, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(21, 0.2);
+            strafeForInches(16, 0.1);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
@@ -895,7 +895,7 @@ public class WonderWomenRobot {
 
     public void depotClaimFromDepot() {
         if (goldSide == mineral.LEFT) {
-            gyroTurn(-20);
+            gyroTurn(-30);
             driveForInches(5, 0.4);
             LowerRotationArm();
             // RotatorForTicks(-1300,1);
@@ -945,30 +945,79 @@ public class WonderWomenRobot {
             gyroTurn(45);
             // driveForInches(72,0.4);
             driveForInches(15, 0.4);
-             double target1 = getIMUBearing();
+            double target1 = getIMUBearing();
             gyroTurn(80);
             driveForInches(50, 0.6);//needs to be 48ish
 
             LowerRotationArm();
             //RotatorForTicks(-1300,1);
         }
-        opmode.telemetry.addData("goldSide ", goldSide);
-        opmode.telemetry.update();
+    }
 
+
+    public void goToCraterFromDepotGyro() {
+
+        // initIMUGyro();
+        //goldSide = mineral.LEFT;
+        if (goldSide == mineral.LEFT) {
+            double target1 = getIMUBearing();
+            gyroTurn(150);
+
+//                driveForInches(12,0.4);
+//                gyroTurn(90);
+           // driveForInches(50, 0.6); //needs to be 48ish
+            gyroPForInches(50,target1+150,0.5);
+            LowerRotationArm();
+            // RotatorForTicks(-1300,1);
+        }
+        if (goldSide == mineral.RIGHT) {
+
+//                gyroTurn(45);m kn
+//                // driveForInches(82,0.4);
+            gyroTurn(15);
+            driveForInches(20, 0.4);
+            double target1 = getIMUBearing();
+            gyroTurn(80);
+            gyroPForInches(76,target1+80,0.5);
+            //driveForInches(76, 0.6);//needs to be 48ish
+            LowerRotationArm();
+            //RotatorForTicks(-1300,1);
+
+
+        }
+        if (goldSide == mineral.MIDDLE) {
+
+            gyroTurn(45);
+            // driveForInches(72,0.4);
+            driveForInches(15, 0.4);
+            double target1 = getIMUBearing();
+            gyroTurn(80);
+//            driveForInches(50, 0.6);//needs to be 48ish
+            gyroPForInches(80,target1+75,0.5);
+            LowerRotationArm();
+            //RotatorForTicks(-1300,1);
+        }
     }
 
     public void goToSameCraterFromDepot(){
         driveForInches(-20,0.4);
-        gyroTurn(-182);
+        gyroTurn(-175);
         driveForInches(24,0.4);
         LowerRotationArm();
     }
-
+    public void goToSameCraterFromDepotGyro(){
+        driveForInches(-20,0.4);
+        double target2 = getIMUBearing();
+        gyroTurn(-175);
+        gyroPForInches(30,target2-175,1);
+        //driveForInches(24,0.4);
+        LowerRotationArm();
+    }
     public void goToDepotFromCrater() {
 
         // initIMUGyro();
         //goldSide = mineral.LEFT;
-        driveForInches(-12, 0.4);
+        driveForInches(-9, 0.4);
 
         if (goldSide == mineral.LEFT) {
             gyroTurn(45);
@@ -977,9 +1026,9 @@ public class WonderWomenRobot {
         }
         if (goldSide == mineral.RIGHT) {
             gyroTurn(90);
-            driveForInches(30, 0.4);
+            driveForInches(25, 0.4);
             gyroTurn(-45);
-            driveForInches(20, 0.6);
+            driveForInches(10, 0.6);
         }
         if (goldSide == mineral.MIDDLE) {
             gyroTurn(90);
@@ -989,8 +1038,41 @@ public class WonderWomenRobot {
 
         }
 
-        gyroTurn(80);
+        gyroTurn(90);
         driveForInches(45, 0.4);
+        LowerRotationArm();
+
+        opmode.telemetry.addData("goldSide ", goldSide);
+        opmode.telemetry.update();
+    }
+    public void goToDepotFromCraterGyro() {
+
+        // initIMUGyro();
+        //goldSide = mineral.LEFT;
+        driveForInches(-9, 0.4);
+
+        if (goldSide == mineral.LEFT) {
+            gyroTurn(45);
+            driveForInches(20, 0.6);
+
+        }
+        if (goldSide == mineral.RIGHT) {
+            gyroTurn(90);
+            driveForInches(25, 0.4);
+            gyroTurn(-45);
+            driveForInches(10, 0.6);
+        }
+        if (goldSide == mineral.MIDDLE) {
+            gyroTurn(90);
+            driveForInches(17, 1);
+            gyroTurn(-45);
+            driveForInches(25, 0.6);
+
+        }
+        double target3 = getIMUBearing();
+        gyroTurn(90);
+        //driveForInches(45, 0.4);
+        gyroPForInches(45,target3+85,1);
         LowerRotationArm();
 
         opmode.telemetry.addData("goldSide ", goldSide);
@@ -1140,7 +1222,7 @@ public class WonderWomenRobot {
         while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
             //  opmode.telemetry.addData("")
             double bearing = getIMUBearing();
-            double diff = bearing - target;
+            double diff = target - bearing;
             double rot_power = diff/max;
             //double sign_power = Math.signum(power);
             rot_power = (rot_power > 1) ? 1 : rot_power;

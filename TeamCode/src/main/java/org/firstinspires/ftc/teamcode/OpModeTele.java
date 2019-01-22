@@ -106,7 +106,7 @@ public class OpModeTele extends OpMode {
             }
 
             robot.rotatorController(rotator, false);
-            robot.extenderController(extender, true);
+            robot.extenderController(extender, false);
 
 
 
