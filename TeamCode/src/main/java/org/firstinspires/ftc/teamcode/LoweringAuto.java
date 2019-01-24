@@ -53,27 +53,27 @@ public class LoweringAuto extends LinearOpMode {
     private MyGoldDetector detector;
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "DogeCV 2018.0 - Gold SilverDetector Example");
-
-        // Setup detector
-        detector = new MyGoldDetector(); // Create detector
-        detector.setAdjustedSize(new Size(480, 270)); // Set detector size
-        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
-        detector.useDefaults(); // Set default detector settings
-        // Optional tuning
-
-        detector.downscale = 0.4; // How much to downscale the input frames
-
-        detector.areaScoringMethod = DogeCV.AreaScoringMethod.PERFECT_AREA; // Can also be PERFECT_AREA
-        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
-        detector.maxAreaScorer.weight = 0.005;
-
-        detector.ratioScorer.weight = 5;
-        detector.ratioScorer.perfectRatio = 1.0;
-
+//        telemetry.addData("Status", "DogeCV 2018.0 - Gold SilverDetector Example");
+//
+//        // Setup detector
+//        detector = new MyGoldDetector(); // Create detector
+//        detector.setAdjustedSize(new Size(480, 270)); // Set detector size
+//        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
+//        detector.useDefaults(); // Set default detector settings
+//        // Optional tuning
+//
+//        detector.downscale = 0.4; // How much to downscale the input frames
+//
+//        detector.areaScoringMethod = DogeCV.AreaScoringMethod.PERFECT_AREA; // Can also be PERFECT_AREA
+//        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+//        detector.maxAreaScorer.weight = 0.005;
+//
+//        detector.ratioScorer.weight = 5;
+//        detector.ratioScorer.perfectRatio = 1.0;
+//
+//        robot.initRobot(hardwareMap, this);
+//        detector.enable();
         robot.initRobot(hardwareMap, this);
-        detector.enable();
-       // robot.initRobot(hardwareMap, this);
 
         // wait for the start button to be pressed.
         waitForStart();

@@ -45,7 +45,7 @@ public class WonderWomenRobot {
 
     private HardwareMap hardwareMap = null;
     private OpMode opmode = null;
-    //   private LinearOpMode opmode1 = null;
+    private LinearOpMode opmode1 = null;
 
     private Rev2mDistanceSensor distanceSensor;//generic distance sensor
     private BNO055IMU imu;
@@ -341,6 +341,7 @@ public class WonderWomenRobot {
     // brings in opmode
     public void setOpMode(LinearOpMode opmode) {
         this.opmode = opmode;
+        this.opmode1 = opmode;
     }
 
     public void setOpMode(OpMode opmode) {
@@ -461,7 +462,7 @@ public class WonderWomenRobot {
         BackRight.setPower(Math.abs(speed));
         FrontRight.setPower(Math.abs(speed));
 
-        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
+        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()&& opmode1.opModeIsActive()) {
             //  opmode.telemetry.addData("")
 
         }
@@ -519,7 +520,7 @@ public class WonderWomenRobot {
         FrontRight.setPower(Math.abs(speed));
 
         //while ((FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())&& RunTime.time() < 5 ) {
-        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy() ) {
+        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy() && opmode1.opModeIsActive()) {
             //  opmode.telemetry.addData("")
 
         }
@@ -860,7 +861,7 @@ public class WonderWomenRobot {
 
     }
 
-    public void findGoldCrater(MyGoldDetector detector) {
+    public void findGoldCraterOld(MyGoldDetector detector) {
         //detector.enable();
 
         Point screenPos = detector.getScreenPosition();
@@ -883,6 +884,40 @@ public class WonderWomenRobot {
                 goldSide = mineral.RIGHT;
             } else {
                 strafeForInches(-31, 0.2);
+                driveForInches(16, 0.4);
+                goldSide = mineral.LEFT;
+            }
+            opmode.telemetry.addData("gold detected", goldSide);
+            opmode.telemetry.update();
+
+
+        }
+
+    }
+    public void findGoldCrater(MyGoldDetector detector) {
+        //detector.enable();
+
+
+        Point screenPos = detector.getScreenPosition();
+        if (screenPos.x > 50 && screenPos.x < 430) {
+            strafeForInches(9, 0.2);
+            //  RotatorForTicks(-50,1);
+            // setRotationArmPower(0);
+            driveForInches(12, 0.4);
+            goldSide = mineral.MIDDLE;
+        } else {
+            strafeForInches(19, 0.1);
+            screenPos = detector.getScreenPosition();
+            setMecanumPower(0, 0, 0, 0);
+            if (screenPos.x > 50 && screenPos.x < 430) {
+                // screenPos = detector.getScreenPosition();
+                strafeForInches(8, 0.2);
+                setMecanumPower(0, 0, 0, 0);
+                driveForInches(16, 0.4);
+                //driveForInches(-6,0.4);
+                goldSide = mineral.RIGHT;
+            } else {
+                strafeForInches(-33, 0.2);
                 driveForInches(16, 0.4);
                 goldSide = mineral.LEFT;
             }
@@ -1011,8 +1046,8 @@ public class WonderWomenRobot {
     public void goToSameCraterFromDepotGyro(){
         driveForInches(-20,0.4);
         double target2 = getIMUBearing();
-        gyroTurn(-175);
-        gyroPForInches(30,target2-175,1);
+        gyroTurn(175);
+        gyroPForInches(30,target2-175,0.3);
         //driveForInches(24,0.4);
         LowerRotationArm();
     }
@@ -1075,7 +1110,7 @@ public class WonderWomenRobot {
         double target3 = getIMUBearing();
         gyroTurn(90);
         //driveForInches(45, 0.4);
-        gyroPForInches(45,target3+85,1);
+        gyroPForInches(45,target3+85,0.3);
         LowerRotationArm();
 
         opmode.telemetry.addData("goldSide ", goldSide);
@@ -1224,7 +1259,7 @@ public class WonderWomenRobot {
 
        double max = 15;
 
-        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
+        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()&& opmode1.opModeIsActive()) {
             //  opmode.telemetry.addData("")
             double bearing = getIMUBearing();
             double diff = target - bearing;
@@ -1288,7 +1323,7 @@ public class WonderWomenRobot {
         FrontRight.setPower(Math.abs(speed));
 
         double max = 3;
-        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
+        while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()&& opmode1.opModeIsActive()) {
             //  opmode.telemetry.addData("")
             double distance = distanceSensor.getDistance(DistanceUnit.INCH);
             double diff = distance - target;

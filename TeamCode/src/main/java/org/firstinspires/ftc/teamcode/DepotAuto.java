@@ -90,6 +90,7 @@ public class DepotAuto extends LinearOpMode {
        // robot.driveForInches(20,0.2);
         robot.strafeForInches(-7,1);//strafe to line up to middle mineral
 
+
         robot.findGold(detector);//find the gold mineral and pushes out
 
         telemetry.addData("Status", "found gold");
