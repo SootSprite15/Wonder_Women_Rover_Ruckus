@@ -83,11 +83,11 @@ public class DepotAuto extends LinearOpMode {
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
 
-       // robot.extenderForTicks(15000,1); //needs to raise 23 inches
+        robot.extenderForTicks(15000,1); //needs to raise 23 inches
         robot.strafeForInches(-7, 1); //strafe off lander
         robot.setMecanumPower(0,0,0,0);
-        robot.driveForInches(23,0.2);//forward to avoid hitting the lander
-       // robot.driveForInches(20,0.2);
+//        robot.driveForInches(23,0.2);//forward to avoid hitting the lander
+        robot.driveForInches(20,0.2);
         robot.strafeForInches(-7,1);//strafe to line up to middle mineral
 
 
@@ -112,11 +112,9 @@ public class DepotAuto extends LinearOpMode {
         telemetry.update();
       //  robot.goToCraterFromDepot(); //goes to crater
         robot.goToCraterFromDepotGyro();
-     //   robot.extenderForTicks(8500,1);
+        robot.extenderForTicks(15000,1);
         telemetry.addData("Status", "at crater");
-       // robot.extenderForTicks(-40000,1);
         telemetry.update();
-      //  sleep(1000);
         detector.disable();
 
         while(opModeIsActive()){

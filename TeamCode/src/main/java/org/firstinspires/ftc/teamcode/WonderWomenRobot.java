@@ -851,7 +851,7 @@ public class WonderWomenRobot {
                 goldSide = mineral.RIGHT;
             } else {
                 strafeForInches(-33, 0.2);
-                driveForInches(25, 0.4);
+                driveForInches(23, 0.3);
                 goldSide = mineral.LEFT;
             }
             opmode.telemetry.addData("gold detected", goldSide);
@@ -997,12 +997,12 @@ public class WonderWomenRobot {
         //goldSide = mineral.LEFT;
         if (goldSide == mineral.LEFT) {
             double target1 = getIMUBearing();
-            gyroTurn(160    );
+            gyroTurn(165);
 
 //                driveForInches(12,0.4);
 //                gyroTurn(90);
            // driveForInches(50, 0.6); //needs to be 48ish
-            gyroPForInches(55,target1+145,0.3);
+            gyroPForInches(40,target1+145,0.3);
             LowerRotationArm();
             // RotatorForTicks(-1300,1);
         }
@@ -1014,9 +1014,9 @@ public class WonderWomenRobot {
             driveForInches(18 , 0.4);
             double target1 = getIMUBearing();
             gyroTurn(15);
-            driveForInches(10,0.4);
-            gyroTurn(51);
-            gyroPForInches(80,target1+90,0.3);
+            driveForInches(8,0.4);
+            gyroTurn(52);
+            gyroPForInches(57,target1+82.5,0.3);
             //driveForInches(76, 0.6);//needs to be 48ish
             LowerRotationArm();
             //RotatorForTicks(-1300,1);
@@ -1029,9 +1029,9 @@ public class WonderWomenRobot {
             // driveForInches(72,0.4);
             driveForInches(13, 0.4);
             double target1 = getIMUBearing();
-            gyroTurn(75);
+            gyroTurn(78);
 //            driveForInches(50, 0.6);//needs to be 48ish
-            gyroPForInches(80,target1+81.5,0.3);
+            gyroPForInches(55,target1+81.5,0.3);
             LowerRotationArm();
             //RotatorForTicks(-1300,1);
         }
@@ -1044,10 +1044,26 @@ public class WonderWomenRobot {
         LowerRotationArm();
     }
     public void goToSameCraterFromDepotGyro(){
+        gyroTurn(-10);
         driveForInches(-20,0.4);
         double target2 = getIMUBearing();
-        gyroTurn(175);
-        gyroPForInches(30,target2-175,0.3);
+        if (goldSide == mineral.LEFT) {
+            gyroTurn(175);
+            gyroPForInches(23,target2 +175,0.3);
+            gyroTurn(10);
+        }
+        if (goldSide == mineral.RIGHT) {
+           gyroTurn(185);
+           gyroPForInches(23,target2 +185,0.3);
+           gyroTurn(-10);
+        }
+        if (goldSide == mineral.MIDDLE) {
+            gyroTurn(175);
+            gyroPForInches(23,target2+175,0.3);
+            gyroTurn(-10);
+
+        }
+
         //driveForInches(24,0.4);
         LowerRotationArm();
     }
@@ -1091,20 +1107,21 @@ public class WonderWomenRobot {
 
         if (goldSide == mineral.LEFT) {
             gyroTurn(45);
-            driveForInches(20, 0.6);
+            driveForInches(16, 0.4);
 
         }
         if (goldSide == mineral.RIGHT) {
+            driveForInches(-3,0.4);
             gyroTurn(90);
-            driveForInches(25, 0.4);
+            driveForInches(30, 0.3);
             gyroTurn(-45);
-            driveForInches(10, 0.6);
+            driveForInches(23, 0.4);
         }
         if (goldSide == mineral.MIDDLE) {
             gyroTurn(90);
-            driveForInches(17, 1);
+            driveForInches(13, 0.4);
             gyroTurn(-45);
-            driveForInches(25, 0.6);
+            driveForInches(23, 0.4);
 
         }
         double target3 = getIMUBearing();
