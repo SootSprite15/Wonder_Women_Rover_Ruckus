@@ -87,7 +87,7 @@ public class ReverseLoweringAuto extends LinearOpMode {
 //        robot.extenderForTicks(-15000,1);
 //        robot.extenderForTicks(-10000,1);
         robot.extenderForTicks(-15000,1);
-       // robot.extenderForTicks(15000,1);
+        robot.extenderForTicks(0,0);
        // robot.extenderForTicks(15000,1);
        // robot.strafeForInches(-7, 1); //strafe off lander
         robot.setMecanumPower(0,0,0,0);

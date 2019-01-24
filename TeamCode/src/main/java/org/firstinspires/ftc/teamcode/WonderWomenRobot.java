@@ -827,6 +827,7 @@ public class WonderWomenRobot {
     }
 
     public void findGold(MyGoldDetector detector) {
+
         //detector.enable();
 
         Point screenPos = detector.getScreenPosition();
@@ -837,19 +838,19 @@ public class WonderWomenRobot {
             driveForInches(25, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(16, 0.1);
+            strafeForInches(19, 0.1);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
                 // screenPos = detector.getScreenPosition();
                 strafeForInches(8, 0.2);
                 setMecanumPower(0, 0, 0, 0);
-                driveForInches(36, 0.4);
+                driveForInches(30, 0.4);
                 driveForInches(-6, 0.4);
                 goldSide = mineral.RIGHT;
             } else {
-                strafeForInches(-31, 0.2);
-                driveForInches(30, 0.4);
+                strafeForInches(-33, 0.2);
+                driveForInches(25, 0.4);
                 goldSide = mineral.LEFT;
             }
             opmode.telemetry.addData("gold detected", goldSide);
@@ -895,8 +896,8 @@ public class WonderWomenRobot {
 
     public void depotClaimFromDepot() {
         if (goldSide == mineral.LEFT) {
-            gyroTurn(-30);
-            driveForInches(5, 0.4);
+            gyroTurn(-35);
+            driveForInches(2, 0.4);
             LowerRotationArm();
             // RotatorForTicks(-1300,1);
         }
@@ -961,12 +962,12 @@ public class WonderWomenRobot {
         //goldSide = mineral.LEFT;
         if (goldSide == mineral.LEFT) {
             double target1 = getIMUBearing();
-            gyroTurn(150);
+            gyroTurn(160    );
 
 //                driveForInches(12,0.4);
 //                gyroTurn(90);
            // driveForInches(50, 0.6); //needs to be 48ish
-            gyroPForInches(50,target1+150,0.5);
+            gyroPForInches(55,target1+145,0.3);
             LowerRotationArm();
             // RotatorForTicks(-1300,1);
         }
@@ -975,10 +976,12 @@ public class WonderWomenRobot {
 //                gyroTurn(45);m kn
 //                // driveForInches(82,0.4);
             gyroTurn(15);
-            driveForInches(20, 0.4);
+            driveForInches(18 , 0.4);
             double target1 = getIMUBearing();
-            gyroTurn(80);
-            gyroPForInches(76,target1+80,0.5);
+            gyroTurn(15);
+            driveForInches(10,0.4);
+            gyroTurn(51);
+            gyroPForInches(80,target1+90,0.3);
             //driveForInches(76, 0.6);//needs to be 48ish
             LowerRotationArm();
             //RotatorForTicks(-1300,1);
@@ -989,11 +992,11 @@ public class WonderWomenRobot {
 
             gyroTurn(45);
             // driveForInches(72,0.4);
-            driveForInches(15, 0.4);
+            driveForInches(13, 0.4);
             double target1 = getIMUBearing();
-            gyroTurn(80);
+            gyroTurn(75);
 //            driveForInches(50, 0.6);//needs to be 48ish
-            gyroPForInches(80,target1+75,0.5);
+            gyroPForInches(80,target1+81.5,0.3);
             LowerRotationArm();
             //RotatorForTicks(-1300,1);
         }
@@ -1218,7 +1221,9 @@ public class WonderWomenRobot {
         BackLeft.setPower(Math.abs(speed));
         BackRight.setPower(Math.abs(speed));
         FrontRight.setPower(Math.abs(speed));
+
        double max = 15;
+
         while (FrontLeft.isBusy() && FrontRight.isBusy() && BackLeft.isBusy() && BackRight.isBusy()) {
             //  opmode.telemetry.addData("")
             double bearing = getIMUBearing();
@@ -1227,7 +1232,7 @@ public class WonderWomenRobot {
             //double sign_power = Math.signum(power);
             rot_power = (rot_power > 1) ? 1 : rot_power;
             rot_power = (rot_power < -1) ? -1 : rot_power;
-            setMecanumPower( 1-Math.abs(rot_power),0, rot_power,Math.abs(speed));
+            setMecanumPower( Math.sqrt(1-Math.abs(rot_power)),0, rot_power,Math.abs(speed));
         }
 //
         //stops the motors
