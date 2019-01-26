@@ -73,7 +73,7 @@ public class DepotAuto extends LinearOpMode {
 
         robot.initRobot(hardwareMap, this);
        // robot.initDriveMotorsAuto();
-        detector.enable();
+
        // robot.initRobot(hardwareMap, this);
 
         // wait for the start button to be pressed.
@@ -83,8 +83,15 @@ public class DepotAuto extends LinearOpMode {
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
 
-        robot.extenderForTicks(15000,1); //needs to raise 23 inches
+       // robot.extenderForTicks(15000,1); //needs to raise 23 inches
+
+        robot.setExtenderArmPower(1);
+        sleep(6000);
+        robot.setExtenderArmPower(0);
+
+
         robot.strafeForInches(-7, 1); //strafe off lander
+        detector.enable();
         robot.setMecanumPower(0,0,0,0);
 //        robot.driveForInches(23,0.2);//forward to avoid hitting the lander
         robot.driveForInches(20,0.2);
@@ -104,15 +111,21 @@ public class DepotAuto extends LinearOpMode {
         robot.setIntakePower(-1); // pushes marker into depot
         sleep(1600);
         robot.setIntakePower(0);
-        robot.RaiseRotationArm();
 
-    //    robot.RotatorForTicks(1200,1); //raises arm
+//        robot.RaiseRotationArm();
+
+        robot.RotatorForTicks(1200,1); //raises arm
 //
         telemetry.addData("Status", "arm raised");
         telemetry.update();
       //  robot.goToCraterFromDepot(); //goes to crater
         robot.goToCraterFromDepotGyro();
-        robot.extenderForTicks(15000,1);
+//        robot.extenderForTicks(15000,1);
+
+        robot.setExtenderArmPower(1);
+        sleep(3000);
+        robot.setExtenderArmPower(0);
+
         telemetry.addData("Status", "at crater");
         telemetry.update();
         detector.disable();

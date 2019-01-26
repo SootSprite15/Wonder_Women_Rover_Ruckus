@@ -83,8 +83,12 @@ public class LoweringAuto extends LinearOpMode {
 
 
         //robot.extenderForTicks(-4200,1); //needs to raise 23 inches
+//
+//        robot.extenderForTicks(15000,1);
+        robot.setExtenderArmPower(1);
+        sleep(6000);
+        robot.setExtenderArmPower(0);
 
-        robot.extenderForTicks(15000,1);
         robot.strafeForInches(-7, 1); //strafe off lander
         robot.setMecanumPower(0,0,0,0);
 

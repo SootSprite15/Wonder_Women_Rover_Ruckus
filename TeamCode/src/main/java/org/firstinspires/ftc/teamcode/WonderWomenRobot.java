@@ -839,7 +839,7 @@ public class WonderWomenRobot {
             driveForInches(25, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(19, 0.1);
+            strafeForInches(21, 0.1);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
@@ -906,7 +906,7 @@ public class WonderWomenRobot {
             driveForInches(12, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(19, 0.1);
+            strafeForInches(21, 0.1);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
@@ -933,16 +933,19 @@ public class WonderWomenRobot {
         if (goldSide == mineral.LEFT) {
             gyroTurn(-35);
             driveForInches(2, 0.4);
-            LowerRotationArm();
+//            LowerRotationArm();
             // RotatorForTicks(-1300,1);
+            RotatorForTicks(-1200,1); //raises arm
         }
         if (goldSide == mineral.RIGHT) {
             gyroTurn(20);
-            LowerRotationArm();
+            RotatorForTicks(-1200,1); //raises arm
+//            LowerRotationArm();
             //RotatorForTicks(-1300,1);
         }
         if (goldSide == mineral.MIDDLE) {
-            LowerRotationArm();
+            RotatorForTicks(-1200,1); //raises arm
+//            LowerRotationArm();
             //RotatorForTicks(-1300,1);
 
         }
@@ -1003,7 +1006,7 @@ public class WonderWomenRobot {
 //                gyroTurn(90);
            // driveForInches(50, 0.6); //needs to be 48ish
             gyroPForInches(40,target1+145,0.3);
-            LowerRotationArm();
+           // LowerRotationArm();
             // RotatorForTicks(-1300,1);
         }
         if (goldSide == mineral.RIGHT) {
@@ -1018,7 +1021,7 @@ public class WonderWomenRobot {
             gyroTurn(52);
             gyroPForInches(57,target1+82.5,0.3);
             //driveForInches(76, 0.6);//needs to be 48ish
-            LowerRotationArm();
+           // LowerRotationArm();
             //RotatorForTicks(-1300,1);
 
 
@@ -1032,9 +1035,12 @@ public class WonderWomenRobot {
             gyroTurn(78);
 //            driveForInches(50, 0.6);//needs to be 48ish
             gyroPForInches(55,target1+81.5,0.3);
-            LowerRotationArm();
+           // LowerRotationArm();
             //RotatorForTicks(-1300,1);
         }
+//        RotatorForTicks(-1000,1);
+        RotatorForTicks(-1200,1); //raises arm
+//            LowerRotationArm();
     }
 
     public void goToSameCraterFromDepot(){
@@ -1065,7 +1071,8 @@ public class WonderWomenRobot {
         }
 
         //driveForInches(24,0.4);
-        LowerRotationArm();
+        RotatorForTicks(-1200,1); //raises arm
+//        LowerRotationArm();
     }
     public void goToDepotFromCrater() {
 
@@ -1128,7 +1135,8 @@ public class WonderWomenRobot {
         gyroTurn(90);
         //driveForInches(45, 0.4);
         gyroPForInches(45,target3+85,0.3);
-        LowerRotationArm();
+        RotatorForTicks(-1200,1); //lowers arm
+//        LowerRotationArm();
 
         opmode.telemetry.addData("goldSide ", goldSide);
         opmode.telemetry.update();
