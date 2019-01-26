@@ -839,7 +839,7 @@ public class WonderWomenRobot {
             driveForInches(25, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(21, 0.1);
+            strafeForInches(23, 0.1);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
@@ -906,7 +906,7 @@ public class WonderWomenRobot {
             driveForInches(12, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(21, 0.1);
+            strafeForInches(23, 0.1);
             screenPos = detector.getScreenPosition();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
@@ -1038,8 +1038,8 @@ public class WonderWomenRobot {
            // LowerRotationArm();
             //RotatorForTicks(-1300,1);
         }
-//        RotatorForTicks(-1000,1);
-        RotatorForTicks(-1200,1); //raises arm
+        RotatorForTicks(-500,1);
+//        RotatorForTicks(-1200,1); //raises arm
 //            LowerRotationArm();
     }
 
