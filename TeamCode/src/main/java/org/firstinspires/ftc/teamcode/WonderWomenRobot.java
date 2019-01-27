@@ -25,6 +25,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Rotation;
 import org.opencv.core.Point;
 
+
 import java.util.Timer;
 
 //not an opmode
@@ -35,6 +36,8 @@ import java.util.Timer;
 public class WonderWomenRobot {
 
     //OpMode members
+
+
     private DcMotor FrontRight = null;
     private DcMotor FrontLeft = null;
     private DcMotor BackRight = null;
@@ -80,12 +83,9 @@ public class WonderWomenRobot {
     static double idealY = 250;
     static double idealThreshold = 10;
 
-    enum rotatorDirect {UP, STOP, DOWN}
-
-    ;
+    enum rotatorDirect {UP, STOP, DOWN};
 
     enum rotatorPrevent {UP, NONE, DOWN}
-
     ;
     rotatorPrevent rotatorState = rotatorPrevent.NONE;
 
@@ -271,67 +271,90 @@ public class WonderWomenRobot {
         return distance;
     }
 
-    public void gyroTurn(double turnAngle) {
-
-        if (turnAngle < 0) {
-            double startAngle = getIMUBearing();
-            double targetAngle;
-            double angle;
-
-            targetAngle = startAngle + turnAngle;
-
-            double error = Angledistance(startAngle, targetAngle);
-
-            while (Math.abs(error) > 5) {
-                angle = getIMUBearing();
-                error = Angledistance(angle, targetAngle);
-
-                opmode.telemetry.addData("imu gyro angle", angle);
-                opmode.telemetry.addData("Target angle", targetAngle);
-                opmode.telemetry.addData("Error = ", error);
-                opmode.telemetry.update();
-
-                if (error > 5) { //clockwise
-                    setDrivePower(-1, 1, 1, -1, 0.2);
-                } else if (error < -5) {//counterclockwise
-                    setDrivePower(1, -1, -1, 1, 0.2);
-                } else // stop
-                    setDrivePower(0, 0, 0, 0);
-
-
-            }
-            setDrivePower(0, 0, 0, 0, 0);
-        } else if (turnAngle > 0) {
-            double startAngle = getIMUBearing();
-            double targetAngle;
-            double angle;
-
-            targetAngle = startAngle + turnAngle;
-
-            double error = Angledistance(startAngle, targetAngle);
-
-
-            while (Math.abs(error) > 5) {
-                angle = getIMUBearing();
-                error = -Angledistance(angle, targetAngle);
-
-                opmode.telemetry.addData("imu gyro angle", angle);
-                opmode.telemetry.addData("Target angle", targetAngle);
-                opmode.telemetry.addData("Error = ", error);
-                opmode.telemetry.update();
-
-                if (error > 5) { //clockwise
-                    setDrivePower(-1, 1, 1, -1, 0.2);
-                } else if (error < -5) {//counterclockwise
-                    setDrivePower(1, -1, -1, 1, 0.2);
-                } else // stop
-                    setDrivePower(0, 0, 0, 0);
-
-
-            }
-            setDrivePower(0, 0, 0, 0, 0);
-        }
+    public void gyroTurn(double turnAngle){
+       gyroTurn(new imuAngle(turnAngle));
     }
+    public void gyroTurn(imuAngle turnAngle){
+        double bearing = getIMUBearing();
+        imuAngle startAngle = new imuAngle(bearing);
+        imuAngle targetAngle;
+        targetAngle = imuAngle.add(startAngle, turnAngle);
+        imuAngle diff = imuAngle.subtract(startAngle, targetAngle);
+        double error = imuAngle.toDouble(diff);
+
+        while(Math.abs(error) > 5){ // not within tolerance (turn)
+            if (error > 5) { //clockwise
+                setDrivePower(-1, 1, 1, -1, 0.2);
+            } else if (error < -5) { //counterclockwise
+                setDrivePower(1, -1, -1, 1, 0.2);
+            } else // stop
+                setDrivePower(0, 0, 0, 0);
+        }
+
+        setDrivePower(0, 0, 0, 0, 0);
+
+
+    }
+//    public void gyroTurn(double turnAngle) {
+//
+//        if (turnAngle < 0) {
+//            double startAngle = getIMUBearing();
+//            double targetAngle;
+//            double angle;
+//
+//            targetAngle = startAngle + turnAngle;
+//
+//            double error = Angledistance(startAngle, targetAngle);
+//
+//            while (Math.abs(error) > 5) {
+//                angle = getIMUBearing();
+//                error = Angledistance(angle, targetAngle);
+//
+//                opmode.telemetry.addData("imu gyro angle", angle);
+//                opmode.telemetry.addData("Target angle", targetAngle);
+//                opmode.telemetry.addData("Error = ", error);
+//                opmode.telemetry.update();
+//
+//                if (error > 5) { //clockwise
+//                    setDrivePower(-1, 1, 1, -1, 0.2);
+//                } else if (error < -5) {//counterclockwise
+//                    setDrivePower(1, -1, -1, 1, 0.2);
+//                } else // stop
+//                    setDrivePower(0, 0, 0, 0);
+//                }
+//
+//            setDrivePower(0, 0, 0, 0, 0);
+//        } else if (turnAngle > 0) {
+//            double startAngle = getIMUBearing();
+//            double targetAngle;
+//            double angle;
+//
+//            targetAngle = startAngle + turnAngle;
+//
+//            double error = Angledistance(startAngle, targetAngle);
+//
+//
+//            while (Math.abs(error) > 5) {
+//                angle = getIMUBearing();
+//                error = -Angledistance(angle, targetAngle);
+//
+//                opmode.telemetry.addData("imu gyro angle", angle);
+//                opmode.telemetry.addData("Target angle", targetAngle);
+//                opmode.telemetry.addData("Error = ", error);
+//                opmode.telemetry.update();
+//
+//                if (error > 5) { //clockwise
+//                    setDrivePower(-1, 1, 1, -1, 0.2);
+//                } else if (error < -5) {//counterclockwise
+//                    setDrivePower(1, -1, -1, 1, 0.2);
+//                } else // stop
+//                    setDrivePower(0, 0, 0, 0);
+//
+//
+//            }
+//            setDrivePower(0, 0, 0, 0, 0);
+//        }
+//    }
 
     //brings in hardware map
     public void setHardwareMap(HardwareMap hwMap) {
@@ -1018,8 +1041,8 @@ public class WonderWomenRobot {
             double target1 = getIMUBearing();
             gyroTurn(15);
             driveForInches(8,0.4);
-            gyroTurn(52);
-            gyroPForInches(57,target1+82.5,0.3);
+            gyroTurn(50);
+            gyroPForInches(57,target1+81,0.3);
             //driveForInches(76, 0.6);//needs to be 48ish
            // LowerRotationArm();
             //RotatorForTicks(-1300,1);

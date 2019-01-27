@@ -48,32 +48,32 @@ import org.opencv.core.Size;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
 @Autonomous
-public class ReverseLoweringAuto extends LinearOpMode {
+public class LoweringAndSample extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
     private MyGoldDetector detector;
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "DogeCV 2018.0 - Gold SilverDetector Example");
-
-        // Setup detector
-        detector = new MyGoldDetector(); // Create detector
-        detector.setAdjustedSize(new Size(480, 270)); // Set detector size
-        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
-        detector.useDefaults(); // Set default detector settings
-        // Optional tuning
-
-        detector.downscale = 0.4; // How much to downscale the input frames
-
-        detector.areaScoringMethod = DogeCV.AreaScoringMethod.PERFECT_AREA; // Can also be PERFECT_AREA
-        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
-        detector.maxAreaScorer.weight = 0.005;
-
-        detector.ratioScorer.weight = 5;
-        detector.ratioScorer.perfectRatio = 1.0;
-
+//        telemetry.addData("Status", "DogeCV 2018.0 - Gold SilverDetector Example");
+//
+//        // Setup detector
+//        detector = new MyGoldDetector(); // Create detector
+//        detector.setAdjustedSize(new Size(480, 270)); // Set detector size
+//        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
+//        detector.useDefaults(); // Set default detector settings
+//        // Optional tuning
+//
+//        detector.downscale = 0.4; // How much to downscale the input frames
+//
+//        detector.areaScoringMethod = DogeCV.AreaScoringMethod.PERFECT_AREA; // Can also be PERFECT_AREA
+//        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+//        detector.maxAreaScorer.weight = 0.005;
+//
+//        detector.ratioScorer.weight = 5;
+//        detector.ratioScorer.perfectRatio = 1.0;
+//
+//        robot.initRobot(hardwareMap, this);
+//        detector.enable();
         robot.initRobot(hardwareMap, this);
-        detector.enable();
-       // robot.initRobot(hardwareMap, this);
 
         // wait for the start button to be pressed.
         waitForStart();
@@ -82,28 +82,35 @@ public class ReverseLoweringAuto extends LinearOpMode {
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
 
 
-//        robot.extenderForTicks(-15000,1); //needs to raise 23 inches
-//        robot.extenderForTicks(-8000,1);
-//        robot.extenderForTicks(-15000,1);
-//        robot.extenderForTicks(-10000,1);
-       // robot.extenderForTicks(-31000,1);
-        robot.setExtenderArmPower(-1);
+        //robot.extenderForTicks(-4200,1); //needs to raise 23 inches
+//
+//        robot.extenderForTicks(15000,1);
+
+
+        robot.setExtenderArmPower(1);
         sleep(6000);
         robot.setExtenderArmPower(0);
-//        robot.setExtenderArmPower(1);
-//        sleep(6000);
-//        robot.setExtenderArmPower(0);
-//        robot.extenderForTicks(16000,1);
-        robot.extenderForTicks(0,0);
-       // robot.extenderForTicks(15000,1);
-       // robot.strafeForInches(-7, 1); //strafe off lander
-        robot.setMecanumPower(0,0,0,0);
+        robot.strafeForInches(-7, 1); //strafe off lander
 
+        robot.setMecanumPower(0,0,0,0);
+//        robot.driveForInches(23,0.2);//forward to avoid hitting the lander
+        robot.driveForInches(5,0.2);
+        robot.strafeForInches(6,0.3);
+        robot.driveForInches(25,0.4);
+//        robot.driveForInches(25,0.4);
+        robot.RotatorForTicks(-1200,1);
+
+        robot.setIntakePower(-1); // pushes marker into depot
+        sleep(1600);
+        robot.setIntakePower(0);
+
+        robot.driveForInches(-20,0.4);
+
+        robot.RotatorForTicks(1200,1);
 
 
         while(opModeIsActive()){
-            telemetry.addData("Screen Position", detector.getScreenPosition());
-            telemetry.update();
+
         }
     }
 }

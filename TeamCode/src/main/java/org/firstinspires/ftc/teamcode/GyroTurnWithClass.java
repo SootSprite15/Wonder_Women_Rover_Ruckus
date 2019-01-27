@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Disabled
+
 @Autonomous
 public class GyroTurnWithClass extends LinearOpMode {
     WonderWomenRobot robot = new WonderWomenRobot();
@@ -17,8 +17,9 @@ public class GyroTurnWithClass extends LinearOpMode {
             telemetry.addData("0", "robot ready");
 
         }
-        robot.gyroTurn(90);
-        robot.gyroTurn(-90);
+        imuAngle turnAngle = new imuAngle(90);
+        robot.gyroTurn(turnAngle);
+
 
     }
 }
