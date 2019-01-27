@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.hardware.Sensor;
+import android.util.Log;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -283,10 +284,20 @@ public class WonderWomenRobot {
         double error = imuAngle.toDouble(diff);
 
         while(Math.abs(error) > 5){ // not within tolerance (turn)
+             double angle = getIMUBearing();
+             startAngle = new imuAngle(angle);
+             error = imuAngle.toDouble(imuAngle.subtract(startAngle, targetAngle));
+
+            opmode.telemetry.addData("imu gyro angle", getIMUBearing());
+
+                opmode.telemetry.addData("Target angle", imuAngle.toDouble(targetAngle));
+                opmode.telemetry.addData("Error = ", error);
+                opmode.telemetry.update();
+
             if (error > 5) { //clockwise
-                setDrivePower(-1, 1, 1, -1, 0.2);
+                setDrivePower(-1, 1, 1, -1, 0.3);
             } else if (error < -5) { //counterclockwise
-                setDrivePower(1, -1, -1, 1, 0.2);
+                setDrivePower(1, -1, -1, 1, 0.3);
             } else // stop
                 setDrivePower(0, 0, 0, 0);
         }
@@ -855,6 +866,9 @@ public class WonderWomenRobot {
         //detector.enable();
 
         Point screenPos = detector.getScreenPosition();
+        Log.d("Screen Pos1", screenPos.toString());
+        opmode.telemetry.addData("Screen Pos: ", screenPos);
+        opmode.telemetry.update();
         if (screenPos.x > 50 && screenPos.x < 430) {
             strafeForInches(9, 0.2);
             //  RotatorForTicks(-50,1);
@@ -862,18 +876,21 @@ public class WonderWomenRobot {
             driveForInches(25, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(23, 0.1);
+            strafeForInches(22, 0.1);
             screenPos = detector.getScreenPosition();
+            Log.d("Screen Pos2", screenPos.toString());
+            opmode.telemetry.addData("Screen Pos: ", screenPos);
+            opmode.telemetry.update();
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
                 // screenPos = detector.getScreenPosition();
                 strafeForInches(8, 0.2);
                 setMecanumPower(0, 0, 0, 0);
-                driveForInches(30, 0.4);
+                driveForInches(26, 0.4);
                 driveForInches(-6, 0.4);
                 goldSide = mineral.RIGHT;
             } else {
-                strafeForInches(-33, 0.2);
+                strafeForInches(-35, 0.2);
                 driveForInches(23, 0.3);
                 goldSide = mineral.LEFT;
             }
@@ -1028,7 +1045,8 @@ public class WonderWomenRobot {
 //                driveForInches(12,0.4);
 //                gyroTurn(90);
            // driveForInches(50, 0.6); //needs to be 48ish
-            gyroPForInches(40,target1+145,0.3);
+            imuAngle targetAngle2 = new imuAngle(target1 +145);
+            gyroPForInches(40,imuAngle.toDouble(targetAngle2),0.3);
            // LowerRotationArm();
             // RotatorForTicks(-1300,1);
         }
@@ -1036,13 +1054,20 @@ public class WonderWomenRobot {
 
 //                gyroTurn(45);m kn
 //                // driveForInches(82,0.4);
-            gyroTurn(15);
-            driveForInches(18 , 0.4);
+//            gyroTurn(15);
+//            driveForInches(20 , 0.4);
+
             double target1 = getIMUBearing();
-            gyroTurn(15);
-            driveForInches(8,0.4);
-            gyroTurn(50);
-            gyroPForInches(57,target1+81,0.3);
+//            gyroTurn(15);
+//            gyroTurn(15);
+            driveForInches(18,0.4);
+            gyroTurn(80);
+            driveForInches(5,0.4);
+            strafeForInches(14,0.3);
+
+
+            imuAngle targetAngle2 = new imuAngle(target1 + 74);
+            gyroPForInches(52,imuAngle.toDouble(targetAngle2),0.3);
             //driveForInches(76, 0.6);//needs to be 48ish
            // LowerRotationArm();
             //RotatorForTicks(-1300,1);
@@ -1055,9 +1080,10 @@ public class WonderWomenRobot {
             // driveForInches(72,0.4);
             driveForInches(13, 0.4);
             double target1 = getIMUBearing();
-            gyroTurn(78);
+            gyroTurn(50);
 //            driveForInches(50, 0.6);//needs to be 48ish
-            gyroPForInches(55,target1+81.5,0.3);
+            imuAngle targetAngle2 = new imuAngle(target1 +81.5);
+            gyroPForInches(55, imuAngle.toDouble(targetAngle2),0.3);
            // LowerRotationArm();
             //RotatorForTicks(-1300,1);
         }
@@ -1078,17 +1104,23 @@ public class WonderWomenRobot {
         double target2 = getIMUBearing();
         if (goldSide == mineral.LEFT) {
             gyroTurn(175);
-            gyroPForInches(23,target2 +175,0.3);
+            imuAngle target4 = new imuAngle(target2 + 175);
+            gyroPForInches(23,imuAngle.toDouble(target4),0.3);
+//            gyroPForInches(23,target2 +175,0.3);
             gyroTurn(10);
         }
         if (goldSide == mineral.RIGHT) {
            gyroTurn(185);
-           gyroPForInches(23,target2 +185,0.3);
+            imuAngle target4 = new imuAngle(target2 + 185);
+            gyroPForInches(23,imuAngle.toDouble(target4),0.3);
+//           gyroPForInches(23,target2 +185,0.3);
            gyroTurn(-10);
         }
         if (goldSide == mineral.MIDDLE) {
             gyroTurn(175);
-            gyroPForInches(23,target2+175,0.3);
+            imuAngle target4 = new imuAngle(target2 + 175);
+            gyroPForInches(23,imuAngle.toDouble(target4),0.3);
+//            gyroPForInches(23,target2+175,0.3);
             gyroTurn(-10);
 
         }
@@ -1155,9 +1187,11 @@ public class WonderWomenRobot {
 
         }
         double target3 = getIMUBearing();
+
         gyroTurn(90);
         //driveForInches(45, 0.4);
-        gyroPForInches(45,target3+85,0.3);
+        imuAngle target2 = new imuAngle(target3 + 85);
+        gyroPForInches(45,imuAngle.toDouble(target2),0.3);
         RotatorForTicks(-1200,1); //lowers arm
 //        LowerRotationArm();
 

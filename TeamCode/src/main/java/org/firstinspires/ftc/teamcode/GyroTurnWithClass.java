@@ -17,12 +17,10 @@ public class GyroTurnWithClass extends LinearOpMode {
             telemetry.addData("0", "robot ready");
 
         }
-        imuAngle turnAngle = new imuAngle(90);
-        robot.gyroTurn(turnAngle);
+//        imuAngle turnAngle = new imuAngle();
+        robot.gyroTurn(280);
 
 
     }
 }
 
-
-//robot.initRobot(hardwareMap, this);

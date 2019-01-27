@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -85,58 +87,65 @@ public class DepotAuto extends LinearOpMode {
 
        // robot.extenderForTicks(15000,1); //needs to raise 23 inches
 
-        robot.setExtenderArmPower(1);
-        sleep(6000);
-        robot.setExtenderArmPower(0);
+//        robot.setExtenderArmPower(1);
+//        sleep(6000);
+//        robot.setExtenderArmPower(0);
 
 
         robot.strafeForInches(-7, 1); //strafe off lander
         detector.enable();
+        sleep(1000);
         robot.setMecanumPower(0,0,0,0);
 //        robot.driveForInches(23,0.2);//forward to avoid hitting the lander
-        robot.driveForInches(20,0.2);
+        robot.driveForInches(16,0.2);
         robot.strafeForInches(-7,1);//strafe to line up to middle mineral
 
 
         robot.findGold(detector);//find the gold mineral and pushes out
-
-        telemetry.addData("Status", "found gold");
-        telemetry.update();
-
-//
-
-        robot.depotClaimFromDepot(); //goes to depot
-        telemetry.addData("Status", "went to depot");
-        telemetry.update();
-        robot.setIntakePower(-1); // pushes marker into depot
-        sleep(1600);
-        robot.setIntakePower(0);
-
-//        robot.RaiseRotationArm();
-
-        robot.RotatorForTicks(1200,1); //raises arm
-//
-        telemetry.addData("Status", "arm raised");
-        telemetry.update();
-      //  robot.goToCraterFromDepot(); //goes to crater
-        robot.goToCraterFromDepotGyro();
-//        robot.extenderForTicks(15000,1);
-
-        robot.setExtenderArmPower(1);
-        sleep(3000);
-        robot.setExtenderArmPower(0);
-
-        telemetry.addData("Status", "at crater");
-        telemetry.update();
         detector.disable();
 
-        while(opModeIsActive()){
-            telemetry.addData("Screen Position", detector.getScreenPosition());
-            telemetry.addData("I hope this works!", " ");
-            telemetry.update();
-            //sleep(20000);
-          //  detector.disable();
+//
+//        Log.d("Status", "found gold");
+//
+//        telemetry.addData("Status", "found gold");
+//        telemetry.update();
+//
+////
+//
+//        robot.depotClaimFromDepot(); //goes to depot
+//        Log.d("Status", "went to depot");
+//        telemetry.addData("Status", "went to depot");
+//        telemetry.update();
+//        robot.setIntakePower(-1); // pushes marker into depot
+//        sleep(1600);
+//        robot.setIntakePower(0);
+//
+////        robot.RaiseRotationArm();
+//
+//        robot.RotatorForTicks(1200,1); //raises arm
+////
+//        telemetry.addData("Status", "arm raised");
+//        telemetry.update();
+//      //  robot.goToCraterFromDepot(); //goes to crater
+//        robot.goToCraterFromDepotGyro();
+//        Log.d("Status", "went to crater");
+////        robot.extenderForTicks(15000,1);
+//
+////      a
+//
+//        telemetry.addData("Status", "at crater");
+        stop();
 
-        }
+
+//        while(opModeIsActive()){
+//            telemetry.addData("Screen Position", detector.getScreenPosition());
+//            telemetry.addData("I hope this works!", " ");
+//            telemetry.update();
+//            //sleep(20000);
+//          //  detector.disable();
+//
+//        }
     }
+
+
 }
