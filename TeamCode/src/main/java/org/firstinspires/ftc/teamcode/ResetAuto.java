@@ -84,7 +84,8 @@ public class ResetAuto extends LinearOpMode {
 
        // robot.extenderForTicks(-12000,1); //needs to raise 23 inches
 //    robot.RaiseRotationArm();
-        robot.RotatorForTicks(500,1); //raises arm
+        robot.RotatorForTicks(750,1); //raises arm
+//        robot.RotatorForTicks(-750,1);
 //        robot.RotatorForTicks(-1200,1);
 //        robot.RotatorForTicks(200,1);=
 
