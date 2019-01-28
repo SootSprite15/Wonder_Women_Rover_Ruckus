@@ -91,17 +91,18 @@ public class DepotAuto extends LinearOpMode {
 //        sleep(6000);
 //        robot.setExtenderArmPower(0);
 
-
-        robot.strafeForInches(-7, 1); //strafe off lander
+        double targetAngle = robot.getIMUBearing();
+        robot.strafeForInches(-8, 0.2); //strafe off lander
         detector.enable();
         sleep(1000);
         robot.setMecanumPower(0,0,0,0);
 //        robot.driveForInches(23,0.2);//forward to avoid hitting the lander
-        robot.driveForInches(16,0.2);
-        robot.strafeForInches(-7,1);//strafe to line up to middle mineral
+        robot.gyroPForInches(16,targetAngle,0.2);
+//        robot.driveForInches(16,0.2);
+//        robot.strafeForInches(-5,0.2);//strafe to line up to middle mineral
 
 
-        robot.findGold(detector);//find the gold mineral and pushes out
+        robot.findGold(detector, targetAngle);//find the gold mineral and pushes out
         detector.disable();
 
 //

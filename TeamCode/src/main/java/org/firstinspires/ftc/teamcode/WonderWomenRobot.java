@@ -861,7 +861,10 @@ public class WonderWomenRobot {
         //detector.disable();
     }
 
-    public void findGold(MyGoldDetector detector) {
+    public void findGold(MyGoldDetector detector){
+        findGold( detector, getIMUBearing());
+    }
+    public void findGold(MyGoldDetector detector, double targetAngle) {
 
         //detector.enable();
 
@@ -870,13 +873,14 @@ public class WonderWomenRobot {
         opmode.telemetry.addData("Screen Pos: ", screenPos);
         opmode.telemetry.update();
         if (screenPos.x > 50 && screenPos.x < 430) {
-            strafeForInches(9, 0.2);
+            strafeForInches(8, 0.2);
             //  RotatorForTicks(-50,1);
             // setRotationArmPower(0);
-            driveForInches(25, 0.4);
+            gyroPForInches(25,targetAngle,0.3);
+//            driveForInches(25, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(22, 0.1);
+            strafeForInches(19, 0.1);
             screenPos = detector.getScreenPosition();
             Log.d("Screen Pos2", screenPos.toString());
             opmode.telemetry.addData("Screen Pos: ", screenPos);
@@ -884,14 +888,16 @@ public class WonderWomenRobot {
             setMecanumPower(0, 0, 0, 0);
             if (screenPos.x > 50 && screenPos.x < 430) {
                 // screenPos = detector.getScreenPosition();
-                strafeForInches(8, 0.2);
+                strafeForInches(7, 0.2);
                 setMecanumPower(0, 0, 0, 0);
-                driveForInches(26, 0.4);
+                gyroPForInches(26,targetAngle,0.3);
+//                driveForInches(26, 0.4);
                 driveForInches(-6, 0.4);
                 goldSide = mineral.RIGHT;
             } else {
-                strafeForInches(-35, 0.2);
-                driveForInches(23, 0.3);
+                strafeForInches(-31, 0.2);
+                gyroPForInches(23,targetAngle,0.3);
+//                driveForInches(23, 0.3);
                 goldSide = mineral.LEFT;
             }
             opmode.telemetry.addData("gold detected", goldSide);
@@ -934,31 +940,48 @@ public class WonderWomenRobot {
         }
 
     }
-    public void findGoldCrater(MyGoldDetector detector) {
+
+    public void findGoldCrater(MyGoldDetector detector){
+        findGoldCrater( detector, getIMUBearing());
+    }
+    public void findGoldCrater(MyGoldDetector detector, double targetAngle) {
         //detector.enable();
 
 
         Point screenPos = detector.getScreenPosition();
+        Log.d("Screen Pos1", screenPos.toString());
+
+        opmode.telemetry.addData("Screen Pos: ", screenPos);
+        opmode.telemetry.update();
+
         if (screenPos.x > 50 && screenPos.x < 430) {
-            strafeForInches(9, 0.2);
+            strafeForInches(8, 0.2);
             //  RotatorForTicks(-50,1);
             // setRotationArmPower(0);
-            driveForInches(12, 0.4);
+            gyroPForInches(12,targetAngle, 0.3);
+//            driveForInches(12, 0.4);
             goldSide = mineral.MIDDLE;
         } else {
-            strafeForInches(23, 0.1);
+            strafeForInches(19, 0.1);
             screenPos = detector.getScreenPosition();
+            Log.d("Screen Pos2", screenPos.toString());
+
+            opmode.telemetry.addData("Screen Pos: ", screenPos);
+            opmode.telemetry.update();
             setMecanumPower(0, 0, 0, 0);
+
             if (screenPos.x > 50 && screenPos.x < 430) {
                 // screenPos = detector.getScreenPosition();
-                strafeForInches(8, 0.2);
+                strafeForInches(7, 0.2);
                 setMecanumPower(0, 0, 0, 0);
-                driveForInches(16, 0.4);
+//                driveForInches(16, 0.4);
+                gyroPForInches(16,targetAngle,0.3);
                 //driveForInches(-6,0.4);
                 goldSide = mineral.RIGHT;
             } else {
-                strafeForInches(-33, 0.2);
-                driveForInches(16, 0.4);
+                strafeForInches(-31, 0.2);
+                gyroPForInches(16,targetAngle,0.3);
+//                driveForInches(16, 0.4);
                 goldSide = mineral.LEFT;
             }
             opmode.telemetry.addData("gold detected", goldSide);
