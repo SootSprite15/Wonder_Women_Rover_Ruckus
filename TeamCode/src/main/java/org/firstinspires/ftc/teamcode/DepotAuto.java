@@ -88,7 +88,7 @@ public class DepotAuto extends LinearOpMode {
        // robot.extenderForTicks(15000,1); //needs to raise 23 inches
 
 //        robot.setExtenderArmPower(1);
-//        sleep(6000);
+//        sleep(6000); //it was 6 at comp. may change it back
 //        robot.setExtenderArmPower(0);
 
         double targetAngle = robot.getIMUBearing();
@@ -97,11 +97,11 @@ public class DepotAuto extends LinearOpMode {
         sleep(1000);
         robot.setMecanumPower(0,0,0,0);
 //        robot.driveForInches(23,0.2);//forward to avoid hitting the lander
-        robot.gyroPForInches(19,targetAngle,0.2);
+        robot.gyroPForInches(21,targetAngle,0.2);
 //        robot.driveForInches(16,0.2);
 //        robot.strafeForInches(-5,0.2);//strafe to line up to middle mineral
 
-
+        sleep(500);
         robot.findGold(detector, targetAngle);//find the gold mineral and pushes out
         detector.disable();
 
@@ -127,12 +127,10 @@ public class DepotAuto extends LinearOpMode {
 //
         telemetry.addData("Status", "arm raised");
         telemetry.update();
-      //  robot.goToCraterFromDepot(); //goes to crater
+
         robot.goToCraterFromDepotGyro();
         Log.d("Status", "went to crater");
 //        robot.extenderForTicks(15000,1);
-
-//      a
 
         telemetry.addData("Status", "at crater");
         stop();

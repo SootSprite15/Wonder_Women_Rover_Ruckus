@@ -85,11 +85,11 @@ public class CraterAuto extends LinearOpMode {
        // robot.extenderForTicks(15000,1); //needs to raise 23 inches
 
 //        robot.setExtenderArmPower(1);
-//        sleep(6000);
+//        sleep(5000); //was 6 sec at comp. may need to change back
 //        robot.setExtenderArmPower(0);
 
         double targetAngle = robot.getIMUBearing();
-        robot.strafeForInches(-9, 0.2); //strafe off lander
+        robot.strafeForInches(-8, 0.2); //strafe off lander
         detector.enable();
         sleep(1000);
         robot.setMecanumPower(0,0,0,0);
@@ -97,29 +97,29 @@ public class CraterAuto extends LinearOpMode {
         robot.gyroPForInches(19,targetAngle,0.2);
 //        robot.driveForInches(23,0.2);
 //        robot.strafeForInches(-7,1);//strafe to line up to middle mineral was -6
-
+        sleep(500);
         robot.findGoldCrater(detector, targetAngle);//find the gold mineral and pushes out
         detector.disable();
         telemetry.addData("Status", "found gold");
         telemetry.update();
 
        robot.goToDepotFromCraterGyro(); //goes to depot
-//        telemetry.addData("Status", "went to depot");
-//        telemetry.update();
-//        robot.setIntakePower(-1); //claims depot
-//        sleep(1600);
-//        robot.setIntakePower(0);
-////         robot.RaiseRotationArm();
-//        robot.RotatorForTicks(750,1); //raises arm
-//        telemetry.addData("Status", "arm raised");
-//        telemetry.update();
-//        robot.goToSameCraterFromDepotGyro(); //goes to crater
-//        telemetry.addData("Status", "at crater");
-//       // robot.extenderForTicks(15000,1); //extends arm to prepare for TeleOp
-////
-////        robot.setExtenderArmPower(1);
-////        sleep(3000);
-////        robot.setExtenderArmPower(0);
+        telemetry.addData("Status", "went to depot");
+        telemetry.update();
+        robot.setIntakePower(-1); //claims depot
+        sleep(1600);
+        robot.setIntakePower(0);
+//         robot.RaiseRotationArm();
+        robot.RotatorForTicks(750,1); //raises arm
+        telemetry.addData("Status", "arm raised");
+        telemetry.update();
+        robot.goToSameCraterFromDepotGyro(); //goes to crater
+        telemetry.addData("Status", "at crater");
+       // robot.extenderForTicks(15000,1); //extends arm to prepare for TeleOp
+//
+//        robot.setExtenderArmPower(1);
+//        sleep(3000);
+//        robot.setExtenderArmPower(0);
 
         telemetry.update();
 
