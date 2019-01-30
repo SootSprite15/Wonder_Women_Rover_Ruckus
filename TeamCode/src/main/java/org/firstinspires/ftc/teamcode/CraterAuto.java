@@ -84,12 +84,12 @@ public class CraterAuto extends LinearOpMode {
 //
        // robot.extenderForTicks(15000,1); //needs to raise 23 inches
 
-//        robot.setExtenderArmPower(1);
-//        sleep(5000); //was 6 sec at comp. may need to change back
-//        robot.setExtenderArmPower(0);
+        robot.setExtenderArmPower(1);
+        sleep(4000); //was 6 sec at comp. may need to change back
+        robot.setExtenderArmPower(0);
 
         double targetAngle = robot.getIMUBearing();
-        robot.strafeForInches(-8, 0.2); //strafe off lander
+        robot.strafeForInches(-7, 0.2); //strafe off lander
         detector.enable();
         sleep(1000);
         robot.setMecanumPower(0,0,0,0);

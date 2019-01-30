@@ -1175,13 +1175,14 @@ public class WonderWomenRobot {
         imuAngle target6 = new imuAngle(target2+1);
         imuAngle target7 = new imuAngle(target2);
         if (goldSide == mineral.LEFT) {
-            driveForInches(-50,0.4);
+            driveForInches(-55,0.4);
         }
         if (goldSide == mineral.RIGHT) {
-
+            driveForInches(-50,0.4);
         }
         if (goldSide == mineral.MIDDLE) {
-            gyroPForInches(-50,imuAngle.toDouble(target7),0.4);
+//            gyroPForInches(-50,imuAngle.toDouble(target7),0.4);
+            driveForInches(-55,0.4);
         }
 
 //        double target2 = getIMUBearing();
@@ -1229,58 +1230,65 @@ public class WonderWomenRobot {
     }
     public void goToDepotFromCraterGyro() {
 
-        // initIMUGyro();
-        //goldSide = mineral.LEFT;
-        driveForInches(-9, 0.2);
+        driveForInches(-7, 0.2);
 
         if (goldSide == mineral.LEFT) {
-            gyroTurn(40);
+//            gyroTurn(40);
+//            driveForInches(18, 0.2);
+//            double target3 = getIMUBearing();
+//
+//            gyroTurn(65);
+//            strafeForInches(4,0.2);
+//            imuAngle target2 = new imuAngle(target3 + 71);
+//            gyroPForInches(45,imuAngle.toDouble(target2),0.2);
+            gyroTurn(75);
             driveForInches(18, 0.2);
             double target3 = getIMUBearing();
+            gyroTurn(19);
+//
+            strafeForInches(20,0.2);
 
-            gyroTurn(65);
-            strafeForInches(4,0.2);
-            //driveForInches(45, 0.4);
-            imuAngle target2 = new imuAngle(target3 + 73);
-            gyroPForInches(45,imuAngle.toDouble(target2),0.2);
+
+            imuAngle target2 = new imuAngle(target3+6);
+            gyroPForInches(45,imuAngle.toDouble(target2),0.3);
 
         }
         if (goldSide == mineral.RIGHT) {
-            driveForInches(-3,0.2);
-            gyroTurn(90);
-            driveForInches(30, 0.2);
-//            gyroTurn(-45);
-//            driveForInches(27, 0.4);
-            double target3 = getIMUBearing();
-            gyroTurn(15);
-            strafeForInches(34,0.2);
-
-
-//            gyroTurn(70);
-            imuAngle target2 = new imuAngle(target3-3);
-            gyroPForInches(45,imuAngle.toDouble(target2),0.3);
-
-            //driveForInches(45, 0.4);
-//            imuAngle target2 = new imuAngle(target3 + 80);
+//            driveForInches(-3,0.2);
+//            gyroTurn(80);
+//            driveForInches(35, 0.2);
+////
+//            double target3 = getIMUBearing();
+//            gyroTurn(15);
+//            strafeForInches(34,0.2);
+//
+//
+////
+//            imuAngle target2 = new imuAngle(target3-3);
 //            gyroPForInches(45,imuAngle.toDouble(target2),0.3);
+//
+//
+            gyroTurn(75);
+            driveForInches(44, 0.2);
+            double target3 = getIMUBearing();
+            gyroTurn(22);
+//
+            strafeForInches(20,0.2);
+
+
+            imuAngle target2 = new imuAngle(target3+6);
+            gyroPForInches(45,imuAngle.toDouble(target2),0.3);
 
         }
         if (goldSide == mineral.MIDDLE) {
-            gyroTurn(85);
-            driveForInches(17, 0.2);
+            gyroTurn(75);
+            driveForInches(32, 0.2);
             double target3 = getIMUBearing();
-            gyroTurn(15);
-//            gyroTurn(-40);
-//            driveForInches(25, 0.2);
-//            double target3 = getIMUBearing();
+            gyroTurn(19);
 //
-//            gyroTurn(80);
-//            //driveForInches(45, 0.4);
-//            imuAngle target2 = new imuAngle(target3 + 85);
-//            gyroPForInches(45,imuAngle.toDouble(target2),0.3);
-           strafeForInches(24,0.2);
+           strafeForInches(23,0.2);
 
-            //driveForInches(45, 0.4);
+
             imuAngle target2 = new imuAngle(target3+6);
             gyroPForInches(45,imuAngle.toDouble(target2),0.3);
 

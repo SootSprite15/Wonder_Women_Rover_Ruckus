@@ -87,9 +87,9 @@ public class DepotAuto extends LinearOpMode {
 
        // robot.extenderForTicks(15000,1); //needs to raise 23 inches
 
-//        robot.setExtenderArmPower(1);
-//        sleep(6000); //it was 6 at comp. may change it back
-//        robot.setExtenderArmPower(0);
+        robot.setExtenderArmPower(1);
+        sleep(6000); //it was 6 at comp. may change it back
+        robot.setExtenderArmPower(0);
 
         double targetAngle = robot.getIMUBearing();
         robot.strafeForInches(-8, 0.2); //strafe off lander
