@@ -86,18 +86,18 @@ public class DepotAuto extends LinearOpMode {
 
 
        // robot.extenderForTicks(15000,1); //needs to raise 23 inches
-
-        robot.setExtenderArmPower(1);
-        sleep(6000); //it was 6 at comp. may change it back
-        robot.setExtenderArmPower(0);
+//
+//        robot.setExtenderArmPower(1);
+//        sleep(4000); //it was 6 at comp. may change it back
+//        robot.setExtenderArmPower(0);
 
         double targetAngle = robot.getIMUBearing();
-        robot.strafeForInches(-8, 0.2); //strafe off lander
+        robot.strafeForInches(-7, 0.2); //strafe off lander
         detector.enable();
         sleep(1000);
         robot.setMecanumPower(0,0,0,0);
 //        robot.driveForInches(23,0.2);//forward to avoid hitting the lander
-        robot.gyroPForInches(21,targetAngle,0.2);
+        robot.gyroPForInches(19,targetAngle,0.2);
 //        robot.driveForInches(16,0.2);
 //        robot.strafeForInches(-5,0.2);//strafe to line up to middle mineral
 
@@ -123,12 +123,12 @@ public class DepotAuto extends LinearOpMode {
 
 //        robot.RaiseRotationArm();
 
-        robot.RotatorForTicks(750,1); //raises arm
+        robot.RotatorForTicks(850,1); //raises arm
 //
         telemetry.addData("Status", "arm raised");
         telemetry.update();
 
-        robot.goToCraterFromDepotGyro();
+        robot.safeRoutegoToCraterFromDepotGyro();
         Log.d("Status", "went to crater");
 //        robot.extenderForTicks(15000,1);
 

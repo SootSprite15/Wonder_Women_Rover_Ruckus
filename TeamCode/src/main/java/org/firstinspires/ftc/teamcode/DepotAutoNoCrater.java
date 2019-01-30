@@ -84,11 +84,11 @@ public class DepotAutoNoCrater extends LinearOpMode {
 
 
        // robot.extenderForTicks(15000,1); //needs to raise 23 inches
-//
-//        robot.setExtenderArmPower(1);
-//        sleep(6000);
-//        robot.setExtenderArmPower(0);
-//
+
+        robot.setExtenderArmPower(1);
+        sleep(4000);
+        robot.setExtenderArmPower(0);
+
 
         robot.strafeForInches(-7, 1); //strafe off lander
         detector.enable();
