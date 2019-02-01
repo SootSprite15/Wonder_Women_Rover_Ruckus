@@ -167,6 +167,33 @@ public class WonderWomenRobot {
         BackLeft.setPower(0);
         BackRight.setPower(0);
     }
+    public void initDriveMotorsTeleOp() {
+        //naming the motors
+        FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
+        FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+        BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
+        BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+
+//
+        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+
+        // The right motors needed to be reversed to run forward.
+        FrontLeft.setDirection(DcMotor.Direction.FORWARD);
+        BackRight.setDirection(DcMotor.Direction.REVERSE);
+        FrontRight.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.FORWARD);
+
+        // resetEncoder();
+        // set power of motors to 0
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
+    }
     public void initDriveMotorsAuto() {
         //naming the motors
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
@@ -236,6 +263,14 @@ public class WonderWomenRobot {
         initIMUGyro();
 
     }
+    public void initRobotTeleOp(HardwareMap hwMap, LinearOpMode opmode) {
+        setHardwareMap(hwMap);
+        setOpMode(opmode);
+        initDriveMotors();
+        initArmMotors();
+        initIMUGyro();
+
+    }
     public void initRobotAuto(HardwareMap hwMap, LinearOpMode opmode) {
         setHardwareMap(hwMap);
         setOpMode(opmode);
@@ -256,6 +291,13 @@ public class WonderWomenRobot {
         setHardwareMap(hwMap);
         setOpMode(opmode);
         initDriveMotors();
+        initArmMotors();
+        initIMUGyro();
+    }
+    public void initRobotTeleOp(HardwareMap hwMap, OpMode opmode) {
+        setHardwareMap(hwMap);
+        setOpMode(opmode);
+        initDriveMotorsTeleOp();
         initArmMotors();
         initIMUGyro();
     }
